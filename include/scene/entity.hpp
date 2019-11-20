@@ -56,7 +56,7 @@ class Entity
 
 	protected:
 
-	shared_ptr<Mesh>	pMesh_;				//pointor toward mesh (allow to not duplicate vertex)
+	shared_ptr<Mesh>		pMesh_;				//pointor toward mesh (allow to not duplicate vertex)
 	math::Mat4				transformation_;	//matrix TRS. Allow to pass vertex form local to global
 
 

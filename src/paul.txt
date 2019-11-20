@@ -1,0 +1,13 @@
+frame buffer avec reso / 2 
+clear buffer ligne par ligne et non pixel par pixel
+
+
+frame buffer = ce qui s'affiche a l'ecran
+Draw triangle () avec en param le buffer
+
+int x = ((v.x + 1.f) / 2.f) * width
+int y = ((v.y + 1.f) / 2.f) * heigth
+
+couleur multi : fonctionne avec des poids R, G, B avec max 1.f
+coordonne par excentrique
+
