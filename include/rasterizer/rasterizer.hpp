@@ -12,6 +12,34 @@ class Rasterizer
 		/* methode  */
 	   /*----------*/
 
+		/**
+		 * function : drawLine
+		 *
+		 * parameter : 
+		 *  : 
+		 *  :
+		 *
+		 * return (type void):
+		 *
+		 * brief : 
+		 */
+		void		drawLine		();
+		
+		/**
+		 * function : drawTriangle
+		 *
+		 * parameter : 
+		 *  : 
+		 *  :
+		 *
+		 * return (type void):
+		 *
+		 * brief : 
+		 */
+		void		drawTriangle		();
+		
+		
+
 		 /*----------*/
 		/* accessor */
 	   /*----------*/

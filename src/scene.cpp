@@ -5,7 +5,6 @@ using namespace math;
 unsigned int 	Scene::addEntity(const Vec3& scaleVec, const Vec3& rotVec, const Vec3& translVec, Primitive3D primitive) noexcept
 {
 	entities_.push_back(Entity(scaleVec, rotVec, translVec, primitive));
-	
 	return entities_.size();
 }
 
