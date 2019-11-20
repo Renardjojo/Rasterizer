@@ -3,23 +3,26 @@
 #include "mat4.hpp"
 #include "scene.hpp"
 #include "entity.hpp"
+#include "window.hpp"
+#include "renderer.hpp"
+
 
 using namespace std;
 using namespace math;
 
 int main()
 {
-	Scene scene;
+	Window win (1024, 700);
+	Renderer ren (win.get(), 1024, 700);
+	bool running = true;
 
-	scene.addEntity({1.f, 1.f, 1.f}, {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, E_primitive3D::CUBE);
-	scene.addEntity({1.f, 1.f, 1.f}, {0.f, 0.f, 0.f}, {0.f, 0.f, 10.f}, E_primitive3D::CUBE);
-	scene.addEntity({1.f, 1.f, 1.f}, {0.f, 0.f, 0.f}, {0.f, 15.f, 0.f}, E_primitive3D::CUBE);
-	scene.addEntity({1.f, 1.f, 1.f}, {0.f, 0.f, 0.f}, {1.f, 0.f, 0.f}, E_primitive3D::CUBE);
-	scene.addEntity({1.f, 1.f, 1.f}, {0.f, 15.f, 0.f}, {0.f, 0.f, 0.f}, E_primitive3D::CUBE);
-	scene.addEntity({1.f, 1.f, 1.f}, {0.f, 0.f, 0.f}, {0.f, 10.f, 0.f}, E_primitive3D::NONE);
-	scene.addEntity({1.f, 1.f, 1.f}, {0.f, 0.f, 0.f}, {0.f, 0.f, 8.f}, E_primitive3D::CUBE);
-	scene.addEntity({1.f, 1.f, 1.f}, {0.f, 0.f, 0.f}, {3.f, 0.f, 0.f}, E_primitive3D::SPHERE);
-	scene.addEntity({1.f, 1.f, 1.f}, {0.f, 0.f, 0.f}, {0.f, 2.f, 0.f}, E_primitive3D::CUBE);
+	while (running)
+	{
+		ren.clear ();
+
+
+		ren.swapBuffer ();
+	}
 	
 	return 0;
 }
