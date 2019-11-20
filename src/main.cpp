@@ -24,13 +24,13 @@ int main()
 	{
 		for (unsigned int i = 0; i < 200; i++)
 		{
-			//ren.clear ();
+			ren.clear ();
 
 			Vertex v1 = {100.f + i, 100.f, 0.f};
 			Vertex v2 = {300.f + i, 500.f, 0.f};
 			Vertex v3 = {500.f + i, 100.f, 0.f};
 
-			ras.drawTriangle(ren.getDrawBuffer(), v1, v2, v3);
+		//	ras.drawTriangle(ren.getDrawBuffer(), v1, v2, v3);
 
 			ren.swapBuffer ();			
 		}

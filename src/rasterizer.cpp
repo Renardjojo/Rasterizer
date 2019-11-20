@@ -8,6 +8,16 @@ void Rasterizer::drawLine()
 
 void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v3)
 {
+/*
+	for (unsigned int x = 100; x < 150; x++)
+	{
+       target.setPixelColor(x, 100, {255, 0, 255, 255});
+       target.setPixelColor(x, 150, {255, 0, 255, 255});
+       target.setPixelColor(100, x, {255, 0, 255, 255});
+       target.setPixelColor(150, x, {255, 0, 255, 255});
+	}
+*/
+
     // Get the bounding box of the triangle
     float maxX, minX, maxY, minY = 0;
 
@@ -34,8 +44,7 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
             // If inside of the triangle
             if ((s >= 0) && (t >= 0) && (s + t <= 1))
             {
-                /* draw pixel */
-                target.setPixelColor(x, y, {255, 255, 255, 0});
+                target.setPixelColor(x, y, {255, 0, 255, 255});
             }
         }
     }
