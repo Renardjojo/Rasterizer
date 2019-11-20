@@ -5,7 +5,7 @@ typedef unsigned char ubyte;
 
 typedef struct S_ColorRGBA
 {
-	ubyte r,  g, b, a; //0 to 255 max. 255 is max value
+	ubyte r, g, b, a; //0 to 255 max. 255 is max value
 
 } ColorRGBA;
 
