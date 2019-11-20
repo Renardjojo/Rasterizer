@@ -41,11 +41,10 @@ class Vertex
 	   /*----------*/
 
 		//public variable (get and set with no effect for class)
+		math::Vec3 position_;
 
 	protected:
 		
-		math::Vec3 position_;
-
 	private:
 };
 

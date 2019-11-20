@@ -1,6 +1,11 @@
 #ifndef _RASTERIZER_HPP
 #define _RASTERIZER_HPP
 
+#include <cmath>
+#include <SDL2/SDL.h>
+#include "../math/vertex.hpp"
+#include "texture.hpp"
+
 class Rasterizer
 {
 	public:
@@ -36,7 +41,7 @@ class Rasterizer
 		 *
 		 * brief : 
 		 */
-		void		drawTriangle		();
+		void		drawTriangle		(Texture&, Vertex& , Vertex& , Vertex&);
 		
 		
 
@@ -55,6 +60,10 @@ class Rasterizer
 		 /*----------*/
 		/* convertor*/ 
 	   /*----------*/
+
+		float		min					(float, float);
+		float		max					(float, float);
+		float		crossProduct		(Vertex&, Vertex&);
 
 		//public variable (get and set with no effect for class)
 
