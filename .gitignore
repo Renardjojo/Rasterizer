@@ -1,3 +1,3 @@
-.o
-.d
-exe
+src/*.o
+src/*.d
+bin/exe
