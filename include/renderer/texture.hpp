@@ -2,6 +2,7 @@
 #define _TEXTURE_H
 
 #include <vector>
+#include <SDL2/SDL.h>
 #include "color.hpp"
 
 class Texture
@@ -21,9 +22,25 @@ class Texture
 		//color pixel of matrix
 		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c);
 
+
+		/**
+		 * function : clear
+		 *
+		 * parameter : 
+		 *
+		 * return (type void):
+		 *
+		 * brief : This function destroy the current Texture and alloc new texture buffer with the same size. Clear in black
+		 */
+		void		clear		();
+		
+
 		 /*----------*/
 		/* accessor */
 	   /*----------*/
+
+		unsigned int 	width	() const { return width_; }
+		unsigned int 	heigth	() const { return heigth_; }
 
 		 /*----------*/
 		/* mutator  */
@@ -32,6 +49,8 @@ class Texture
 		 /*----------*/
 		/* operator */
 	   /*----------*/
+
+		
 
 		void operator=(const Texture& other) = delete; //TODO
 
@@ -70,7 +89,7 @@ class Texture
 	protected:
 		
 		unsigned int 				width_;
-		unsigned int 				height_;
+		unsigned int 				heigth_;
 		ColorRGBA*					pPixels_;
 
 	private:
