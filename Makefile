@@ -1,5 +1,5 @@
 OUTPUT=./bin/exe
-IDIR=-Iinclude -Iinclude/math -Iinclude/rasterizer -Iinclude/scene -Iinclude/texture
+IDIR=-Iinclude -Iinclude/math -Iinclude/rasterizer -Iinclude/scene -Iinclude/renderer
 CXXFLAGS= -g -O0 -Wall -Werror $(IDIR)
 VFLAG=--leak-check=full --show-leak-kinds=all
 #LIBSGL=-lGL -lGLU -ldl
