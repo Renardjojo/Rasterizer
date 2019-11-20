@@ -31,6 +31,7 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
             if ((s >= 0) && (t >= 0) && (s + t <= 1))
             {
                 /* draw pixel */
+                target.setPixelColor(x, y, {255, 255, 255, 255});
             }
         }
     }
