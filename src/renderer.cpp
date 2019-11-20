@@ -26,8 +26,8 @@ void		Renderer::swapBuffer		() noexcept
 
 void		Renderer::clear		() noexcept
 {
+	texBuffer_.clear();	
 	SDL_SetRenderTarget		(SDLRen_, SDLBuffer_);
-    SDL_SetRenderDrawColor	(SDLRen_, 0, 0, 0, 0);
 	SDL_RenderClear			(SDLRen_);
 	SDL_SetRenderTarget		(SDLRen_, NULL);
 }

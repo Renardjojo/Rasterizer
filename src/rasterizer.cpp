@@ -16,9 +16,11 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
     maxY = max(max(v1.position_.y_, v2.position_.y_), v3.position_.y_);
     minY = min(min(v1.position_.y_, v2.position_.y_), v3.position_.y_);
 
+
     // Spanning vectors of edge (v1,v2) and (v1,v3)
     Vertex vs1 = {v2.position_.x_ - v1.position_.x_, v2.position_.y_ - v1.position_.y_, 0};
     Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0};
+
 
     for (int x = minX; x <= maxX; x++)
     {
@@ -33,7 +35,7 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
             if ((s >= 0) && (t >= 0) && (s + t <= 1))
             {
                 /* draw pixel */
-                target.setPixelColor(x, y, {255, 255, 255, 255});
+                target.setPixelColor(x, y, {255, 255, 255, 0});
             }
         }
     }

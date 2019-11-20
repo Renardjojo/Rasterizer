@@ -18,19 +18,24 @@ int main()
 	Renderer ren (win.get(), 1024, 700);
 	Rasterizer ras;
 
-	bool running = true;
+	bool running = false;
 
-	while (running)
+	do
 	{
-		//ren.clear ();
+		for (unsigned int i = 0; i < 200; i++)
+		{
+			//ren.clear ();
 
-		Vertex v1 = {1.f, 1.f, 1.f};
-		Vertex v2 = {1.f, 10.f, 1.f};
+			Vertex v1 = {100.f + i, 100.f, 0.f};
+			Vertex v2 = {300.f + i, 500.f, 0.f};
+			Vertex v3 = {500.f + i, 100.f, 0.f};
 
-		ras.drawTriangle(ren.getDrawBuffer(), v1, v2, v1);
+			ras.drawTriangle(ren.getDrawBuffer(), v1, v2, v3);
 
-		ren.swapBuffer ();
-	}
+			ren.swapBuffer ();			
+		}
+
+	} 	while (running);
 	
 	return 0;
 }
