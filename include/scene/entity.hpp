@@ -5,6 +5,7 @@
 #include "mesh.hpp"
 #include "vec3.hpp"
 #include "mat4.hpp"
+#include "texture.hpp"
 
 typedef enum E_primitive3D
 {
@@ -34,7 +35,7 @@ class Entity
 	   /*----------*/
 
 		//display vextex in function of his matrix TRS
-		void 	display		();
+		void 	draw		(Texture& RenBuffer) const noexcept;
 
 		 /*----------*/
 		/* accessor */

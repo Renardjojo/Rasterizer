@@ -16,8 +16,10 @@ Texture::~Texture ()
 
 void Texture::setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c)
 {
-	assert(x < width_ && y < heigth_);
-	pPixels_[width_ * y + x] = c;
+	//assert(x < width_ && y < heigth_);
+
+	if (x < width_ && y < heigth_)
+		pPixels_[width_ * y + x] = c;
 }
 
 void Texture::clear		()
