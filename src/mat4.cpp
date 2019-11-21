@@ -112,6 +112,17 @@ Mat4 Mat4::createTRSMatrix(const Vec3& scaleVec, const Vec3& rotVec, const Vec3&
 			createFixedAngleEulerRotationMatrix (rotVec) *
 			createScaleMatrix (scaleVec);
 }
+
+Mat4 Mat4::createProjectionMatrix		(float distance)
+{
+	Mat4 pMat;
+
+	pMat[3][2] = 1.f / distance;
+	pMat[3][3] = 0;
+
+	return pMat;
+}
+
 /*
 Vec3 Mat4::operator*(Vec3 cVec)
 {

@@ -39,12 +39,10 @@ class Rasterizer
 		 *
 		 * return (type void):
 		 *
-		 * brief : 
+		 * brief : this function draw colorfull triangle. Use algorythme of barycenter triangle.
 		 */
 		void		drawTriangle		(Texture&, Vertex& , Vertex& , Vertex&);
 		
-		
-
 		 /*----------*/
 		/* accessor */
 	   /*----------*/

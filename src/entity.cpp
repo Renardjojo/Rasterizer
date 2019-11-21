@@ -2,9 +2,13 @@
 
 using namespace math;
 
-Entity::Entity (const Vec3& scaleVec, const Vec3& rotVec, const Vec3& translVec, Primitive3D primitive)
-	:	pMesh_			(nullptr),
-		transformation_	(Mat4::createTRSMatrix(scaleVec, rotVec, translVec))
+Entity::Entity (const math::Vec3& 	translVec,
+				const math::Vec3& 	rotVec, 
+				const math::Vec3& 	scaleVec,
+				Ref3& 				dependance,
+				Primitive3D 		primitive)
+	:	pMesh_		(nullptr),
+		transform_	("Test", translVec, rotVec, scaleVec, dependance)
 {
 	switch (primitive)
 	{
@@ -34,8 +38,6 @@ Entity::Entity (const Vec3& scaleVec, const Vec3& rotVec, const Vec3& translVec,
 void 	Entity::draw		(Texture& RenBuffer) const noexcept
 {
 	assert(pMesh_ != nullptr);
-	
-	
 
 	//TODO
 }

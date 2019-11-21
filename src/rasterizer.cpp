@@ -46,7 +46,7 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
                 target.setPixelColor(x, y, {static_cast<ubyte>(s * 255.f),
                                             static_cast<ubyte>(t * 255.f),
                                             static_cast<ubyte>((1.f - s - t) * 255.f),
-                                             100});
+                                            255});
             }
         }
     }

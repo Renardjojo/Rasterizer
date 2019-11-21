@@ -2,9 +2,19 @@
 
 using namespace math;
 
-unsigned int 	Scene::addEntity(const Vec3& scaleVec, const Vec3& rotVec, const Vec3& translVec, Primitive3D primitive) noexcept
+unsigned int 	Scene::addEntity(const Vec3&  originVec, const Vec3& orientationVec, const Vec3& scaleVec, 
+								int entityIDDependance, Primitive3D primitive) throw()
 {
-	entities_.push_back(Entity(scaleVec, rotVec, translVec, primitive));
+	if (entityIDDependance > (int)entities_.size() - 1 || entityIDDependance < -1)
+		throw range_error("ID does not exist to create entity");
+
+	entities_.push_back(Entity(	originVec, 
+								orientationVec,
+								scaleVec,
+								entityIDDependance == -1 ? 
+								world :	entities_[entityIDDependance].getTransform(),
+								primitive));
+
 	return entities_.size();
 }
 
