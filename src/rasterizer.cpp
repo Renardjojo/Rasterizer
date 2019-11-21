@@ -1,8 +1,7 @@
 #include "rasterizer.hpp"
 
 
-
-void Rasterizer::drawLine()
+void Rasterizer::drawLine(Texture& target, Vertex& v1, Vertex& v2)
 {
     
 }
@@ -14,6 +13,7 @@ float dotProduct(Vertex& v1, Vertex& v2)
 
 void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v3)
 {
+
     projectVertex(v1);
     projectVertex(v2);
     projectVertex(v3);
@@ -26,7 +26,6 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
     maxY = max(max(v1.position_.y_, v2.position_.y_), v3.position_.y_);
     minY = min(min(v1.position_.y_, v2.position_.y_), v3.position_.y_);
 
-
     // Spanning vectors of edge (v1,v2) and (v1,v3)
     Vertex vs1 = {v2.position_.x_ - v1.position_.x_, v2.position_.y_ - v1.position_.y_, 0};
     Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0};
@@ -36,6 +35,7 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
         for (int y = minY; y < maxY; y++)
         {
             Vertex q = {x - v1.position_.x_, y - v1.position_.y_, 0};
+            //Vertex p = {x - v2.position_.x_, y - v2.position_.y_, 0};
 
             float s = dotProduct(q, vs2) / dotProduct(vs1, vs2);
             float t = dotProduct(vs1, q) / dotProduct(vs1, vs2);
@@ -53,10 +53,9 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
 }
 
 
-
 float Rasterizer::min(float value1, float value2)
 {
-    if (value2 < value1)
+    if (value2 <= value1)
         return value2;
     else
         return value1;
@@ -64,7 +63,7 @@ float Rasterizer::min(float value1, float value2)
 
 float Rasterizer::max(float value1, float value2)
 {
-    if (value1 > value2)
+    if (value1 >= value2)
         return value1;
     else
         return value2;
@@ -74,5 +73,4 @@ void	Rasterizer::projectVertex		(Vertex& vec)
 {
     vec.position_.x_ = ((vec.position_.x_ / 5) + 1) * 0.5 * 800;
     vec.position_.y_ = 600 - ((vec.position_.y_ / 5) + 1) * 0.5 * 600;
-
 }

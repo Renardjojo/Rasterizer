@@ -28,7 +28,7 @@ class Rasterizer
 		 *
 		 * brief : 
 		 */
-		void		drawLine		();
+		void		drawLine		(Texture&, Vertex&, Vertex&);
 		
 		/**
 		 * function : drawTriangle
@@ -69,8 +69,10 @@ class Rasterizer
 		//private function
 		float		min					(float, float);
 		float		max					(float, float);
+		float		dotProduct			(Vertex&, Vertex&);
 		float		crossProduct		(Vertex&, Vertex&);
 		void		projectVertex		(Vertex&);
+
 
 	private:
 };

@@ -24,14 +24,14 @@ int main()
 
 	scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, -1, E_primitive3D::CUBE);
 
-	do
+do
 	{
 		//update
 		input.pollEvent(SDL_GetWindowID(win.get()));
 
-		if(input.keyboard.escIsRelease)
+		if (input.keyboard.escIsRelease)
 		{
-			running = false; 
+			running = false;
 			break;
 		}
 
