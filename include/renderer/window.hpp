@@ -28,6 +28,7 @@ class Window
 
 		const SDL_Window*		get () const 	{ return win; }
 		SDL_Window*				get () 			{ return win; }
+		
 
 		 /*----------*/
 		/* mutator  */
