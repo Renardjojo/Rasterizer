@@ -24,8 +24,26 @@ int main()
 
 	do
 	{
+<<<<<<< HEAD
 		//diaply
 
+=======
+		//update
+		input.pollEvent(SDL_GetWindowID(win.get()));
+
+		if(input.keyboard.escIsRelease)
+		{
+			running = false; 
+			break;
+		}
+
+		//display
+		ren.clear ();
+
+		Vertex v1 = {-1.f, 0.f, 0.f};
+		Vertex v2 = {0.f, 1.f, 0.f};
+		Vertex v3 = {1.f, 0.f, 0.f};
+>>>>>>> 7b63f122d42087b5a3bf59f0615980927660c021
 
 		for (int i = 0; i < 100; i++)
 		{
@@ -38,12 +56,6 @@ int main()
 			ren.swapBuffer ();
 		}
 	
-
-		//update
-		input.pollEvent(SDL_GetWindowID(win.get()));
-
-		if(input.keyboard.escIsRelease)
-			running = false;
 
 	} 	while (running);
 	
