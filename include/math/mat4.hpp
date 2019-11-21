@@ -75,6 +75,10 @@ namespace math
 			//Same as creat transform Matrix
 			static Mat4 createTRSMatrix(const Vec3& scaleVec, const Vec3& rotVec, const Vec3& translVec);
 
+			//static function that return projection matrix to pass from 3D to 2D.
+			//Distance in parameter is the distance between pin hole and user.
+			static Mat4 createProjectionMatrix (float distance);
+
 			//this function trnasforme culumn vect to matrix 4*1 and multipli it by current matrix
 			//Vec3 operator*(Vec3 culumnVec);
 

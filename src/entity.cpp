@@ -31,10 +31,12 @@ Entity::Entity (const Vec3& scaleVec, const Vec3& rotVec, const Vec3& translVec,
 }
 
 
-void 	Entity::display		()
+void 	Entity::draw		(Texture& RenBuffer) const noexcept
 {
 	assert(pMesh_ != nullptr);
 	
+	
+
 	//TODO
 }
 
