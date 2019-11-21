@@ -10,7 +10,6 @@
 #include "vertex.hpp"
 #include "input.hpp"
 
-
 using namespace std;
 using namespace math;
 
@@ -23,14 +22,14 @@ int main()
 
 	bool running = true;
 
-	do
+do
 	{
 		//update
 		input.pollEvent(SDL_GetWindowID(win.get()));
 
-		if(input.keyboard.escIsRelease)
+		if (input.keyboard.escIsRelease)
 		{
-			running = false; 
+			running = false;
 			break;
 		}
 

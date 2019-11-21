@@ -4,6 +4,7 @@
 #include <memory>
 #include "mesh.hpp"
 #include "vec3.hpp"
+#include "vec4.hpp"
 #include "mat4.hpp"
 #include "texture.hpp"
 
@@ -35,7 +36,13 @@ class Entity
 	   /*----------*/
 
 		//display vextex in function of his matrix TRS
-		void 	draw		(Texture& RenBuffer) const noexcept;
+		void			draw					(Texture& RenBuffer) const noexcept;
+
+		//retrun an array of modified vectices
+		vector<Vertex>	transformLocalToGlobal	(Mat4&) const;
+
+		//return the transformation of a vertex in a vec4
+		Vec4			transformVertexInVec4	(const Vertex&) const;
 
 		 /*----------*/
 		/* accessor */

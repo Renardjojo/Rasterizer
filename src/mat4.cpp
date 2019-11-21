@@ -112,20 +112,35 @@ Mat4 Mat4::createTRSMatrix(const Vec3& scaleVec, const Vec3& rotVec, const Vec3&
 			createFixedAngleEulerRotationMatrix (rotVec) *
 			createScaleMatrix (scaleVec);
 }
-/*
-Vec3 Mat4::operator*(Vec3 cVec)
+
+Vec4 operator*(Mat4& mat4, Vec4& vect4)
 {
-	Matrix mVec (4, 1, 1);
-	mVec[0][0] = cVec.x_;
-	mVec[0][1] = cVec.y_;
-	mVec[0][2] = cVec.z_;
-	mVec.display();
+    Vec4 result;
+    float res;
 
-	mVec = (*this) * mVec;
+    for (int i = 0; i < 4; i++)
+    {
+        res = 0;
+        for (int j = 0; j < 4; j++)
+        {
+            if (j == 0)
+                res += mat4[i][j] * vect4.x_;
+            else if (j == 1)
+                res += mat4[i][j] * vect4.y_;
+            else if (j == 2)
+                res += mat4[i][j] * vect4.z_;
+            else 
+                res += mat4[i][j] * vect4.w_; 
+        }
 
-	cVec.x_ = mVec[0][0];
-	cVec.y_ = mVec[0][1];
-	cVec.z_ = mVec[0][2];
-
-	return cVec;
-}*/
+        if (i == 0)
+            result.x_ = res;
+        else if (i == 1)
+            result.y_ = res;
+        else if (i == 2)
+            result.z_ = res;
+        else
+            result.w_ = res;
+    }
+    return result;
+}
