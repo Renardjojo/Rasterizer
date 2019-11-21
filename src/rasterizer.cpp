@@ -8,15 +8,9 @@ void Rasterizer::drawLine()
 
 void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v3)
 {
-
-	for (unsigned int x = 100; x < 150; x++)
-	{
-       target.setPixelColor(x, 100, {255, 0, 255, 255});
-       target.setPixelColor(x, 150, {255, 0, 255, 255});
-       target.setPixelColor(100, x, {255, 0, 255, 255});
-       target.setPixelColor(150, x, {255, 0, 255, 255});
-	}
-/*
+    projectVertex(v1);
+    projectVertex(v2);
+    projectVertex(v3);
 
     // Get the bounding box of the triangle
     float maxX, minX, maxY, minY = 0;
@@ -47,7 +41,7 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
                 target.setPixelColor(x, y, {255, 0, 255, 255});
             }
         }
-    }*/
+    }
 }
 
 float Rasterizer::crossProduct(Vertex& v1, Vertex& v2)
@@ -74,4 +68,10 @@ float Rasterizer::max(float value1, float value2)
         return value1;
     else
         return value2;
+}
+
+void	Rasterizer::projectVertex		(Vertex& vec)
+{
+    vec.position_.x_ = ((vec.position_.x_ / 5) + 1) * 0.5 * 1024;
+    vec.position_.y_ = 700 - ((vec.position_.y_ / 5) + 1) * 0.5 * 700;
 }
