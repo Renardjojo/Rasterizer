@@ -1,6 +1,7 @@
 #include "texture.hpp"
 #include <cassert>
 #include <cstdlib>
+#include <iostream>
 
 Texture::Texture (unsigned int width, unsigned int height)
 	:	width_	(width),

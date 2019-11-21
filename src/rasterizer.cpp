@@ -1,26 +1,25 @@
 #include "rasterizer.hpp"
 
 
-void Rasterizer::drawLine()
+void Rasterizer::drawLine(Texture& target, Vertex& v1, Vertex& v2)
 {
+    /*float dx = v2.position_.x_ - v1.position_.x_;
+    float dy = v2.position_.y_ - v1.position_.y_;
+
+    float minX = min(v1.position_.x_, v2.position_.x_);
+
+    for (int x = v1.position_.x_; x < v2.position_.x_; x++)
+    {
+
+    }*/
 }
 
-void Rasterizer::drawTriangle(Texture &target, Vertex &v1, Vertex &v2, Vertex &v3)
+void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v3)
 {
-<<<<<<< HEAD
 
-    /*for (unsigned int x = 100; x < 150; x++)
-	{
-       target.setPixelColor(x, 100, {255, 0, 255, 255});
-       target.setPixelColor(x, 150, {255, 0, 255, 255});
-       target.setPixelColor(100, x, {255, 0, 255, 255});
-       target.setPixelColor(150, x, {255, 0, 255, 255});
-	}*/
-=======
     projectVertex(v1);
     projectVertex(v2);
     projectVertex(v3);
->>>>>>> 7b63f122d42087b5a3bf59f0615980927660c021
 
     // Get the bounding box of the triangle
     float maxX, minX, maxY, minY = 0;
@@ -41,9 +40,9 @@ void Rasterizer::drawTriangle(Texture &target, Vertex &v1, Vertex &v2, Vertex &v
             Vertex q = {x - v1.position_.x_, y - v1.position_.y_, 0};
             //Vertex p = {x - v2.position_.x_, y - v2.position_.y_, 0};
 
-            float s = dotProduct(q, vs2) / dotProduct(vs1, vs2);
-            float t = dotProduct(vs1, q) / dotProduct(vs1, vs2);
-                std::cout << s << " " << t << std::endl;
+            float s = crossProduct(q, vs2) / crossProduct(vs1, vs2);
+            float t = crossProduct(vs1, q) / crossProduct(vs1, vs2);
+            
             // If inside of the triangle
             if ((s >= 0) && (t >= 0) && (s + t <= 1))
             {
@@ -58,15 +57,10 @@ float Rasterizer::dotProduct(Vertex& v1, Vertex& v2)
     return ((v1.position_.x_ * v2.position_.x_) + (v1.position_.y_ * v2.position_.y_));
 }
 
-/*float Rasterizer::crossProduct(Vertex &v1, Vertex &v2)
+float Rasterizer::crossProduct(Vertex& v1, Vertex& v2)
 {
-    float lenghtV1 = sqrtf(v1.position_.x_ * v1.position_.x_ + v1.position_.y_ * v1.position_.y_);
-    float lenghtV2 = sqrtf(v2.position_.x_ * v2.position_.x_ + v2.position_.y_ * v2.position_.y_);
-
-    float teta = (v1.position_.x_ * v2.position_.x_) + (v1.position_.y_ * v2.position_.y_) / (lenghtV1 * lenghtV2);
-
-    return lenghtV1 * lenghtV2 * sinf(teta);
-}*/
+    return (v1.position_.x_ * v2.position_.y_) / (v2.position_.x_ * v1.position_.y_);
+}
 
 float Rasterizer::min(float value1, float value2)
 {
