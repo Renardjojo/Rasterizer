@@ -5,6 +5,7 @@
 #include "entity.hpp"
 #include "vec3.hpp"
 #include "mat4.hpp"
+#include "texture.hpp"
 
 class Scene
 {
@@ -25,6 +26,9 @@ class Scene
 
 		//delete entity of scene in function of id in parameter. Error if Id doesn't exist
 		void 			deleteEntity		(unsigned int id) throw();
+
+		//this function draw all entities of the scene in function of there referential. It take in parameter th buffer of renderer
+		void 			draw				(Texture& RenBuffer) const noexcept;
 
 		 /*----------*/
 		/* accessor */

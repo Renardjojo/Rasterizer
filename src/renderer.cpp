@@ -23,14 +23,14 @@ void		Renderer::swapBuffer		() noexcept
 	SDL_RenderCopy(SDLRen_, SDLBuffer_, NULL, NULL);
 	SDL_RenderPresent(SDLRen_);	*/
 
-	for (unsigned int x = 0; x < texBuffer_.heigth(); x++)
+	for (unsigned int x = 0; x < texBuffer_.width(); x++)
 	{
-		for (unsigned int y = 0; y < texBuffer_.width(); y++)
+		for (unsigned int y = 0; y < texBuffer_.heigth(); y++)
 		{
-		  	SDL_SetRenderDrawColor(SDLRen_, texBuffer_[x][y].r,
-											texBuffer_[x][y].g,
-											texBuffer_[x][y].b,
-											texBuffer_[x][y].a);
+		  	SDL_SetRenderDrawColor(SDLRen_, texBuffer_[y][x].r,
+											texBuffer_[y][x].g,
+											texBuffer_[y][x].b,
+											texBuffer_[y][x].a);
 
 			SDL_RenderDrawPoint(SDLRen_, x, y);	
 		}

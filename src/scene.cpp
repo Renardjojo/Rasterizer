@@ -15,3 +15,9 @@ void 			Scene::deleteEntity	(unsigned int id) throw()
 
 	entities_.erase(entities_.begin() + id);
 }
+
+void 			Scene::draw				(Texture& RenBuffer) const noexcept
+{
+	for (auto& entity : entities_)
+		entity.draw(RenBuffer);
+}
