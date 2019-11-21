@@ -24,22 +24,25 @@ int main()
 
 	do
 	{
-		//diaply
-		ren.clear ();
-
-		Vertex v1 = {100.f, 100.f, 0.f};
-		Vertex v2 = {300.f, 500.f, 0.f};
-		Vertex v3 = {500.f, 100.f, 0.f};
-
-		ras.drawTriangle(ren.getDrawBuffer(), v1, v2, v3);
-
-		ren.swapBuffer ();
-
 		//update
 		input.pollEvent(SDL_GetWindowID(win.get()));
 
 		if(input.keyboard.escIsRelease)
-			running = false;
+		{
+			running = false; 
+			break;
+		}
+
+		//display
+		ren.clear ();
+
+		Vertex v1 = {-1.f, 0.f, 0.f};
+		Vertex v2 = {0.f, 1.f, 0.f};
+		Vertex v3 = {1.f, 0.f, 0.f};
+
+		ras.drawTriangle(ren.getDrawBuffer(), v1, v2, v3);
+
+		ren.swapBuffer ();
 
 	} 	while (running);
 	

@@ -61,14 +61,18 @@ class Rasterizer
 		/* convertor*/ 
 	   /*----------*/
 
-		float		min					(float, float);
-		float		max					(float, float);
-		float		crossProduct		(Vertex&, Vertex&);
 
 		//public variable (get and set with no effect for class)
 
 	protected:
-			
+	
+
+
+		//private function
+		float		min					(float, float);
+		float		max					(float, float);
+		float		crossProduct		(Vertex&, Vertex&);
+		void		projectVertex		(Vertex&);
 
 	private:
 };
