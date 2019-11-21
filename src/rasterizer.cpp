@@ -22,7 +22,7 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
     Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0};
 
 
-    for (int x = minX; x <= maxX; x++)
+    /*for (int x = minX; x <= maxX; x++)
     {
         for (int y = minY; y <= maxY; y++)
         {
@@ -34,11 +34,10 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
             // If inside of the triangle
             if ((s >= 0) && (t >= 0) && (s + t <= 1))
             {
-                /* draw pixel */
                 target.setPixelColor(x, y, {255, 255, 255, 0});
             }
         }
-    }
+    }*/
 }
 
 float Rasterizer::crossProduct(Vertex& v1, Vertex& v2)
