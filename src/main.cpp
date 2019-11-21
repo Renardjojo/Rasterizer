@@ -24,22 +24,20 @@ int main()
 
 	do
 	{
-<<<<<<< HEAD
-		for (unsigned int i = 0; i < 400; i++)
-		{
-			ren.clear ();
-=======
 		//diaply
-		ren.clear ();
->>>>>>> 46b11e112034aaca41ca62aae378f24cc0ace1c4
 
-		Vertex v1 = {100.f, 100.f, 0.f};
-		Vertex v2 = {300.f, 500.f, 0.f};
-		Vertex v3 = {500.f, 100.f, 0.f};
 
-		ras.drawTriangle(ren.getDrawBuffer(), v1, v2, v3);
+		for (int i = 0; i < 100; i++)
+		{
+			Vertex v1 = {100.f, 100.f, 0.f};
+			Vertex v2 = {300.f, 500.f, 0.f};
+			Vertex v3 = {500.f, 100.f, 0.f};
 
-		ren.swapBuffer ();
+			ren.clear ();
+			ras.drawTriangle(ren.getDrawBuffer(), v1, v2, v3);
+			ren.swapBuffer ();
+		}
+	
 
 		//update
 		input.pollEvent(SDL_GetWindowID(win.get()));

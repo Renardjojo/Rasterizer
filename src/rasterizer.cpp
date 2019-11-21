@@ -25,28 +25,19 @@ void Rasterizer::drawTriangle(Texture &target, Vertex &v1, Vertex &v2, Vertex &v
     minY = min(min(v1.position_.y_, v2.position_.y_), v3.position_.y_);
 
     // Spanning vectors of edge (v1,v2) and (v1,v3)
-    /*Vertex vs1 = {v2.position_.x_ - v1.position_.x_, v2.position_.y_ - v1.position_.y_, 0};
-    Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0};*/
-
-    /*for (int x = minX; x <= maxX; x++)
-    {
-        for (int y = minY; y <= maxY; y++)
-        {
-            Vertex P = {v1.position_.x_ + };
-        }
-    }*/
+    Vertex vs1 = {v2.position_.x_ - v1.position_.x_, v2.position_.y_ - v1.position_.y_, 0};
+    Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0};
 
     for (int x = minX; x <= maxX; x++)
     {
-        
         for (int y = minY; y <= maxY; y++)
         {
             Vertex q = {x - v1.position_.x_, y - v1.position_.y_, 0};
-            Vertex p = {x - v2.position_.x_, y - v2.position_.y_, 0};
+            //Vertex p = {x - v2.position_.x_, y - v2.position_.y_, 0};
 
-            float s = dotProduct(q, v2) / dotProduct(v1, v2);
-            float t = dotProduct(v1, p) / dotProduct(v1, v2);
-
+            float s = dotProduct(q, vs2) / dotProduct(vs1, vs2);
+            float t = dotProduct(vs1, q) / dotProduct(vs1, vs2);
+                std::cout << s << " " << t << std::endl;
             // If inside of the triangle
             if ((s >= 0) && (t >= 0) && (s + t <= 1))
             {
@@ -73,7 +64,7 @@ float Rasterizer::dotProduct(Vertex& v1, Vertex& v2)
 
 float Rasterizer::min(float value1, float value2)
 {
-    if (value2 < value1)
+    if (value2 <= value1)
         return value2;
     else
         return value1;
@@ -81,7 +72,7 @@ float Rasterizer::min(float value1, float value2)
 
 float Rasterizer::max(float value1, float value2)
 {
-    if (value1 > value2)
+    if (value1 >= value2)
         return value1;
     else
         return value2;
