@@ -30,7 +30,7 @@ int main()
 			Vertex v2 = {300.f + i, 500.f, 0.f};
 			Vertex v3 = {500.f + i, 100.f, 0.f};
 
-		//	ras.drawTriangle(ren.getDrawBuffer(), v1, v2, v3);
+			ras.drawTriangle(ren.getDrawBuffer(), v1, v2, v3);
 
 			ren.swapBuffer ();			
 		}
