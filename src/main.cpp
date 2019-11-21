@@ -22,7 +22,7 @@ int main()
 
 	do
 	{
-		for (unsigned int i = 0; i < 200; i++)
+		for (unsigned int i = 0; i < 400; i++)
 		{
 			ren.clear ();
 

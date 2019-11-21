@@ -30,7 +30,7 @@ void		Renderer::swapBuffer		() noexcept
 		  	SDL_SetRenderDrawColor(SDLRen_, texBuffer_[x][y].r,
 											texBuffer_[x][y].g,
 											texBuffer_[x][y].b,
-											texBuffer_[x][y].a);
+											255);
 
 			SDL_RenderDrawPoint(SDLRen_, x, y);	
 		}

@@ -63,7 +63,8 @@ class Rasterizer
 
 		float		min					(float, float);
 		float		max					(float, float);
-		float		crossProduct		(Vertex&, Vertex&);
+		//float		crossProduct		(Vertex&, Vertex&);
+		float		dotProduct			(Vertex&, Vertex&);
 
 		//public variable (get and set with no effect for class)
 

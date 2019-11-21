@@ -1,22 +1,20 @@
 #include "rasterizer.hpp"
 
 
-
 void Rasterizer::drawLine()
 {
 }
 
-void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v3)
+void Rasterizer::drawTriangle(Texture &target, Vertex &v1, Vertex &v2, Vertex &v3)
 {
 
-	for (unsigned int x = 100; x < 150; x++)
+    /*for (unsigned int x = 100; x < 150; x++)
 	{
        target.setPixelColor(x, 100, {255, 0, 255, 255});
        target.setPixelColor(x, 150, {255, 0, 255, 255});
        target.setPixelColor(100, x, {255, 0, 255, 255});
        target.setPixelColor(150, x, {255, 0, 255, 255});
-	}
-/*
+	}*/
 
     // Get the bounding box of the triangle
     float maxX, minX, maxY, minY = 0;
@@ -26,43 +24,52 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
     maxY = max(max(v1.position_.y_, v2.position_.y_), v3.position_.y_);
     minY = min(min(v1.position_.y_, v2.position_.y_), v3.position_.y_);
 
-
     // Spanning vectors of edge (v1,v2) and (v1,v3)
-    Vertex vs1 = {v2.position_.x_ - v1.position_.x_, v2.position_.y_ - v1.position_.y_, 0};
-    Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0};
-
+    /*Vertex vs1 = {v2.position_.x_ - v1.position_.x_, v2.position_.y_ - v1.position_.y_, 0};
+    Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0};*/
 
     /*for (int x = minX; x <= maxX; x++)
     {
         for (int y = minY; y <= maxY; y++)
         {
-            Vertex q = {x - v1.position_.x_, y - v1.position_.y_, 0};
+            Vertex P = {v1.position_.x_ + };
+        }
+    }*/
 
-            float s = crossProduct(q, vs2) / crossProduct(vs1, vs2);
-            float t = crossProduct(vs1, q) / crossProduct(vs1, vs2);
+    for (int x = minX; x <= maxX; x++)
+    {
+        
+        for (int y = minY; y <= maxY; y++)
+        {
+            Vertex q = {x - v1.position_.x_, y - v1.position_.y_, 0};
+            Vertex p = {x - v2.position_.x_, y - v2.position_.y_, 0};
+
+            float s = dotProduct(q, v2) / dotProduct(v1, v2);
+            float t = dotProduct(v1, p) / dotProduct(v1, v2);
 
             // If inside of the triangle
             if ((s >= 0) && (t >= 0) && (s + t <= 1))
             {
-<<<<<<< HEAD
-                target.setPixelColor(x, y, {255, 255, 255, 0});
-=======
-                target.setPixelColor(x, y, {255, 0, 255, 255});
->>>>>>> c2d340e39ce1fdfd9de432f21d2e0f8c2e3d9c8f
+                target.setPixelColor(x, y, {255, 255, 255, 255});
             }
         }
-    }*/
+    }
 }
 
-float Rasterizer::crossProduct(Vertex& v1, Vertex& v2)
+float Rasterizer::dotProduct(Vertex& v1, Vertex& v2)
+{
+    return ((v1.position_.x_ * v2.position_.x_) + (v1.position_.y_ * v2.position_.y_));
+}
+
+/*float Rasterizer::crossProduct(Vertex &v1, Vertex &v2)
 {
     float lenghtV1 = sqrtf(v1.position_.x_ * v1.position_.x_ + v1.position_.y_ * v1.position_.y_);
     float lenghtV2 = sqrtf(v2.position_.x_ * v2.position_.x_ + v2.position_.y_ * v2.position_.y_);
 
     float teta = (v1.position_.x_ * v2.position_.x_) + (v1.position_.y_ * v2.position_.y_) / (lenghtV1 * lenghtV2);
 
-    return  lenghtV1 * lenghtV2 * sinf(teta);
-}
+    return lenghtV1 * lenghtV2 * sinf(teta);
+}*/
 
 float Rasterizer::min(float value1, float value2)
 {
