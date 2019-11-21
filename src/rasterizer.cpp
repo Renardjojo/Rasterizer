@@ -73,5 +73,4 @@ void	Rasterizer::projectVertex		(Vertex& vec)
 {
     vec.position_.x_ = ((vec.position_.x_ / 5) + 1) * 0.5 * 800;
     vec.position_.y_ = 600 - ((vec.position_.y_ / 5) + 1) * 0.5 * 600;
-
 }

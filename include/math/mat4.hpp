@@ -3,6 +3,7 @@
 
 #include "matrix.hpp"
 #include "vec3.hpp"
+#include "vec4.hpp"
 
 namespace math
 {
@@ -79,7 +80,7 @@ namespace math
 			//Distance in parameter is the distance between pin hole and user.
 			static Mat4 createProjectionMatrix (float distance);
 
-			//this function trnasforme culumn vect to matrix 4*1 and multipli it by current matrix
+			//this function transforme culumn vect to matrix 4*1 and multipli it by current matrix
 			//Vec3 operator*(Vec3 culumnVec);
 
 		protected:
@@ -92,6 +93,9 @@ namespace math
 
 	typedef Mat4 Matix4D; //complet name
 };
+
+// Multiply all the components of the matrix by a vector
+Vec4 operator*(const Mat4&, const Vec4&); 
 
 
 

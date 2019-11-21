@@ -2,44 +2,73 @@
 
 using namespace math;
 
-Entity::Entity (const Vec3& scaleVec, const Vec3& rotVec, const Vec3& translVec, Primitive3D primitive)
-	:	pMesh_			(nullptr),
-		transformation_	(Mat4::createTRSMatrix(scaleVec, rotVec, translVec))
+Entity::Entity(const Vec3 &scaleVec, const Vec3 &rotVec, const Vec3 &translVec, Primitive3D primitive)
+	: pMesh_(nullptr),
+	  transformation_(Mat4::createTRSMatrix(scaleVec, rotVec, translVec))
 {
 	switch (primitive)
 	{
-		case E_primitive3D::NONE :
+	case E_primitive3D::NONE:
 		break;
 
-		case E_primitive3D::CUBE :
-			if (pMeshCube == nullptr)
-				pMeshCube =  Mesh::createCube();
+	case E_primitive3D::CUBE:
+		if (pMeshCube == nullptr)
+			pMeshCube = Mesh::createCube();
 
-			pMesh_ = pMeshCube;
+		pMesh_ = pMeshCube;
 		break;
 
-		case E_primitive3D::SPHERE :
-			if (pMeshSphere == nullptr)
-				pMeshSphere =  Mesh::createSphere(10, 10);
+	case E_primitive3D::SPHERE:
+		if (pMeshSphere == nullptr)
+			pMeshSphere = Mesh::createSphere(10, 10);
 
-			pMesh_ = pMeshSphere;
+		pMesh_ = pMeshSphere;
 		break;
-	
-		default :
+
+	default:
 		break;
 	}
 }
 
-
-void 	Entity::draw		(Texture& RenBuffer) const noexcept
+vector<Vertex> Entity::transformLocalToGlobal(Mat4 &matTRS) const
 {
-	assert(pMesh_ != nullptr);
-	
-	
+	vector<Vertex> vertexGlobal;
+	for (auto &vertex : pMesh_->getVertices())
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 2; j++)
+			{
+			}
+		}
+	}
 
-	//TODO
+	return vertexGlobal;
 }
 
-shared_ptr<Mesh> Entity::pMeshCube 		(nullptr);
-shared_ptr<Mesh> Entity::pMeshSphere	(nullptr);
+Vec4 Entity::transformVertexInVec4(const Vertex & vertex) const
+{
+	return (Vec4) {vertex.position_.x_, vertex.position_.y_, vertex.position_.z_, 1};
+}
 
+void Entity::draw(Texture &RenBuffer) const noexcept
+{
+	assert(pMesh_ != nullptr);
+
+	// Transform all the Mesh's Vertices to Vec4
+	vector<Vec4> vertexToVec4;
+	for (auto &vertex : pMesh_->getVertices())
+	{
+		vertexToVec4.push_back(Mat4::createProjectionMatrix(0.5f) * transformVertexInVec4(vertex));
+	}
+
+	for (auto &vertex : vertexToVec4)
+	{
+		vertex.homogenize();
+
+		RenBuffer.setPixelColor(vertex.x_, vertex.y_, {0, 255, 0, 255});
+	}
+}
+
+shared_ptr<Mesh> Entity::pMeshCube(nullptr);
+shared_ptr<Mesh> Entity::pMeshSphere(nullptr);
