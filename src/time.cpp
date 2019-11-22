@@ -49,7 +49,6 @@ void TimeManager::update()
 	SDL_Delay(delay);
 
 	dtf_ += delay/1000;
-	
 
 	time_ = SDL_GetTicks();
 
