@@ -63,7 +63,7 @@ void 		Referential3D::addChildReferential (Referential3D& child) noexcept
 
 void 		Referential3D::displayAxis 	(Texture& RenBuffer) 			noexcept
 {
-
+	
 }
 
 void 		Referential3D::updateTRSMat	() 			noexcept
