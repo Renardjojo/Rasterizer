@@ -61,8 +61,10 @@ void 		Referential3D::addChildReferential (Referential3D& child) noexcept
 	child.		updateTRSMat();		//update TRS matrix of each of his child because of the new dependace.
 }
 
-void 		Referential3D::displayAxis 	() 			noexcept
-{}
+void 		Referential3D::displayAxis 	(Texture& RenBuffer) 			noexcept
+{
+
+}
 
 void 		Referential3D::updateTRSMat	() 			noexcept
 {
