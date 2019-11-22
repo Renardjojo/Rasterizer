@@ -45,6 +45,16 @@ Referential3D::Referential3D (	const char* 			name,
 	dependance.addChildReferential((*this));
 }
 
+Referential3D::Referential3D 	(const Referential3D& other) 
+	:	name_			(other.getName()),
+		origin_			(other.getLocalOrigin()),
+		orientation_	(other.getLocalOrientation()),
+		scale_			(other.getLocalScale()),
+		childRef_		(other.getChild()),
+		parentRef_		(other.getpParent()),
+		TRSMat_			(other.getTRSMatrix())
+{}
+
 void 		Referential3D::addChildReferential (Referential3D& child) noexcept
 {
 	childRef_.	push_back(&child);
@@ -56,11 +66,10 @@ void 		Referential3D::displayAxis 	() 			noexcept
 
 void 		Referential3D::updateTRSMat	() 			noexcept
 {
-	TRSMat_ = parentRef_->getTRSMatrix();
-	TRSMat_ = TRSMat_ * Mat4::createTRSMatrix (scale_, orientation_, origin_);	
-	
-	std::cout << name_ + " update" << std::endl;
+	if (parentRef_ != nullptr)
+		TRSMat_ = parentRef_->getTRSMatrix();
 
+	TRSMat_ = TRSMat_ * Mat4::createTRSMatrix (scale_, orientation_, origin_);	
 	for (unsigned int i = 0; i < childRef_.size(); i++)
 	{
 		childRef_[i]->updateTRSMat();

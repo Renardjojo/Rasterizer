@@ -42,7 +42,7 @@ typedef class Referential3D
 							Referential3D& 			dependance);
 
 		//copy constructor
-		Referential3D 	(const Referential3D& other) = default;
+		Referential3D 	(const Referential3D& other);
 		~Referential3D 	() = default;
 
 		 /*----------*/
@@ -59,6 +59,18 @@ typedef class Referential3D
 		/* accessor */
 	   /*----------*/
 
+		const std::string& 				getName					()	const noexcept	{ return name_;}
+		const math::Mat4&				getTRSMatrix			()	const noexcept	{ return TRSMat_;}
+		const vector<Referential3D*>&	getChild				()	const noexcept	{ return childRef_;}
+		const Referential3D*			getpParent				()	const noexcept	{ return parentRef_;}
+		const math::Vec3&				getLocalOrigin			()	const noexcept	{ return origin_;}
+		const math::Vec3&				getLocalOrientation		()	const noexcept	{ return orientation_;}
+		const math::Vec3&				getLocalScale			()	const noexcept	{ return scale_;}
+
+		 /*----------*/
+		/* mutator  */
+	   /*----------*/
+
 		//few function to change TRS matrix. Update each child ref after changement.
 		// Param : this axe X, Y and Z (width, higth and depth). Orientation in rad in indirect referential
 		void 		setOrigin				(math::Vec3 tVec)						noexcept;
@@ -68,15 +80,6 @@ typedef class Referential3D
 		void 		translate				(math::Vec3 tVec)						noexcept;
 		void 		rotate					(math::Vec3 rVec)						noexcept;
 		void 		scale					(math::Vec3 sVec)						noexcept;
-
-		 /*----------*/
-		/* mutator  */
-	   /*----------*/
-
-		const std::string& 				getName					()	const noexcept	{ return name_;}
-		const math::Mat4&				getTRSMatrix			()	const noexcept	{ return TRSMat_;}
-		const vector<Referential3D*>&	getChild				()	const noexcept	{ return childRef_;}
-		const Referential3D*			getpParent				()	const noexcept	{ return parentRef_;}
 
 		 /*----------*/
 		/* operator */
@@ -94,7 +97,7 @@ typedef class Referential3D
 		math::Vec3					scale_; 		//Local coef scale in x, y and z
 	
 		vector<Referential3D*>		childRef_;		//List of child referential
-		Referential3D*				parentRef_;		//dependant referential
+		const Referential3D*		parentRef_;		//dependant referential
 
 		math::Mat4					TRSMat_;		//global TRS matrix (translation/Rotation/Scale), comput with mother ref. Allow to pass from local to global
 

@@ -92,10 +92,12 @@ namespace math
 	};
 
 	typedef Mat4 Matix4D; //complet name
+
+	// Multiply all the components of the matrix by a vector
+	Vec4 operator*(const Mat4&, const Vec4&); 
 };
 
-// Multiply all the components of the matrix by a vector
-Vec4 operator*(const Mat4&, const Vec4&); 
+
 
 
 

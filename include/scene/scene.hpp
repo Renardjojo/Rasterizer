@@ -10,7 +10,7 @@
 class Scene
 {
 	public:
-		Scene ()					= default;
+		Scene ()					;
 		Scene (const Scene& other) 	= default;
 		~Scene () 					= default;
 
@@ -48,6 +48,9 @@ class Scene
 		 /*----------*/
 		/* accessor */
 	   /*----------*/
+
+		const Entity& 		getEntity		(unsigned int id) const throw();
+		Entity& 			getEntity		(unsigned int id) throw();
 
 		 /*----------*/
 		/* mutator  */

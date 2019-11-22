@@ -2,6 +2,7 @@
 #define _ENTITY_H
 
 #include <memory>
+#include <vector>
 #include "mesh.hpp"
 #include "vec3.hpp"
 #include "vec4.hpp"
@@ -39,13 +40,15 @@ class Entity
 	   /*----------*/
 
 		//display vextex in function of his matrix TRS
-		void			draw					(Texture& RenBuffer) const noexcept;
+		void			drawPoint				(Texture& RenBuffer) const noexcept;
+		void 			drawLine				(Texture &RenBuffer) const noexcept;
+		void 			drawFill				(Texture &RenBuffer) const noexcept;
 
 		//retrun an array of modified vectices
-		vector<Vertex>	transformLocalToGlobal	(Mat4&) const;
+		vector<Vertex>	transformLocalToGlobal	(const math::Mat4&) const;
 
 		//return the transformation of a vertex in a vec4
-		Vec4			transformVertexInVec4	(const Vertex&) const;
+		math::Vec4			transformVertexInVec4	(const Vertex&) const;
 
 		 /*----------*/
 		/* accessor */
