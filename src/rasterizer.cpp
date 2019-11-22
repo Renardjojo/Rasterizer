@@ -3,7 +3,24 @@
 
 void Rasterizer::drawLine(Texture& target, Vertex& v1, Vertex& v2)
 {
-    
+    projectVertex(v1);
+    projectVertex(v2);
+
+    float dx = v2.position_.x_ - v1.position_.x_;
+    float dy = v2.position_.y_ - v1.position_.y_;
+
+    assert(dx == NULL);
+
+    float maxX = max(v1.position_.x_, v2.position_.x_);
+    float minX = min(v1.position_.x_, v2.position_.x_);
+
+    int y = 0;
+    for (int x = minX; x < maxX; x++)
+    {
+        y = v1.position_.y_ + dy * (x - v1.position_.x_) / dx;
+
+        target.setPixelColor(x, y, {0, 255, 0, 255});
+    }
 }
 
 float dotProduct(Vertex& v1, Vertex& v2)
@@ -13,7 +30,6 @@ float dotProduct(Vertex& v1, Vertex& v2)
 
 void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v3)
 {
-
     projectVertex(v1);
     projectVertex(v2);
     projectVertex(v3);
@@ -35,7 +51,6 @@ void Rasterizer::drawTriangle(Texture& target, Vertex& v1, Vertex& v2, Vertex& v
         for (int y = minY; y < maxY; y++)
         {
             Vertex q = {x - v1.position_.x_, y - v1.position_.y_, 0};
-            //Vertex p = {x - v2.position_.x_, y - v2.position_.y_, 0};
 
             float s = dotProduct(q, vs2) / dotProduct(vs1, vs2);
             float t = dotProduct(vs1, q) / dotProduct(vs1, vs2);
