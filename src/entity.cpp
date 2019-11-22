@@ -81,9 +81,36 @@ void Entity::drawPoint(Texture &RenBuffer) const noexcept
 
 void Entity::drawLine(Texture &RenBuffer) const noexcept
 {
+	if(pMesh_ == nullptr)
+		return;
 
+	// Transform all the Mesh's Vertices to Vec4
+	vector<Vec4> vertexToVec4;
+	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix());
 
+	for (auto &vertex : globalVertex)
+	{
+		vertexToVec4.push_back(transformVertexInVec4(vertex));
+	}
 
+	Vertex pV1 = projectVertex(v1);
+    Vertex pV2 = projectVertex(v2);
+
+    float dx = pV2.position_.x_ - pV1.position_.x_;
+    float dy = pV2.position_.y_ - pV1.position_.y_;
+
+    assert(dx == NULL);
+
+    float maxX = max(pV1.position_.x_, pV2.position_.x_);
+    float minX = min(pV1.position_.x_, pV2.position_.x_);
+
+    int y = 0;
+    for (int x = minX; x < maxX; x++)
+    {
+        y = pV1.position_.y_ + dy * (x - pV1.position_.x_) / dx;
+
+        RenBuffer.setPixelColor(x, y, {0, 255, 0, 255});
+    }
 }
 
 void Entity::drawFill(Texture &RenBuffer) const noexcept

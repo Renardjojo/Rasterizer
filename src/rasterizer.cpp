@@ -27,21 +27,21 @@ Vertex projectVertex(const Vertex &vec)
 
 void Rasterizer::drawLine(Texture &target, Vertex &v1, Vertex &v2)
 {
-    projectVertex(v1);
-    projectVertex(v2);
+    Vertex pV1 = projectVertex(v1);
+    Vertex pV2 = projectVertex(v2);
 
-    float dx = v2.position_.x_ - v1.position_.x_;
-    float dy = v2.position_.y_ - v1.position_.y_;
+    float dx = pV2.position_.x_ - pV1.position_.x_;
+    float dy = pV2.position_.y_ - pV1.position_.y_;
 
     assert(dx == NULL);
 
-    float maxX = max(v1.position_.x_, v2.position_.x_);
-    float minX = min(v1.position_.x_, v2.position_.x_);
+    float maxX = max(pV1.position_.x_, pV2.position_.x_);
+    float minX = min(pV1.position_.x_, pV2.position_.x_);
 
     int y = 0;
     for (int x = minX; x < maxX; x++)
     {
-        y = v1.position_.y_ + dy * (x - v1.position_.x_) / dx;
+        y = pV1.position_.y_ + dy * (x - pV1.position_.x_) / dx;
 
         target.setPixelColor(x, y, {0, 255, 0, 255});
     }
