@@ -11,68 +11,67 @@ shared_ptr<Mesh> Mesh::createCube	()
 
 	//cube is center arround local zero
 	//Start with point of front face
-	mesh->getVertices()[0] = { 0.5f,  0.5f, 0.5};
-	mesh->getVertices()[1] = { 0.5f, -0.5f, 0.5};
-	mesh->getVertices()[2] = {-0.5f, -0.5f, 0.5};
-	mesh->getVertices()[3] = {-0.5f,  0.5f, 0.5};
+	mesh->getVertices().push_back({ 0.5f,  0.5f, 0.5});
+	mesh->getVertices().push_back({ 0.5f, -0.5f, 0.5});
+	mesh->getVertices().push_back({-0.5f, -0.5f, 0.5});
+	mesh->getVertices().push_back({-0.5f,  0.5f, 0.5});
 	
 	//point of back face
-	mesh->getVertices()[4] = { 0.5f,  0.5f, -0.5};
-	mesh->getVertices()[5] = { 0.5f, -0.5f, -0.5};
-	mesh->getVertices()[6] = {-0.5f, -0.5f, -0.5};
-	mesh->getVertices()[7] = {-0.5f,  0.5f, -0.5};
-
+	mesh->getVertices().push_back({ 0.5f,  0.5f, -0.5});
+	mesh->getVertices().push_back({ 0.5f, -0.5f, -0.5});
+	mesh->getVertices().push_back({-0.5f, -0.5f, -0.5});
+	mesh->getVertices().push_back({-0.5f,  0.5f, -0.5});
 
 	//cube contain 12 triangles this 3 indices. Cube contain 36 indices
 	mesh->getIndices().reserve(36);
 
 	//front
-	mesh->getIndices()[0]  = 0;
-	mesh->getIndices()[1]  = 1;
-	mesh->getIndices()[2]  = 2;
-	mesh->getIndices()[3]  = 2;
-	mesh->getIndices()[4]  = 0;
-	mesh->getIndices()[5]  = 3;
+	mesh->getIndices().push_back(0);
+	mesh->getIndices().push_back(1);
+	mesh->getIndices().push_back(2);
+	mesh->getIndices().push_back(2);
+	mesh->getIndices().push_back(0);
+	mesh->getIndices().push_back(3);
 
 	//left
-	mesh->getIndices()[6]  = 3;
-	mesh->getIndices()[7]  = 2;
-	mesh->getIndices()[8]  = 6;
-	mesh->getIndices()[9]  = 6;
-	mesh->getIndices()[10] = 3;
-	mesh->getIndices()[11] = 7;
+	mesh->getIndices().push_back(3);
+	mesh->getIndices().push_back(2);
+	mesh->getIndices().push_back(6);
+	mesh->getIndices().push_back(6);
+	mesh->getIndices().push_back(3);
+	mesh->getIndices().push_back(7);
 
 	//back
-	mesh->getIndices()[12] = 7;
-	mesh->getIndices()[13] = 6;
-	mesh->getIndices()[14] = 5;
-	mesh->getIndices()[15] = 5;
-	mesh->getIndices()[16] = 7;
-	mesh->getIndices()[17] = 4;
+	mesh->getIndices().push_back(7);
+	mesh->getIndices().push_back(6);
+	mesh->getIndices().push_back(5);
+	mesh->getIndices().push_back(5);
+	mesh->getIndices().push_back(7);
+	mesh->getIndices().push_back(4);
 
 	//up
-	mesh->getIndices()[18] = 4;
-	mesh->getIndices()[19] = 7;
-	mesh->getIndices()[20] = 3;
-	mesh->getIndices()[21] = 3;
-	mesh->getIndices()[22] = 4;
-	mesh->getIndices()[23] = 0;
+	mesh->getIndices().push_back(4);
+	mesh->getIndices().push_back(7);
+	mesh->getIndices().push_back(3);
+	mesh->getIndices().push_back(3);
+	mesh->getIndices().push_back(4);
+	mesh->getIndices().push_back(0);
 
 	//right
-	mesh->getIndices()[24] = 0;
-	mesh->getIndices()[25] = 4;
-	mesh->getIndices()[26] = 5;
-	mesh->getIndices()[27] = 5;
-	mesh->getIndices()[28] = 0;
-	mesh->getIndices()[29] = 1;
+	mesh->getIndices().push_back(0);
+	mesh->getIndices().push_back(4);
+	mesh->getIndices().push_back(5);
+	mesh->getIndices().push_back(5);
+	mesh->getIndices().push_back(0);
+	mesh->getIndices().push_back(1);
 
 	//down
-	mesh->getIndices()[30] = 1;
-	mesh->getIndices()[31] = 5;
-	mesh->getIndices()[32] = 6;
-	mesh->getIndices()[33] = 6;
-	mesh->getIndices()[34] = 1;
-	mesh->getIndices()[35] = 2;
+	mesh->getIndices().push_back(1);
+	mesh->getIndices().push_back(5);
+	mesh->getIndices().push_back(6);
+	mesh->getIndices().push_back(6);
+	mesh->getIndices().push_back(1);
+	mesh->getIndices().push_back(2);
 
 	return mesh;
 }

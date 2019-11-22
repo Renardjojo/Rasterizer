@@ -15,12 +15,18 @@ using namespace math;
 
 int main()
 {
-	Window win (800, 600);
-	Renderer ren (win.get(), 800, 600);
-	Input input;
-	Rasterizer ras;
+	Window 			win (800, 600);
+	Renderer 		ren (win.get(), 800, 600);
+	Input 			input;
+	Rasterizer 		ras;
+	Scene 			scene;
+	bool 			running = true;
 
-	bool running = true;
+	//int id = scene.addEntity({2.f, 2.f, 0.f}, {0.f, 0.f, 0.f}, {2.f, 2.f, 2.f}, -1, E_primitive3D::SPHERE);
+//	int id2 = scene.addEntity({-2.f, -2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, -1, E_primitive3D::SPHERE);
+	//int id3 = scene.addEntity({-2.f, 2.f, 0.f}, {0.f, 0.f, 0.f}, {2.f, 2.f, 2.f}, -1, E_primitive3D::CUBE);
+	int id4 = scene.addEntity({2.f, -2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, -1, E_primitive3D::CUBE);
+
 
 do
 	{
@@ -33,23 +39,22 @@ do
 			break;
 		}
 
+	//	scene.getEntity(id).getTransform().rotate({0.01f, 0.f, 0.05f});
+	//	scene.getEntity(id2).getTransform().rotate({0.05f, 0.f, 0.01f});
+	//	scene.getEntity(id3).getTransform().rotate({0.02f, 0.05f, 0.002f});
+		scene.getEntity(id4).getTransform().rotate({0.005f, 0.005f, 0.005f});	
+		
+
 		//display
+		ren.clear ();
 
-		for (float i = 0.f; i < 6.28f; i+= 0.05f)
-		{
-			ren.clear ();
+		scene.draw(ren.getDrawBuffer());
+		ren.swapBuffer ();
 
-			Vertex v1 = {0.f * cosf(i), -2.f * sinf(i), 0.f};
-			Vertex v2 = {-4.f * cosf(i), 3.f * sinf(i), 0.f};
-			Vertex v3 = {5.f * cosf(i), 5.f * sinf(i), 0.f};
+		SDL_Delay((1.f /60.f) * 1000);
 
-			ras.drawTriangle(ren.getDrawBuffer(), v1, v2, v3);
-
-		ren.swapBuffer ();	
-
-		}
 	} 	while (running);
-	
+
 	return 0;
 
 }

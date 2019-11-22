@@ -6,6 +6,12 @@
 #include "../math/vertex.hpp"
 #include "texture.hpp"
 
+//private function
+float		min					(float, float);
+float		max					(float, float);
+float		dotProduct			(Vertex&, Vertex&);
+void		projectVertex		(Vertex&);
+
 class Rasterizer
 {
 	public:
@@ -28,7 +34,7 @@ class Rasterizer
 		 *
 		 * brief : 
 		 */
-		void		drawLine		(Texture&, Vertex&, Vertex&);
+		static void		drawLine		(Texture&, Vertex&, Vertex&);
 		
 		/**
 		 * function : drawTriangle
@@ -39,12 +45,10 @@ class Rasterizer
 		 *
 		 * return (type void):
 		 *
-		 * brief : 
+		 * brief : this function draw colorfull triangle. Use algorythme of barycenter triangle.
 		 */
-		void		drawTriangle		(Texture&, Vertex& , Vertex& , Vertex&);
+		static void		drawTriangle		(Texture&, const Vertex& , const Vertex& , const Vertex&);
 		
-		
-
 		 /*----------*/
 		/* accessor */
 	   /*----------*/
@@ -66,16 +70,6 @@ class Rasterizer
 
 	protected:
 	
-
-
-		//private function
-		float		min					(float, float);
-		float		max					(float, float);
-		float		dotProduct			(Vertex&, Vertex&);
-		float		crossProduct		(Vertex&, Vertex&);
-		void		projectVertex		(Vertex&);
-
-
 	private:
 };
 
