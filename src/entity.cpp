@@ -76,26 +76,7 @@ void Entity::drawLine(Texture &RenBuffer) const noexcept
 		return;
 
 	// Transform all the Mesh's Vertices to Vec4
-	vector<Vec4> vertexToVec4;
-	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix());
-
-	for (auto &vertex : globalVertex)
-	{
-		vertexToVec4.push_back(transformVertexInVec4(vertex));
-	}
-
-	for (auto &vertex : vertexToVec4)
-	{
-		vertex.homogenize();
-		vertex.x_ = ((vertex.x_ / 5) + 1) * 0.5 * 800;
-		vertex.y_ = 600 - ((vertex.y_ / 5) + 1) * 0.5 * 600;
-	}
-
-	for (size_t i = 0; i < globalVertex.size(); i++)
-	{
-		globalVertex[i].position_.x_ = vertexToVec4[i].x_;
-		globalVertex[i].position_.y_ = vertexToVec4[i].y_;
-	}
+	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), RenBuffer.width(), RenBuffer.heigth());
 
 	for (size_t i = 0; i < pMesh_->getIndices().size(); i += 3)
 	{
