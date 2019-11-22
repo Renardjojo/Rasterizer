@@ -10,7 +10,7 @@
 float		min					(float, float);
 float		max					(float, float);
 float		dotProduct			(Vertex&, Vertex&);
-void		projectVertex		(Vertex&);
+Vertex		projectVertex		(Vertex&);
 
 class Rasterizer
 {

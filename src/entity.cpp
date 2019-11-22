@@ -4,35 +4,35 @@
 using namespace math;
 using namespace std;
 
-Entity::Entity (const math::Vec3& 	translVec,
-				const math::Vec3& 	rotVec, 
-				const math::Vec3& 	scaleVec,
-				Ref3& 				dependance,
-				Primitive3D 		primitive)
-	:	pMesh_		(nullptr),
-		transform_	("Test", translVec, rotVec, scaleVec, dependance)
+Entity::Entity(const math::Vec3 &translVec,
+			   const math::Vec3 &rotVec,
+			   const math::Vec3 &scaleVec,
+			   Ref3 &dependance,
+			   Primitive3D primitive)
+	: pMesh_(nullptr),
+	  transform_("Test", translVec, rotVec, scaleVec, dependance)
 {
 	switch (primitive)
 	{
 	case E_primitive3D::NONE:
-	break;
+		break;
 
 	case E_primitive3D::CUBE:
 		if (pMeshCube == nullptr)
 			pMeshCube = Mesh::createCube();
 
 		pMesh_ = pMeshCube;
-	break;
+		break;
 
 	case E_primitive3D::SPHERE:
 		if (pMeshSphere == nullptr)
 			pMeshSphere = Mesh::createSphere(10, 10);
 
 		pMesh_ = pMeshSphere;
-	break;
+		break;
 
 	default:
-	break;
+		break;
 	}
 }
 
@@ -41,7 +41,7 @@ vector<Vertex> Entity::transformLocalToGlobal(const Mat4 &matTRS, unsigned int w
 	vector<Vertex> vertexGlobal;
 	for (auto &vertex : pMesh_->getVertices())
 	{
-		Vec4 vec (vertex.position_);
+		Vec4 vec(vertex.position_);
 		vec = matTRS * vec;
 		vertexGlobal.push_back({static_cast<float>(((vec.x_ / 5) + 1) * 0.5f * winW),
 								static_cast<float>(winH - ((vec.y_ / 5) + 1) * 0.5 * winH),
@@ -51,14 +51,14 @@ vector<Vertex> Entity::transformLocalToGlobal(const Mat4 &matTRS, unsigned int w
 	return vertexGlobal;
 }
 
-Vec4 Entity::transformVertexInVec4(const Vertex & vertex) const
+Vec4 Entity::transformVertexInVec4(const Vertex &vertex) const
 {
-	return (Vec4) {vertex.position_.x_, vertex.position_.y_, vertex.position_.z_, 1};
+	return (Vec4){vertex.position_.x_, vertex.position_.y_, vertex.position_.z_, 1};
 }
 
 void Entity::drawPoint(Texture &RenBuffer) const noexcept
 {
-	if(pMesh_ == nullptr)
+	if (pMesh_ == nullptr)
 		return;
 
 	// Transform all the Mesh's Vertices to Vec4
@@ -72,9 +72,45 @@ void Entity::drawPoint(Texture &RenBuffer) const noexcept
 
 void Entity::drawLine(Texture &RenBuffer) const noexcept
 {
+	if (pMesh_ == nullptr)
+		return;
 
+	// Transform all the Mesh's Vertices to Vec4
+	vector<Vec4> vertexToVec4;
+	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix());
 
+	for (auto &vertex : globalVertex)
+	{
+		vertexToVec4.push_back(transformVertexInVec4(vertex));
+	}
 
+	for (auto &vertex : vertexToVec4)
+	{
+		vertex.homogenize();
+		vertex.x_ = ((vertex.x_ / 5) + 1) * 0.5 * 800;
+		vertex.y_ = 600 - ((vertex.y_ / 5) + 1) * 0.5 * 600;
+	}
+
+	for (size_t i = 0; i < globalVertex.size(); i++)
+	{
+		globalVertex[i].position_.x_ = vertexToVec4[i].x_;
+		globalVertex[i].position_.y_ = vertexToVec4[i].y_;
+	}
+
+	for (size_t i = 0; i < pMesh_->getIndices().size(); i += 3)
+	{
+		Rasterizer::drawLine(	RenBuffer, 
+								globalVertex[pMesh_->getIndices()[i]],
+								globalVertex[pMesh_->getIndices()[i + 1]]);
+
+		Rasterizer::drawLine(	RenBuffer, 
+								globalVertex[pMesh_->getIndices()[i + 1]],
+								globalVertex[pMesh_->getIndices()[i + 2]]);
+
+		Rasterizer::drawLine(	RenBuffer, 
+								globalVertex[pMesh_->getIndices()[i + 2]],
+								globalVertex[pMesh_->getIndices()[i]]);
+	}
 }
 
 void Entity::drawFill(Texture &RenBuffer) const noexcept
@@ -85,15 +121,14 @@ void Entity::drawFill(Texture &RenBuffer) const noexcept
 	// Transform all the Mesh's Vertices to Vec4
 	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), RenBuffer.width(), RenBuffer.heigth());
 
-	for (size_t i = 0; i < pMesh_->getIndices().size(); i+= 3)
+	for (size_t i = 0; i < pMesh_->getIndices().size(); i += 3)
 	{
-			Rasterizer::drawTriangle(	RenBuffer, 
-										globalVertex[pMesh_->getIndices()[i]],
-										globalVertex[pMesh_->getIndices()[i + 1]],
-										globalVertex[pMesh_->getIndices()[i + 2]]);
+		Rasterizer::drawTriangle(RenBuffer,
+								 globalVertex[pMesh_->getIndices()[i]],
+								 globalVertex[pMesh_->getIndices()[i + 1]],
+								 globalVertex[pMesh_->getIndices()[i + 2]]);
 	}
 }
-
 
 shared_ptr<Mesh> Entity::pMeshCube(nullptr);
 shared_ptr<Mesh> Entity::pMeshSphere(nullptr);

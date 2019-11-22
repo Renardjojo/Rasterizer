@@ -37,7 +37,8 @@ void 			Scene::draw				(Texture& RenBuffer) const noexcept
 {
 	for (auto& entity : entities_)
 	{
-		entity.drawFill(RenBuffer);
+		//entity.drawFill(RenBuffer);
+		entity.drawLine(RenBuffer);
 	}
 }
 
