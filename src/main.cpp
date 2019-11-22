@@ -22,9 +22,9 @@ int main()
 	Scene 			scene;
 	bool 			running = true;
 
-	//int id = scene.addEntity({2.f, 2.f, 0.f}, {0.f, 0.f, 0.f}, {2.f, 2.f, 2.f}, -1, E_primitive3D::SPHERE);
-//	int id2 = scene.addEntity({-2.f, -2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, -1, E_primitive3D::SPHERE);
-	//int id3 = scene.addEntity({-2.f, 2.f, 0.f}, {0.f, 0.f, 0.f}, {2.f, 2.f, 2.f}, -1, E_primitive3D::CUBE);
+	int id = scene.addEntity({2.f, 2.f, 0.f}, {0.f, 0.f, 0.f}, {2.f, 2.f, 2.f}, -1, E_primitive3D::SPHERE);
+	int id2 = scene.addEntity({-2.f, -2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, -1, E_primitive3D::SPHERE);
+	int id3 = scene.addEntity({-2.f, 2.f, 0.f}, {0.f, 0.f, 0.f}, {2.f, 2.f, 2.f}, -1, E_primitive3D::CUBE);
 	int id4 = scene.addEntity({2.f, -2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, -1, E_primitive3D::CUBE);
 
 
@@ -39,9 +39,9 @@ do
 			break;
 		}
 
-	//	scene.getEntity(id).getTransform().rotate({0.01f, 0.f, 0.05f});
-	//	scene.getEntity(id2).getTransform().rotate({0.05f, 0.f, 0.01f});
-	//	scene.getEntity(id3).getTransform().rotate({0.02f, 0.05f, 0.002f});
+		scene.getEntity(id).getTransform().rotate({0.01f, 0.f, 0.05f});
+		scene.getEntity(id2).getTransform().rotate({0.05f, 0.f, 0.01f});
+		scene.getEntity(id3).getTransform().rotate({0.02f, 0.05f, 0.002f});
 		scene.getEntity(id4).getTransform().rotate({0.005f, 0.005f, 0.005f});	
 		
 

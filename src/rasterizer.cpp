@@ -39,11 +39,10 @@ float dotProduct(Vertex& v1, Vertex& v2)
 
 void Rasterizer::drawTriangle(Texture& target, const Vertex& v1, const Vertex& v2, const Vertex& v3)
 {
-    std::cout << v1.position_ << "  " << v2.position_ << "  " << v3.position_ << std::endl;
 
-    Vertex pV1 = projectVertex(v1);
-    Vertex pV2 = projectVertex(v2);
-    Vertex pV3 = projectVertex(v3);
+    Vertex pV1 = v1;
+    Vertex pV2 = v2;
+    Vertex pV3 = v3;
 
     // Get the bounding box of the triangle
     float maxX, minX, maxY, minY = 0;
