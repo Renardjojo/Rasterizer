@@ -113,7 +113,17 @@ Mat4 Mat4::createTRSMatrix(const Vec3& scaleVec, const Vec3& rotVec, const Vec3&
 			createScaleMatrix (scaleVec);
 }
 
-Vec4 operator*(Mat4& mat4, Vec4& vect4)
+Mat4 Mat4::createProjectionMatrix		(float distance)
+{
+	Mat4 pMat;
+
+	pMat[3][2] = 1.f / distance;
+	pMat[3][3] = 0;
+
+	return pMat;
+}
+
+Vec4 math::operator*(const Mat4& mat4, const Vec4& vect4)
 {
     Vec4 result;
     float res;
