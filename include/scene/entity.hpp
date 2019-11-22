@@ -9,6 +9,7 @@
 #include "mat4.hpp"
 #include "texture.hpp"
 #include "referential.hpp"
+#include "color.hpp"
 
 typedef enum E_primitive3D
 {
@@ -41,13 +42,16 @@ class Entity
 
 		//display vextex in function of his matrix TRS
 		void			drawPoint				(Texture& RenBuffer) const noexcept;
-		void 			drawLine				(Texture &RenBuffer) const noexcept;
+		void 			drawLine				(Texture &RenBuffer, const ColorRGBA&& c = {255, 255, 255, 255}) const noexcept;
 		void 			drawFill				(Texture &RenBuffer) const noexcept;
 
+		//this function update TRS matrix of entity in function of dependante matrix. If entity depende of world, put in paramter the world TRS matrix.
+		//This function must be update each time that his parent TRS matrix change (rotation, scale, translatoin...)
+		//void 			updateTRS				(const math::Mat4& TRSMatDep);
 
 
 		//return the transformation of a vertex in a vec4
-		math::Vec4			transformVertexInVec4	(const Vertex&) const;
+		math::Vec4		transformVertexInVec4	(const Vertex&) const;
 
 		 /*----------*/
 		/* accessor */
@@ -72,6 +76,7 @@ class Entity
 
 	protected:
 
+	//std::vector<Entity>		dependantEntities_;	
 	shared_ptr<Mesh>		pMesh_;				//pointor toward mesh (allow to not duplicate vertex)
 	Ref3					transform_;			//local referential of entity. Entity is clip into another referntial and dependant of it.
 

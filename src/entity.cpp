@@ -47,7 +47,6 @@ vector<Vertex> Entity::transformLocalToGlobal(const Mat4 &matTRS, unsigned int w
 								static_cast<float>(winH - ((vec.y_ / 5) + 1) * 0.5 * winH),
 								vec.z_});
 	}
-
 	return vertexGlobal;
 }
 
@@ -70,7 +69,7 @@ void Entity::drawPoint(Texture &RenBuffer) const noexcept
 	}
 }
 
-void Entity::drawLine(Texture &RenBuffer) const noexcept
+void Entity::drawLine(Texture &RenBuffer, const ColorRGBA&& c) const noexcept
 {
 	if (pMesh_ == nullptr)
 		return;
@@ -82,15 +81,15 @@ void Entity::drawLine(Texture &RenBuffer) const noexcept
 	{
 		Rasterizer::drawLine(	RenBuffer, 
 								globalVertex[pMesh_->getIndices()[i]],
-								globalVertex[pMesh_->getIndices()[i + 1]]);
+								globalVertex[pMesh_->getIndices()[i + 1]], std::move(c));
 
 		Rasterizer::drawLine(	RenBuffer, 
 								globalVertex[pMesh_->getIndices()[i + 1]],
-								globalVertex[pMesh_->getIndices()[i + 2]]);
+								globalVertex[pMesh_->getIndices()[i + 2]], std::move(c));
 
 		Rasterizer::drawLine(	RenBuffer, 
 								globalVertex[pMesh_->getIndices()[i + 2]],
-								globalVertex[pMesh_->getIndices()[i]]);
+								globalVertex[pMesh_->getIndices()[i]], std::move(c));
 	}
 }
 
@@ -102,7 +101,7 @@ void Entity::drawFill(Texture &RenBuffer) const noexcept
 	// Transform all the Mesh's Vertices to Vec4
 	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), RenBuffer.width(), RenBuffer.heigth());
 
-	for (size_t i = 0; i < pMesh_->getIndices().size(); i += 3)
+	for (size_t i = 0; i < pMesh_->getIndices().size() ; i += 3)
 	{
 		Rasterizer::drawTriangle(RenBuffer,
 								 globalVertex[pMesh_->getIndices()[i]],
@@ -110,6 +109,12 @@ void Entity::drawFill(Texture &RenBuffer) const noexcept
 								 globalVertex[pMesh_->getIndices()[i + 2]]);
 	}
 }
+/*
+void Entity::updateTRS (const math::Mat4& TRSMatDep)
+{
+	transform_.updateTRSMat(TRSMatDep);
+}*/
+
 
 shared_ptr<Mesh> Entity::pMeshCube(nullptr);
 shared_ptr<Mesh> Entity::pMeshSphere(nullptr);

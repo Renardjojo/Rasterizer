@@ -31,7 +31,7 @@ float crossProduct(Vertex& v1, Vertex& v2)
     return v1.position_.x_ * v2.position_.y_ - v1.position_.y_ * v2.position_.x_;
 }
 
-void Rasterizer::drawLine(Texture &target, Vertex &v1, Vertex &v2)
+void Rasterizer::drawLine(Texture &target, Vertex &v1, Vertex &v2, const ColorRGBA&& c)
 {
     Vertex pV1 = v1;
     Vertex pV2 = v2;
@@ -64,11 +64,11 @@ void Rasterizer::drawLine(Texture &target, Vertex &v1, Vertex &v2)
     {
         if (steep)
         {
-            target.setPixelColor(y, x, {0, 255, 0, 255});
+            target.setPixelColor(y, x, c);
         }
         else
         {
-            target.setPixelColor(x, y, {0, 255, 0, 255});
+            target.setPixelColor(x, y, c);
         }
 
         error -= dy;
@@ -84,6 +84,8 @@ void Rasterizer::drawTriangle(Texture &target, const Vertex &v1, const Vertex &v
 {
     // Get the bounding box of the triangle
     float maxX, minX, maxY, minY = 0;
+    //float maxZ = -5;
+   // float minZ = +5;
 
     maxX = max(max(v1.position_.x_, v2.position_.x_), v3.position_.x_);
     minX = min(min(v1.position_.x_, v2.position_.x_), v3.position_.x_);
@@ -111,12 +113,26 @@ void Rasterizer::drawTriangle(Texture &target, const Vertex &v1, const Vertex &v
             // If inside of the triangle
             if ((w1 >= 0) && (w2 >= 0) && (w3 >= 0))
             {
-              //  float depth = (v1.position_.z_ +  v2.position_.z_ + v3.position_.z_) / 3;
-             //   float depth = 1.f;
-                 target.setPixelColor(x, y, {static_cast<ubyte>(w1 * 255.f),
-                                            static_cast<ubyte>(w2 * 255.f),
-                                            static_cast<ubyte>(w3 * 255.f),
-                                            255}, 1.f);
+                float depth = (w1 * v2.position_.z_ + w2 * v3.position_.z_ + w3 * v1.position_.z_);
+                
+                //maxZ = depth > maxZ ? depth : maxZ;
+                //minZ = depth < minZ ? depth : minZ;
+
+                unsigned int zValue = -((-depth - 1) / 2) * 0xffffffff;
+                #if 0
+                ubyte color = (depth + 1) / 2 * 255;
+                target.setPixelColor(x, y, {static_cast<ubyte>(color),
+                                            static_cast<ubyte>(color),
+                                            static_cast<ubyte>(color),
+                                            255}, zValue);
+                #else
+
+                target.setPixelColor(x, y, {static_cast<ubyte>(w1 * 255),
+                                            static_cast<ubyte>(w2 * 255),
+                                            static_cast<ubyte>(w3 * 255),
+                                            255}, zValue);
+
+                #endif
             }
         }
     }

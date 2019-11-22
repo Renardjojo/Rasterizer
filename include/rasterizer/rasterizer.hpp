@@ -34,7 +34,7 @@ class Rasterizer
 		 *
 		 * brief : 
 		 */
-		static void		drawLine		(Texture&, Vertex&, Vertex&);
+		static void		drawLine		(Texture&, Vertex&, Vertex&, const ColorRGBA&& c = {255, 255, 255, 255});
 		
 		/**
 		 * function : drawTriangle
