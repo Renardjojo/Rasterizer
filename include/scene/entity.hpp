@@ -44,8 +44,7 @@ class Entity
 		void 			drawLine				(Texture &RenBuffer) const noexcept;
 		void 			drawFill				(Texture &RenBuffer) const noexcept;
 
-		//retrun an array of modified vectices
-		vector<Vertex>	transformLocalToGlobal	(const math::Mat4&) const;
+
 
 		//return the transformation of a vertex in a vec4
 		math::Vec4			transformVertexInVec4	(const Vertex&) const;
@@ -76,6 +75,10 @@ class Entity
 	shared_ptr<Mesh>		pMesh_;				//pointor toward mesh (allow to not duplicate vertex)
 	Ref3					transform_;			//local referential of entity. Entity is clip into another referntial and dependant of it.
 
+	//method
+
+	//retrun an array of modified vectices form local to global. Project Shape in ortho
+	vector<Vertex>	transformLocalToGlobal	(const math::Mat4& matTRS, unsigned int winW, unsigned int winH) const;
 
 	static shared_ptr<Mesh> pMeshCube;
 	static shared_ptr<Mesh> pMeshSphere;

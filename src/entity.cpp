@@ -36,14 +36,16 @@ Entity::Entity (const math::Vec3& 	translVec,
 	}
 }
 
-vector<Vertex> Entity::transformLocalToGlobal(const Mat4 &matTRS) const
+vector<Vertex> Entity::transformLocalToGlobal(const Mat4 &matTRS, unsigned int winW, unsigned int winH) const
 {
 	vector<Vertex> vertexGlobal;
 	for (auto &vertex : pMesh_->getVertices())
 	{
 		Vec4 vec (vertex.position_);
 		vec = matTRS * vec;
-		vertexGlobal.push_back({vec.x_, vec.y_, vec.z_});
+		vertexGlobal.push_back({static_cast<float>(((vec.x_ / 5) + 1) * 0.5f * winW),
+								static_cast<float>(winH - ((vec.y_ / 5) + 1) * 0.5 * winH),
+								vec.z_});
 	}
 
 	return vertexGlobal;
@@ -60,22 +62,11 @@ void Entity::drawPoint(Texture &RenBuffer) const noexcept
 		return;
 
 	// Transform all the Mesh's Vertices to Vec4
-	vector<Vec4> vertexToVec4;
-	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix());
+	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), RenBuffer.width(), RenBuffer.heigth());
 
 	for (auto &vertex : globalVertex)
 	{
-		vertexToVec4.push_back(transformVertexInVec4(vertex));
-	}
-
-
-	for (auto &vertex : vertexToVec4)
-	{
-		vertex.homogenize();
-
-		vertex.x_ = ((vertex.x_ / 5) + 1) * 0.5 * 800;
-		vertex.y_ = 600 - ((vertex.y_ / 5) + 1) * 0.5 * 600;
-		RenBuffer.setPixelColor(vertex.x_, vertex.y_, {0, 255, 0, 255});
+		RenBuffer.setPixelColor(vertex.position_.x_, vertex.position_.y_, {0, 255, 0, 255});
 	}
 }
 
@@ -92,26 +83,7 @@ void Entity::drawFill(Texture &RenBuffer) const noexcept
 		return;
 
 	// Transform all the Mesh's Vertices to Vec4
-	vector<Vec4> vertexToVec4;
-	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix());
-
-	for (auto &vertex : globalVertex)
-	{
-		vertexToVec4.push_back(transformVertexInVec4(vertex));
-	}
-
-	for (auto &vertex : vertexToVec4)
-	{
-		vertex.homogenize();
-		vertex.x_ = ((vertex.x_ / 5) + 1) * 0.5 * 800;
-		vertex.y_ = 600 - ((vertex.y_ / 5) + 1) * 0.5 * 600;
-	}
-
-	for (size_t i = 0; i < globalVertex.size(); i++)
-	{
-		globalVertex[i].position_.x_ = vertexToVec4[i].x_;
-		globalVertex[i].position_.y_ = vertexToVec4[i].y_;
-	}
+	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), RenBuffer.width(), RenBuffer.heigth());
 
 	for (size_t i = 0; i < pMesh_->getIndices().size(); i+= 3)
 	{

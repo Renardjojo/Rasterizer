@@ -32,51 +32,50 @@ Vertex	projectVertex		(const Vertex& vec)
     return newVer;
 }
 
-float dotProduct(Vertex& v1, Vertex& v2)
+float crossProduct(Vertex& v1, Vertex& v2)
 {
     return  v1.position_.x_ * v2.position_.y_ - v1.position_.y_ * v2.position_.x_;
 }
 
 void Rasterizer::drawTriangle(Texture& target, const Vertex& v1, const Vertex& v2, const Vertex& v3)
 {
-
-    Vertex pV1 = v1;
-    Vertex pV2 = v2;
-    Vertex pV3 = v3;
-
     // Get the bounding box of the triangle
     float maxX, minX, maxY, minY = 0;
 
-    maxX = max(max(pV1.position_.x_, pV2.position_.x_), pV3.position_.x_);
-    minX = min(min(pV1.position_.x_, pV2.position_.x_), pV3.position_.x_);
-    maxY = max(max(pV1.position_.y_, pV2.position_.y_), pV3.position_.y_);
-    minY = min(min(pV1.position_.y_, pV2.position_.y_), pV3.position_.y_);
+    maxX = max(max(v1.position_.x_, v2.position_.x_), v3.position_.x_);
+    minX = min(min(v1.position_.x_, v2.position_.x_), v3.position_.x_);
+    maxY = max(max(v1.position_.y_, v2.position_.y_), v3.position_.y_);
+    minY = min(min(v1.position_.y_, v2.position_.y_), v3.position_.y_);
 
     // Spanning vectors of edge (pV1,pV2) and (pV1,v3)
-    Vertex vs1 = {pV2.position_.x_ - pV1.position_.x_, pV2.position_.y_ - pV1.position_.y_, 0};
-    Vertex vs2 = {pV3.position_.x_ - pV1.position_.x_, pV3.position_.y_ - pV1.position_.y_, 0};
+    Vertex vs1 = {v2.position_.x_ - v1.position_.x_, v2.position_.y_ - v1.position_.y_, 0};
+    Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0};
 
     for (int x = minX; x < maxX; x++)
     {
         for (int y = minY; y < maxY; y++)
         {
-            Vertex q = {x - pV1.position_.x_, y - pV1.position_.y_, 0};
-            //Vertex p = {x - pV2.position_.x_, y - pV2.position_.y_, 0};
+            Vertex q = {x - v1.position_.x_, y - v1.position_.y_, 0};
 
-            float s = dotProduct(q, vs2) / dotProduct(vs1, vs2);
-            float t = dotProduct(vs1, q) / dotProduct(vs1, vs2);
+            float crossproductV1V2 = crossProduct(vs1, vs2);
+            if (crossproductV1V2 == 0.f)
+                continue;
+
+            float w1 = crossProduct(q, vs2) / crossproductV1V2;
+            float w2 = crossProduct(vs1, q) / crossproductV1V2;
+            float w3 = 1.f - w1 - w2;
 
             // If inside of the triangle
-            if ((s >= 0) && (t >= 0) && (s + t <= 1))
+            if ((w1 >= 0) && (w2 >= 0) && (w3 >= 0))
             {
-                target.setPixelColor(x, y, {static_cast<ubyte>(s * 255.f),
-                                            static_cast<ubyte>(t * 255.f),
-                                            static_cast<ubyte>((1.f - s - t) * 255.f),
-                                            255});
+
+              //  float depth = (v1.position_.z_ +  v2.position_.z_ + v3.position_.z_) / 3;
+             //    float depth = 1.f;
+                 target.setPixelColor(x, y, {static_cast<ubyte>(w1 * 255.f),
+                                            static_cast<ubyte>(w2 * 255.f),
+                                            static_cast<ubyte>(w3 * 255.f),
+                                            255}, 1.f);
             }
         }
     }
 }
-
-
-
