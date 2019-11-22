@@ -19,8 +19,8 @@ class Texture
 		/* methode  */
 	   /*----------*/
 
-		//color pixel of matrix
-		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c);
+		//color pixel of matrix. Z paraqmter correspond to the depth of pixel in zBuffer
+		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, unsigned int z = __INT_MAX__ * 2U + 1);
 
 
 		/**
@@ -91,6 +91,7 @@ class Texture
 		unsigned int 				width_;
 		unsigned int 				heigth_;
 		ColorRGBA*					pPixels_;
+		unsigned int*				zBuffer_;	//Z buffer determined the depth of pixel. If 2 textures war add, Z buffer determined whitch pixel is hidden
 
 	private:
 };
