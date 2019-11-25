@@ -1,4 +1,5 @@
 #include "scene.hpp"
+#include "referential.hpp"
 
 using namespace math;
 
@@ -39,7 +40,8 @@ void 			Scene::draw				(Texture& RenBuffer) const noexcept
 	{
 		//entity.drawFill(RenBuffer);
 		entity.drawLine(RenBuffer);
-	}
+		entity.getTransform().displayAxis(RenBuffer);
+	}	
 }
 
 const Entity& 			Scene::getEntity		(unsigned int id) const throw()

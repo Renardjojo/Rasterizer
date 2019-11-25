@@ -47,7 +47,7 @@ class Entity
 
 
 		//return the transformation of a vertex in a vec4
-		math::Vec4			transformVertexInVec4	(const Vertex&) const;
+		math::Vec4		transformVertexInVec4	(const Vertex&) const;
 
 		 /*----------*/
 		/* accessor */

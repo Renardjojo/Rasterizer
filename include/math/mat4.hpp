@@ -97,10 +97,4 @@ namespace math
 	Vec4 operator*(const Mat4&, const Vec4&); 
 };
 
-
-
-
-
-
-
 #endif // _MAT4_H
