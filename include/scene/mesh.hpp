@@ -9,13 +9,19 @@
 class Mesh
 {
 	public:
+
+		#pragma region constructor/destructor
+
 		Mesh ()						= default;
 		Mesh (const Mesh& other) 	= default;
 		~Mesh () 					= default;
 
-		 /*----------*/
-		/* methode  */
-	   /*----------*/
+		#pragma endregion //!constructor/destructor
+
+		#pragma region methods
+		#pragma endregion //!methods
+
+		#pragma region static methods
 
 		//create cube of size 1 with triangle and return mesh. Cube is centered on the origin
 		static std::shared_ptr<Mesh> createCube	();
@@ -23,34 +29,41 @@ class Mesh
 		//create sphere of radius 1 and return it mesh.	Sphere is centered on the origin	
 		static std::shared_ptr<Mesh> createSphere(int latitudeCount, int longitudeCount);
 
+		#pragma endregion //!static methods
 
-		 /*----------*/
-		/* accessor */
-	   /*----------*/
+		#pragma region accessor
 
 		 const 	std::vector<Vertex>&	getVertices	() const 	{ return vertices_;}
 		 		std::vector<Vertex>&	getVertices	() 			{ return vertices_;}
 
 		 const 	std::vector<int>&		getIndices	() const	{ return indices_;}
 		 		std::vector<int>&		getIndices	() 			{ return indices_;}
-		 /*----------*/
-		/* mutator  */
-	   /*----------*/
 
-		 /*----------*/
-		/* operator */
-	   /*----------*/
+		#pragma endregion //!accessor
 
-		 /*----------*/
-		/* convertor*/ 
-	   /*----------*/
+		#pragma region mutator
+		#pragma endregion //!mutator
 
-		//public variable (get and set with no effect for class)
+		#pragma region operator
+		#pragma endregion //!operator
+
+		#pragma region convertor
+		#pragma endregion //!convertor
 
 	protected:
-		
+
+		#pragma region attribut
+
 		std::vector<Vertex> vertices_; //vertex buffer. Local vertices, doesn't change
 		std::vector<int>	indices_;  //indices buffer. Define triangle of mesh. It's a suit of triplet index
+
+		#pragma endregion //!attribut
+
+		#pragma region static attribut
+		#pragma endregion //! static attribut
+
+		#pragma region methods
+		#pragma endregion //!methods
 
 	private:
 };

@@ -12,39 +12,51 @@
 class Vertex
 {
 	public:
-		Vertex () 			 	= default;
-		Vertex (float x, float y, float z);
+
+	   	#pragma region constructor/destructor
+
+		Vertex () 			 			= default;
+		Vertex (float x, float y, float z, float nx = 0.f, float ny = 0.f, float nz = 0.f);
+		Vertex (const math::Vec3& position, const math::Vec3& normal);
 
 		Vertex (const Vertex& other) 	= default;
-		Vertex (const math::Vec3& other);
-
 		~Vertex () 						= default;
 
-		 /*----------*/
-		/* methode  */
-	   /*----------*/
+		#pragma endregion //!constructor/destructor
 
-		 /*----------*/
-		/* accessor */
-	   /*----------*/
+		#pragma region methods
+		#pragma endregion //!methods
 
-		 /*----------*/
-		/* mutator  */
-	   /*----------*/
+		#pragma region static methods
+		#pragma endregion //!static methods
 
-		 /*----------*/
-		/* operator */
-	   /*----------*/
+		#pragma region accessor
+		#pragma endregion //!accessor
 
-		 /*----------*/
-		/* convertor*/ 
-	   /*----------*/
+		#pragma region mutator
+		#pragma endregion //!mutator
+
+		#pragma region operator
+		#pragma endregion //!operator
+
+		#pragma region convertor
+		#pragma endregion //!convertor
 
 		//public variable (get and set with no effect for class)
 		math::Vec3 position_;
+		math::Vec3 normal_;
 
 	protected:
 		
+		#pragma region attribut
+		#pragma endregion //!attribut
+
+		#pragma region static attribut
+		#pragma endregion //! static attribut
+
+		#pragma region methods
+		#pragma endregion //!methods
+
 	private:
 };
 

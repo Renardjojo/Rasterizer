@@ -19,10 +19,12 @@ typedef enum E_primitive3D
 
 } Primitive3D;
 
-
 class Entity
 {
 	public:
+
+		#pragma region constructor/destructor
+
 		Entity () = default;
 		
 		//constructor to init entity this position, scale and rotation. Entity can be choose in function of enum E_primitive3D
@@ -36,13 +38,13 @@ class Entity
 		Entity (const Entity& other) = default;
 		~Entity () = default;
 
-		 /*----------*/
-		/* methode  */
-	   /*----------*/
+		#pragma endregion //!constructor/destructor
+
+		#pragma region methods
 
 		//display vextex in function of his matrix TRS
 		void			drawPoint				(Texture& RenBuffer) const noexcept;
-		void 			drawLine				(Texture &RenBuffer, const ColorRGBA&& c = {255, 255, 255, 255}) const noexcept;
+		void 			drawLine				(Texture &RenBuffer) const noexcept;
 		void 			drawFill				(Texture &RenBuffer) const noexcept;
 
 		//this function update TRS matrix of entity in function of dependante matrix. If entity depende of world, put in paramter the world TRS matrix.
@@ -53,44 +55,52 @@ class Entity
 		//return the transformation of a vertex in a vec4
 		math::Vec4		transformVertexInVec4	(const Vertex&) const;
 
-		 /*----------*/
-		/* accessor */
-	   /*----------*/
+		#pragma endregion //!methods
+
+		#pragma region accessor
 
 	   const Ref3& 		getTransform()				const noexcept { return transform_;}
 	   Ref3& 			getTransform()					  noexcept { return transform_;}
 
-		 /*----------*/
-		/* mutator  */
-	   /*----------*/
+		#pragma endregion //!accessor
 
-		 /*----------*/
-		/* operator */
-	   /*----------*/
+		#pragma region mutator
 
-		 /*----------*/
-		/* convertor*/ 
-	   /*----------*/
+		#pragma endregion //!mutator
 
-		//public variable (get and set with no effect for class)
+		#pragma region operator
+
+		#pragma endregion //!operator
+
+		#pragma region convertor
+
+		#pragma endregion //!convertor
 
 	protected:
 
-	//std::vector<Entity>		dependantEntities_;	
-	shared_ptr<Mesh>		pMesh_;				//pointor toward mesh (allow to not duplicate vertex)
-	Ref3					transform_;			//local referential of entity. Entity is clip into another referntial and dependant of it.
+		#pragma region attribut
 
-	//method
+		//std::vector<Entity>		dependantEntities_;	
+		shared_ptr<Mesh>		pMesh_;				//pointor toward mesh (allow to not duplicate vertex)
+		Ref3					transform_;			//local referential of entity. Entity is clip into another referntial and dependant of it.
 
-	//retrun an array of modified vectices form local to global. Project Shape in ortho
-	vector<Vertex>	transformLocalToGlobal	(const math::Mat4& matTRS, unsigned int winW, unsigned int winH) const;
+		#pragma endregion //!attribut
 
-	static shared_ptr<Mesh> pMeshCube;
-	static shared_ptr<Mesh> pMeshSphere;
+		#pragma region static attribut
+
+		static shared_ptr<Mesh> pMeshCube;
+		static shared_ptr<Mesh> pMeshSphere;
+
+		#pragma endregion //! static attribut
+
+		#pragma region methods
+
+		//retrun an array of modified vectices form local to global. Project Shape in ortho
+		vector<Vertex>	transformLocalToGlobal	(const math::Mat4& matTRS, unsigned int winW, unsigned int winH) const;
+
+		#pragma endregion //!methods
 
 	private:
 };
-
-
 
 #endif // _ENTITY_H
