@@ -1,4 +1,5 @@
 #include "mesh.hpp"
+#include "rasterizer.hpp"
 
 using namespace std;
 
@@ -6,26 +7,32 @@ shared_ptr<Mesh> Mesh::createCube	()
 {
 	shared_ptr<Mesh> mesh = make_shared<Mesh>();
 
-	//cube contain 8 vertex
+	// Cube contain 8 vertex
 	mesh->getVertices().reserve(8);
 
-	//cube is center arround local zero
-	//Start with point of front face
-	mesh->getVertices().push_back({ 0.5f,  0.5f, 0.5, 1.f, 1.f, 1.f});
-	mesh->getVertices().push_back({ 0.5f, -0.5f, 0.5, 1.f, -1.f, 1.f});
-	mesh->getVertices().push_back({-0.5f, -0.5f, 0.5, -1.f, -1.f, 1.f});
-	mesh->getVertices().push_back({-0.5f,  0.5f, 0.5, -1.f, 1.f, 1.f});
-	
-	//point of back face
-	mesh->getVertices().push_back({ 0.5f,  0.5f, -0.5, 1.f, 1.f, -1.f});
-	mesh->getVertices().push_back({ 0.5f, -0.5f, -0.5, 1.f, -1.f, -1.f});
-	mesh->getVertices().push_back({-0.5f, -0.5f, -0.5, -1.f, -1.f, -1.f});
-	mesh->getVertices().push_back({-0.5f,  0.5f, -0.5, -1.f, 1.f, -1.f});
+	// Color
+	Rasterizer::setColor4ub((ubyte)255, 0, 0, 255);
+	ColorRGBA c = Rasterizer::getColor4ub();
 
-	//cube contain 12 triangles this 3 indices. Cube contain 36 indices
+	std::cout << c.r << std::endl;
+
+	// Cube is center arround local zero
+	// Start with point of front face
+	mesh->getVertices().push_back({{0.5f,  0.5f, 0.5}, {1.f, 1.f, 1.f}, c});
+	mesh->getVertices().push_back({{0.5f, -0.5f, 0.5}, {1.f, -1.f, 1.f}, c});
+	mesh->getVertices().push_back({{-0.5f, -0.5f, 0.5}, {-1.f, -1.f, 1.f}, c});
+	mesh->getVertices().push_back({{-0.5f,  0.5f, 0.5}, {-1.f, 1.f, 1.f}, c});
+	
+	// Point of back face
+	mesh->getVertices().push_back({{0.5f,  0.5f, -0.5}, {1.f, 1.f, -1.f}, c});
+	mesh->getVertices().push_back({{0.5f, -0.5f, -0.5}, {1.f, -1.f, -1.f}, c});
+	mesh->getVertices().push_back({{-0.5f, -0.5f, -0.5}, {-1.f, -1.f, -1.f}, c});
+	mesh->getVertices().push_back({{-0.5f,  0.5f, -0.5}, {-1.f, 1.f, -1.f}, c});
+
+	// Cube contain 12 triangles this 3 indices. Cube contain 36 indices
 	mesh->getIndices().reserve(36);
 
-	//front
+	// Front
 	mesh->getIndices().push_back(0);
 	mesh->getIndices().push_back(1);
 	mesh->getIndices().push_back(2);
@@ -33,7 +40,7 @@ shared_ptr<Mesh> Mesh::createCube	()
 	mesh->getIndices().push_back(0);
 	mesh->getIndices().push_back(3);
 
-	//left
+	// Left
 	mesh->getIndices().push_back(3);
 	mesh->getIndices().push_back(2);
 	mesh->getIndices().push_back(6);
@@ -41,7 +48,7 @@ shared_ptr<Mesh> Mesh::createCube	()
 	mesh->getIndices().push_back(3);
 	mesh->getIndices().push_back(7);
 
-	//back
+	// Back
 	mesh->getIndices().push_back(7);
 	mesh->getIndices().push_back(6);
 	mesh->getIndices().push_back(5);
@@ -49,7 +56,7 @@ shared_ptr<Mesh> Mesh::createCube	()
 	mesh->getIndices().push_back(7);
 	mesh->getIndices().push_back(4);
 
-	//up
+	// Up
 	mesh->getIndices().push_back(4);
 	mesh->getIndices().push_back(7);
 	mesh->getIndices().push_back(3);
@@ -57,7 +64,7 @@ shared_ptr<Mesh> Mesh::createCube	()
 	mesh->getIndices().push_back(4);
 	mesh->getIndices().push_back(0);
 
-	//right
+	// Right
 	mesh->getIndices().push_back(0);
 	mesh->getIndices().push_back(4);
 	mesh->getIndices().push_back(5);
@@ -65,7 +72,7 @@ shared_ptr<Mesh> Mesh::createCube	()
 	mesh->getIndices().push_back(0);
 	mesh->getIndices().push_back(1);
 
-	//down
+	// Down
 	mesh->getIndices().push_back(1);
 	mesh->getIndices().push_back(5);
 	mesh->getIndices().push_back(6);
@@ -103,13 +110,17 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 				posX = xy * cosf(latitudeAngle);
 				posY = xy * sinf(latitudeAngle);
 
+				// Color
+				Rasterizer::setColor4ub((ubyte)255, 0, 0, 255);
+				ColorRGBA c = Rasterizer::getColor4ub();
+
 				// vertex position (x, y, z)
-				mesh->getVertices().push_back({	posX, 
+				mesh->getVertices().push_back({	{posX, 
 												posY, 
-												posZ,
-												posX * radiusInv,
+												posZ},
+												{posX * radiusInv,
 												posY * radiusInv,
-												posZ * radiusInv}); //point * radius
+												posZ * radiusInv}, c}); //point * radius
 			}
 		}
 	}

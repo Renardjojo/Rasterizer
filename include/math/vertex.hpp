@@ -7,17 +7,18 @@
 #include <cassert>
 
 #include "vec3.hpp"
-
+#include "color.hpp"
 
 class Vertex
 {
 	public:
 
-	   	#pragma region constructor/destructor
+	   	#pragma region constructor/destructo
 
 		Vertex () 			 			= default;
-		Vertex (float x, float y, float z, float nx = 0.f, float ny = 0.f, float nz = 0.f);
-		Vertex (const math::Vec3& position, const math::Vec3& normal);
+		Vertex (float x, float y, float z, float nx = 0.f, float ny = 0.f, float nz = 0.f,	ubyte r = 255, ubyte g = 255, 
+																							ubyte b = 255, ubyte a = 255);
+		Vertex (const math::Vec3& position, const math::Vec3& normal, ColorRGBA& color);
 
 		Vertex (const Vertex& other) 	= default;
 		~Vertex () 						= default;
@@ -43,8 +44,9 @@ class Vertex
 		#pragma endregion //!convertor
 
 		//public variable (get and set with no effect for class)
-		math::Vec3 position_;
-		math::Vec3 normal_;
+		math::Vec3	position_;
+		math::Vec3	normal_;
+		ColorRGBA	color_;
 
 	protected:
 		
