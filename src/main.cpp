@@ -72,6 +72,15 @@ do
 			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_DEPTH_BUFFER, false);
 		}
 
+		if (input.keyboard.isDown[SDL_SCANCODE_F4])
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_DEPTH_BUFFER, true);
+		}
+		else
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_DEPTH_BUFFER, false);
+		}
+
 
 		Rasterizer::setColor4ub(0, 255, 255, 0);
 		scene.getEntity(id).getTransform().rotate({0.1f * time.dtf_, 0.f, 0.5f* time.dtf_});
