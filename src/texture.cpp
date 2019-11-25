@@ -12,7 +12,7 @@ Texture::Texture (unsigned int width, unsigned int height)
 	//init zBuffer wither min value
 	for (size_t i = 0; i < width * height; i++)
 	{
-		zBuffer_[i] = __INT_MAX__ * 2U + 1; //uint limit
+		zBuffer_[i] = 0; //uint limit
 	}
 }
 
@@ -30,7 +30,7 @@ void Texture::setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, 
 	//assert(x < width_ && y < heigth_);
 
 	//TODO: Add opacity function oin function of depth
-	if (x < width_ && y < heigth_ /*&& z < zBuffer_[width_ * y + x]*/)
+	if (x < width_ && y < heigth_ && z > zBuffer_[width_ * y + x])
 	{
 		pPixels_[width_ * y + x] = c;
 		zBuffer_[width_ * y + x] = z;
@@ -50,7 +50,7 @@ void Texture::clear		()
 
 	for (size_t i = 0; i < width_ * heigth_; i++)
 	{
-		zBuffer_[i] = __INT_MAX__ * 2U + 1; //uint limit
+		zBuffer_[i] = 0; //uint limit
 	}
 }
 

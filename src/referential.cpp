@@ -65,9 +65,8 @@ void 		Referential3D::addChildReferential (Referential3D& child) noexcept
 
 void 		Referential3D::displayAxis 	(Texture& RenBuffer) const noexcept
 {
-	Vertex origin	= getLocalOrigin();
+	Vertex origin (origin_.x_, origin_.y_, origin_.z_);
 	Vec4 vecO(origin.position_);
-	vecO = TRSMat_ * vecO;
 	origin = {((vecO.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
 			(RenBuffer.heigth() - (( vecO.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vecO.z_};
 	
@@ -89,8 +88,11 @@ void 		Referential3D::displayAxis 	(Texture& RenBuffer) const noexcept
 	axisZ = {((vec2.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
 			(RenBuffer.heigth() - (( vec2.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vec2.z_};
 
+	Rasterizer::setColor4ub(255, 0, 0, 255);
 	Rasterizer::drawLine(RenBuffer, axisX, origin); // (Ox)
+	Rasterizer::setColor4ub(0, 255, 0, 255);
 	Rasterizer::drawLine(RenBuffer, axisY, origin); // (Oy)
+	Rasterizer::setColor4ub(0, 0, 255, 255);
 	Rasterizer::drawLine(RenBuffer, axisZ, origin); // (Oz)
 }
 

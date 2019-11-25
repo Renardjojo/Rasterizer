@@ -11,16 +11,16 @@ shared_ptr<Mesh> Mesh::createCube	()
 
 	//cube is center arround local zero
 	//Start with point of front face
-	mesh->getVertices().push_back({ 0.5f,  0.5f, 0.5});
-	mesh->getVertices().push_back({ 0.5f, -0.5f, 0.5});
-	mesh->getVertices().push_back({-0.5f, -0.5f, 0.5});
-	mesh->getVertices().push_back({-0.5f,  0.5f, 0.5});
+	mesh->getVertices().push_back({ 0.5f,  0.5f, 0.5, 1.f, 1.f, 1.f});
+	mesh->getVertices().push_back({ 0.5f, -0.5f, 0.5, 1.f, -1.f, 1.f});
+	mesh->getVertices().push_back({-0.5f, -0.5f, 0.5, -1.f, -1.f, 1.f});
+	mesh->getVertices().push_back({-0.5f,  0.5f, 0.5, -1.f, 1.f, 1.f});
 	
 	//point of back face
-	mesh->getVertices().push_back({ 0.5f,  0.5f, -0.5});
-	mesh->getVertices().push_back({ 0.5f, -0.5f, -0.5});
-	mesh->getVertices().push_back({-0.5f, -0.5f, -0.5});
-	mesh->getVertices().push_back({-0.5f,  0.5f, -0.5});
+	mesh->getVertices().push_back({ 0.5f,  0.5f, -0.5, 1.f, 1.f, -1.f});
+	mesh->getVertices().push_back({ 0.5f, -0.5f, -0.5, 1.f, -1.f, -1.f});
+	mesh->getVertices().push_back({-0.5f, -0.5f, -0.5, -1.f, -1.f, -1.f});
+	mesh->getVertices().push_back({-0.5f,  0.5f, -0.5, -1.f, 1.f, -1.f});
 
 	//cube contain 12 triangles this 3 indices. Cube contain 36 indices
 	mesh->getIndices().reserve(36);
@@ -87,21 +87,29 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 	{
 		float xy;
 		float latitudeAngle, longitudeAngle;
-		float radius = 1.f; // radius of 1
+		float radius = 1.f; 			// radius of 1
+		float radiusInv = 1.f / radius; // for more perform
+		float posX, posY, posZ; 		//position of point
 
 		for(unsigned int i = 0; i <= static_cast<unsigned int>(longitudeCount); i++)
 		{
 			longitudeAngle = M_PI / 2.f - i * longitudeStep;    // starting from pi/2 to -pi/2
 			xy = radius * cosf(longitudeAngle);
+			posZ = radius * sinf(longitudeAngle);
 
 			for(unsigned int j = 0; j <= static_cast<unsigned int>(latitudeCount); j++)
 			{
 				latitudeAngle = j * latitudeStep;           // starting from 0 to 2pi
+				posX = xy * cosf(latitudeAngle);
+				posY = xy * sinf(latitudeAngle);
 
 				// vertex position (x, y, z)
-				mesh->getVertices().push_back({	xy * cosf(latitudeAngle), 
-											xy * sinf(latitudeAngle) , 
-											radius * sinf(longitudeAngle)});
+				mesh->getVertices().push_back({	posX, 
+												posY, 
+												posZ,
+												posX * radiusInv,
+												posY * radiusInv,
+												posZ * radiusInv}); //point * radius
 			}
 		}
 	}

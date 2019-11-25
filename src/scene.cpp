@@ -11,19 +11,21 @@ Scene::Scene ()
 	entities_.reserve(50);	
 }
 
-unsigned int 	Scene::addEntity(const Vec3&  originVec, const Vec3& orientationVec, const Vec3& scaleVec, 
-								int entityIDDependance, Primitive3D primitive) throw()
+unsigned int 	Scene::addEntity(const Vec3&  originVec, const Vec3& orientationVec, const Vec3& scaleVec, Primitive3D primitive) noexcept
 {
-	if (entityIDDependance > (int)entities_.size() || entityIDDependance < -1)
-		throw range_error("ID does not exist to create entity");
+	entities_.push_back(std::make_unique<Entity>(originVec, 
+												orientationVec,
+												scaleVec,
+												world,
+												primitive));
 
-	entities_.push_back(Entity(	originVec, 
-								orientationVec,
-								scaleVec,
-								entityIDDependance == -1 ? 
-								world :	entities_[entityIDDependance - 1].getTransform(),
-								primitive));
+	return entities_.size();
+}
 
+unsigned int 	Scene::moveEntityInto (std::unique_ptr<Entity>& pEntityMove) noexcept
+{
+	//pEntityMove->getTransform().updateTRSMat(world.getTRSMatrix());
+	entities_.push_back(std::move(pEntityMove));
 	return entities_.size();
 }
 
@@ -45,12 +47,11 @@ void 			Scene::deleteLight	(unsigned int id) throw()
 
 void 			Scene::draw				(Texture& RenBuffer) const noexcept
 {
-	for (auto& entity : entities_)
+	for (unsigned int i = 0; i < entities_.size(); i++)
 	{
-		//entity.drawFill(RenBuffer);
-		entity.drawLine(RenBuffer);
-		entity.getTransform().displayAxis(RenBuffer);
-	}	
+		entities_[i]->getTransform().displayAxis(RenBuffer);
+		entities_[i]->drawFill(RenBuffer);
+	}
 }
 
 const Entity& 			Scene::getEntity		(unsigned int id) const throw()
@@ -58,7 +59,7 @@ const Entity& 			Scene::getEntity		(unsigned int id) const throw()
 	if (id > entities_.size())
 		throw range_error("ID does not exist to destroy entity");
 
-	return entities_[id - 1];
+	return (*entities_[id - 1]);
 }
 
 Entity& 			Scene::getEntity		(unsigned int id) throw()
@@ -66,7 +67,7 @@ Entity& 			Scene::getEntity		(unsigned int id) throw()
 	if (id > entities_.size())
 		throw range_error("ID does not exist to destroy entity");
 
-	return entities_[id - 1];
+	return (*entities_[id - 1]);
 }
 
 const Light& 			Scene::getLight		(unsigned int id) const throw()

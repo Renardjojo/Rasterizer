@@ -12,6 +12,8 @@ typedef class Referential3D
 {
 	public:
 
+		#pragma region constructor/destructor
+
 		//default ref init "World" referential
 		Referential3D 	();
 
@@ -46,19 +48,22 @@ typedef class Referential3D
 		Referential3D 	(const Referential3D& other);
 		~Referential3D 	() = default;
 
-		 /*----------*/
-		/* methode  */
-	   /*----------*/
-		
+		#pragma endregion constructor/destructor
+
+		#pragma region methods
+
 		//this function add to referential child matrix. Each child matrix depende of parent referential.
 		void 		addChildReferential (Referential3D& child) 	noexcept;
 
 		// few function to display entity of ref in function of his TRS matrix.
 		void 		displayAxis 		(Texture&)				const noexcept;
-		
-		 /*----------*/
-		/* accessor */
-	   /*----------*/
+
+		#pragma endregion //!methods
+
+		#pragma region static methods
+		#pragma endregion //!static methods
+
+		#pragma region accessor
 
 		const std::string& 				getName					()	const noexcept	{ return name_;}
 		const math::Mat4&				getTRSMatrix			()	const noexcept	{ return TRSMat_;}
@@ -68,9 +73,9 @@ typedef class Referential3D
 		const math::Vec3&				getLocalOrientation		()	const noexcept	{ return orientation_;}
 		const math::Vec3&				getLocalScale			()	const noexcept	{ return scale_;}
 
-		 /*----------*/
-		/* mutator  */
-	   /*----------*/
+		#pragma endregion //!accessor
+
+		#pragma region mutator
 
 		//few function to change TRS matrix. Update each child ref after changement.
 		// Param : this axe X, Y and Z (width, higth and depth). Orientation in rad in indirect referential
@@ -82,15 +87,17 @@ typedef class Referential3D
 		void 		rotate					(math::Vec3 rVec)						noexcept;
 		void 		scale					(math::Vec3 sVec)						noexcept;
 
-		 /*----------*/
-		/* operator */
-	   /*----------*/
+		#pragma endregion //!mutator
 
-		 /*----------*/
-		/* convertor*/ 
-	   /*----------*/
+		#pragma region operator
+		#pragma endregion //!operator
+
+		#pragma region convertor
+		#pragma endregion //!convertor
 
 	protected:
+
+		#pragma region attribut
 
 		std::string 				name_;			//name of ref
 		math::Vec3					origin_; 		//Local origin in parent ref
@@ -102,11 +109,20 @@ typedef class Referential3D
 
 		math::Mat4					TRSMat_;		//global TRS matrix (translation/Rotation/Scale), comput with mother ref. Allow to pass from local to global
 
+		#pragma endregion //!attribut
+
+		#pragma region static attribut
+		#pragma endregion //! static attribut
+
+		#pragma region methods
+
 		//update the TRS matrix in function of his origin, euler angle and scale. 
 		//TRS Mat must be update if there component change.
 		//This function update each dependent referential TRS Matrix.
 		//This function use in parameter the TRS matrix of his parent. So, world nether use this function, because is nether modifie.
 		void 		updateTRSMat		() 			noexcept;
+
+		#pragma endregion //!methods
 
 	private:
 
@@ -116,6 +132,3 @@ typedef class Referential3D
 std::ostream& 	operator<<		(std::ostream& out, const Ref3& ref);
 
 #endif // _REFERENTIAL_3D_H
-
-
-
