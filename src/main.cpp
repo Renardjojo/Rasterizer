@@ -29,10 +29,6 @@ int main()
 	int id3 = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::CUBE);
 	int id4 = scene.addEntity({2.f, -2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::CUBE);
 
-
-	Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_EDGE, true);
-	Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_MULTI_COLOR, true);
-
 do
 	{
 		//update
@@ -74,11 +70,20 @@ do
 
 		if (input.keyboard.isDown[SDL_SCANCODE_F4])
 		{
-			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_DEPTH_BUFFER, true);
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_NORMAL, true);
 		}
 		else
 		{
-			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_DEPTH_BUFFER, false);
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_NORMAL, false);
+		}
+
+		if (input.keyboard.isDown[SDL_SCANCODE_F5])
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_SHAPE_FILL, false);
+		}
+		else
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_SHAPE_FILL, true);
 		}
 
 

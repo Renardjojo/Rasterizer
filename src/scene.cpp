@@ -1,12 +1,13 @@
 #include "scene.hpp"
 #include "referential.hpp"
+#include "rasterizer.hpp"
 
 using namespace math;
 
 Scene::Scene ()
 	: 	entities_	(),
-		world		(),
-		light_		()
+		light_		(),
+		world		()
 {
 	entities_.reserve(50);	
 }
@@ -49,6 +50,11 @@ void 			Scene::draw				(Texture& RenBuffer) const noexcept
 {
 	for (unsigned int i = 0; i < entities_.size(); i++)
 	{
+		if (Rasterizer::getSetting(R_DRAW_NORMAL))
+		{
+			entities_[i]->getpMesh()->drawNormal(RenBuffer, entities_[i]->getTransform().getTRSMatrix());
+		}
+
 		entities_[i]->getTransform().displayAxis(RenBuffer);
 		entities_[i]->drawFill(RenBuffer);
 	}
@@ -75,7 +81,7 @@ const Light& 			Scene::getLight		(unsigned int id) const throw()
 	if (id > entities_.size())
 		throw range_error("ID does not exist to destroy light");
 
-	return entities_[id - 1];
+	return light_[id - 1];
 }
 
 Light& 			Scene::getLight		(unsigned int id) throw()
@@ -83,5 +89,5 @@ Light& 			Scene::getLight		(unsigned int id) throw()
 	if (id > entities_.size())
 		throw range_error("ID does not exist to destroy light");
 
-	return entities_[id - 1];
+	return light_[id - 1];
 }

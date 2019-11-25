@@ -62,6 +62,8 @@ class Entity
 	   const Ref3& 		getTransform()				const noexcept { return transform_;}
 	   Ref3& 			getTransform()					  noexcept { return transform_;}
 
+	   const shared_ptr<Mesh>& getpMesh	()			const noexcept { return pMesh_; }	
+
 		#pragma endregion //!accessor
 
 		#pragma region mutator

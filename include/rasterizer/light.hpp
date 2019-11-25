@@ -6,45 +6,72 @@
 class Light
 {
 public:
-    Light()             =  default;
-    Light(math::Vec3&, float, float, float);
 
-    // Copy constructor
-    Light(const Light& other);
+       #pragma region constructor/destructor
 
-    virtual ~Light()    = default;
+        Light()             =  default;
+        Light(math::Vec3&, float, float, float);
 
-    /*----------*/
-	/* accessor */
-	/*----------*/
+        // Copy constructor
+        Light(const Light& other);
 
-    const math::Vec3& 		getPosition             () const throw()    { return position_;}
-	math::Vec3& 			getPosition		        () throw()          { return position_;}
+        virtual ~Light()    = default;
 
-    const float& 		    getAmbientComponent		() const throw()    { return ambientComponent_;}
-	float& 				    getAmbientComponent		() throw()          { return ambientComponent_;}
+        #pragma endregion //!constructor/destructor
 
-    const float& 		    getDiffuseComponent		() const throw()    { return diffuseComponent_;}
-	float& 				    getDiffuseComponent		() throw()          { return diffuseComponent_;}
+        #pragma region methods
+        #pragma endregion //!methods
 
-    const float& 		    getSpecularComponent	() const throw()    { return specularComponent_;}
-	float& 				    getSpecularComponent	() throw()          { return specularComponent_;}
+        #pragma region static methods
+        #pragma endregion //!static methods
 
-    /*----------*/
-	/* mutator  */
-	/*----------*/
+        #pragma region accessor
 
-    void 		            setPosition				(math::Vec3 pos)					noexcept;
-	void 		            setAmbientComponent     (float ambientCompo)				noexcept;
-	void 		            setDiffuseComponent     (float diffuseCompo)				noexcept;
-    void 		            setSpecularComponent	(float specularCompo)				noexcept;
+        const math::Vec3& 		getPosition             () const throw()    { return position_;}
+        math::Vec3& 			getPosition		        () throw()          { return position_;}
 
+        const float& 		    getAmbientComponent		() const throw()    { return ambientComponent_;}
+        float& 				    getAmbientComponent		() throw()          { return ambientComponent_;}
 
-protected:
-    math::Vec3  position_;
-    float       ambientComponent_;
-    float       diffuseComponent_;
-    float       specularComponent_;
+        const float& 		    getDiffuseComponent		() const throw()    { return diffuseComponent_;}
+        float& 				    getDiffuseComponent		() throw()          { return diffuseComponent_;}
+
+        const float& 		    getSpecularComponent	() const throw()    { return specularComponent_;}
+        float& 				    getSpecularComponent	() throw()          { return specularComponent_;}
+
+        #pragma endregion //!accessor
+
+        #pragma region mutator
+
+        void 		            setPosition				(math::Vec3 pos)					noexcept;
+        void 		            setAmbientComponent     (float ambientCompo)				noexcept;
+        void 		            setDiffuseComponent     (float diffuseCompo)				noexcept;
+        void 		            setSpecularComponent	(float specularCompo)				noexcept;
+
+        #pragma endregion //!mutator
+
+        #pragma region operator
+        #pragma endregion //!operator
+
+        #pragma region convertor
+        #pragma endregion //!convertor
+
+    protected:
+
+        #pragma region attribut
+
+        math::Vec3  position_;
+        float       ambientComponent_;
+        float       diffuseComponent_;
+        float       specularComponent_;
+
+        #pragma endregion //!attribut
+
+        #pragma region static attribut
+        #pragma endregion //! static attribut
+
+        #pragma region methods
+        #pragma endregion //!methods
 
 private:
 

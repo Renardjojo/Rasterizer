@@ -19,7 +19,8 @@ enum E_rasterizerSetting
 	R_DRAW_EDGE,
 	R_DRAW_DEPTH_BUFFER,
 	R_DRAW_SHAPE_FILL,
-	R_DRAW_MULTI_COLOR
+	R_DRAW_MULTI_COLOR,
+	R_DRAW_NORMAL
 
 };
 
@@ -89,6 +90,7 @@ class Rasterizer
 		// R_DRAW_DEPTH_BUFFER		: Allow to draw depth buffer. This buffer is relative to the distance between user and objet and allow to draw correctely the shape. by default to false 
 		// R_DRAW_SHAPE_FILL		: Allow to draw the shape fill in mode drawTriangle(). By default to true.
 		// R_DRAW_MULTI_COLOR		: Allow to drawn shape in multi color in mode drawTriangle(). By default to false.
+		// R_DRAW_NORMAL			: Allow to draw the normal of each vertexe.
 		//
 		static void setSetting	(E_rasterizerSetting setting, bool data) throw();
 
@@ -113,6 +115,7 @@ class Rasterizer
 		static bool			drawZBuffer;			//by default in false
 		static bool			drawShapeFill;			//by default in true
 		static bool			drawMutliColor;			//by default in false
+		static bool			drawNormal;				//by default in false
 
 		#pragma endregion //! static attribut
 

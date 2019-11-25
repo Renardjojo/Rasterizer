@@ -1,6 +1,29 @@
 #include "mesh.hpp"
+#include "rasterizer.hpp"
 
+using namespace math;
 using namespace std;
+
+void 	Mesh::drawNormal(Texture& RenBuffer, const math::Mat4& TRSMatrix) 	const
+{
+	for (size_t i = 0; i < vertices_.size(); i++)
+	{
+		Vertex origin (vertices_[i].position_.x_, vertices_[i].position_.y_, vertices_[i].position_.z_);
+		Vec4 vecO(origin.position_);
+		vecO = TRSMatrix * vecO;
+		origin = {((vecO.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
+				(RenBuffer.heigth() - (( vecO.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vecO.z_};
+		
+		Vertex axis = {vertices_[i].normal_.x_, vertices_[i].normal_.y_, vertices_[i].normal_.z_};
+		Vec4 vec(axis.position_);
+		vec = TRSMatrix * vec;
+		axis = {((vec.x_ / 5) + 1) * 0.5f * RenBuffer.width(),
+				(RenBuffer.heigth() - (( vec.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vec.z_};
+		
+		Rasterizer::setColor4ub(0, 255, 0, 255);
+		Rasterizer::drawLine(RenBuffer, origin, axis);
+	}
+}
 
 shared_ptr<Mesh> Mesh::createCube	()
 {
@@ -88,7 +111,6 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 		float xy;
 		float latitudeAngle, longitudeAngle;
 		float radius = 1.f; 			// radius of 1
-		float radiusInv = 1.f / radius; // for more perform
 		float posX, posY, posZ; 		//position of point
 
 		for(unsigned int i = 0; i <= static_cast<unsigned int>(longitudeCount); i++)
@@ -107,9 +129,9 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 				mesh->getVertices().push_back({	posX, 
 												posY, 
 												posZ,
-												posX * radiusInv,
-												posY * radiusInv,
-												posZ * radiusInv}); //point * radius
+												posX * 2.f,
+												posY * 2.f,
+												posZ * 2.f}); //point * radius
 			}
 		}
 	}

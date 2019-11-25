@@ -180,6 +180,10 @@ bool 		Rasterizer::getSetting	(E_rasterizerSetting setting) throw()
 			return drawMutliColor;
 		break;
 
+        case (E_rasterizerSetting::R_DRAW_NORMAL) :
+			return drawNormal;
+		break;
+
 		default :
 			throw runtime_error("Setting doesn't implemented");
 		break;
@@ -222,6 +226,10 @@ void 	 Rasterizer::setSetting	(E_rasterizerSetting setting, bool data) throw()
 			drawMutliColor = data;
 		break;
 
+        case (E_rasterizerSetting::R_DRAW_NORMAL) :
+			drawNormal = data;
+		break;
+
 		default :
 			throw runtime_error("Setting doesn't implemented");
 		break;
@@ -234,3 +242,4 @@ bool Rasterizer::drawEdge 			(false);
 bool Rasterizer::drawZBuffer		(false);
 bool Rasterizer::drawShapeFill		(true);
 bool Rasterizer::drawMutliColor		(false);
+bool Rasterizer::drawNormal		    (false);
