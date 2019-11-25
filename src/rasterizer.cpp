@@ -119,21 +119,118 @@ void Rasterizer::drawTriangle(Texture &target, const Vertex &v1, const Vertex &v
                 //minZ = depth < minZ ? depth : minZ;
 
                 unsigned int zValue = -((-depth - 1) / 2) * 0xffffffff;
-                #if 0
-                ubyte color = (depth + 1) / 2 * 255;
-                target.setPixelColor(x, y, {static_cast<ubyte>(color),
-                                            static_cast<ubyte>(color),
-                                            static_cast<ubyte>(color),
-                                            255}, zValue);
-                #else
-
-                target.setPixelColor(x, y, {static_cast<ubyte>(w1 * 255),
-                                            static_cast<ubyte>(w2 * 255),
-                                            static_cast<ubyte>(w3 * 255),
-                                            255}, zValue);
-
-                #endif
+                
+				if (drawShapeFill)
+				{	
+					if (drawEdge && (w1 < 0.02f || w2 < 0.02f || w3 < 0.02f))
+					{
+						target.setPixelColor(x, y, {0, 0, 0, 255}, zValue);
+					}
+				/*	else if (drawEdge && (w1 < 0.03f || w2 < 0.03f || w3 < 0.03f))
+					{
+						target.setPixelColor(x, y, {0, 0, 0, 100}, zValue);
+					}*/ //TODO: AAfunction When apha was implement
+					else if (drawZBuffer)
+					{
+					    ubyte color = (depth + 1) / 2 * 255;
+					    target.setPixelColor(x, y, {static_cast<ubyte>(color),
+					                                static_cast<ubyte>(color),
+					                                static_cast<ubyte>(color),
+					                                255}, zValue);
+			        }
+					else if (drawMutliColor)
+					{
+					    target.setPixelColor(x, y, {static_cast<ubyte>(w1 * 255),
+					                                static_cast<ubyte>(w2 * 255),
+					                                static_cast<ubyte>(w3 * 255),
+					                                255}, zValue);
+					}
+					else
+					{
+					  	 target.setPixelColor(x, y, color, zValue);
+					}
+				}
             }
         }
     }
 }
+
+ColorRGBA Rasterizer::getColor4f	()
+{
+	return {color.r, color.r, color.r, color.r};
+}
+
+bool 		Rasterizer::getSetting	(E_rasterizerSetting setting) throw()
+{
+	switch (setting)
+	{
+		case (E_rasterizerSetting::R_DRAW_EDGE) :
+			return drawEdge;
+		break;
+
+		case (E_rasterizerSetting::R_DRAW_DEPTH_BUFFER) :
+			return drawZBuffer;
+		break;
+
+		case (E_rasterizerSetting::R_DRAW_SHAPE_FILL) :
+			return drawShapeFill;
+		break;
+
+		case (E_rasterizerSetting::R_DRAW_MULTI_COLOR) :
+			return drawMutliColor;
+		break;
+
+		default :
+			throw runtime_error("Setting doesn't implemented");
+		break;
+	}
+	return false;
+}
+
+void Rasterizer::setColor4f	( float r, float g, float b, float a)
+{
+	assert((r < 0.f || r > 1.f) && (g < 0.f || g > 1.f) && (b < 0.f || b > 1.f) && (a < 0.f || a > 1.f));
+
+	color = {	static_cast<ubyte>(r * 255.f), 
+				static_cast<ubyte>(g * 255.f), 
+				static_cast<ubyte>(b * 255.f), 
+				static_cast<ubyte>(a * 255.f)};
+}
+
+void Rasterizer::setColor4ub	( ubyte r, ubyte g, ubyte b, ubyte a)
+{
+	color = {r, g, b, a};
+}
+
+void 	 Rasterizer::setSetting	(E_rasterizerSetting setting, bool data) throw()
+{
+	switch (setting)
+	{
+		case (E_rasterizerSetting::R_DRAW_EDGE) :
+			drawEdge = data;
+		break;
+
+		case (E_rasterizerSetting::R_DRAW_DEPTH_BUFFER) :
+			drawZBuffer = data;
+		break;
+
+		case (E_rasterizerSetting::R_DRAW_SHAPE_FILL) :
+			drawShapeFill = data;
+		break;
+
+		case (E_rasterizerSetting::R_DRAW_MULTI_COLOR) :
+			drawMutliColor = data;
+		break;
+
+		default :
+			throw runtime_error("Setting doesn't implemented");
+		break;
+	}
+}
+
+ColorRGBA Rasterizer::color ({255, 255, 255, 255});
+
+bool Rasterizer::drawEdge 			(false);
+bool Rasterizer::drawZBuffer		(false);
+bool Rasterizer::drawShapeFill		(true);
+bool Rasterizer::drawMutliColor		(false);
