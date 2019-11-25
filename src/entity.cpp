@@ -69,7 +69,7 @@ void Entity::drawPoint(Texture &RenBuffer) const noexcept
 	}
 }
 
-void Entity::drawLine(Texture &RenBuffer, const ColorRGBA&& c) const noexcept
+void Entity::drawLine(Texture &RenBuffer) const noexcept
 {
 	if (pMesh_ == nullptr)
 		return;
@@ -81,15 +81,15 @@ void Entity::drawLine(Texture &RenBuffer, const ColorRGBA&& c) const noexcept
 	{
 		Rasterizer::drawLine(	RenBuffer, 
 								globalVertex[pMesh_->getIndices()[i]],
-								globalVertex[pMesh_->getIndices()[i + 1]], std::move(c));
+								globalVertex[pMesh_->getIndices()[i + 1]]);
 
 		Rasterizer::drawLine(	RenBuffer, 
 								globalVertex[pMesh_->getIndices()[i + 1]],
-								globalVertex[pMesh_->getIndices()[i + 2]], std::move(c));
+								globalVertex[pMesh_->getIndices()[i + 2]]);
 
 		Rasterizer::drawLine(	RenBuffer, 
 								globalVertex[pMesh_->getIndices()[i + 2]],
-								globalVertex[pMesh_->getIndices()[i]], std::move(c));
+								globalVertex[pMesh_->getIndices()[i]]);
 	}
 }
 

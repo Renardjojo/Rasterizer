@@ -23,17 +23,19 @@ enum E_rasterizerSetting
 
 };
 
-
 class Rasterizer
 {
 	public:
+
+		#pragma region constructor/destructor
+
 		Rasterizer () = default;
 		Rasterizer (const Rasterizer& other) = default;
 		virtual ~Rasterizer () = default;
 
-		 /*----------*/
-		/* methode  */
-	   /*----------*/
+		#pragma endregion //!constructor/destructor
+
+		#pragma region methods
 
 		/**
 		 * function : drawLine
@@ -46,7 +48,7 @@ class Rasterizer
 		 *
 		 * brief : 
 		 */
-		static void		drawLine		(Texture&, Vertex&, Vertex&, const ColorRGBA&& c = {255, 255, 255, 255});
+		static void		drawLine		(Texture&, Vertex&, Vertex&);
 		
 		/**
 		 * function : drawTriangle
@@ -60,16 +62,20 @@ class Rasterizer
 		 * brief : this function draw colorfull triangle. Use algorythme of barycenter triangle.
 		 */
 		static void		drawTriangle		(Texture&, const Vertex& , const Vertex& , const Vertex&);
-		
-		 /*----------*/
-		/* accessor */
-	   /*----------*/
+
+		#pragma endregion //!methods
+
+		#pragma region static methods
+		#pragma endregion //!static methods
+
+		#pragma region accessor
 
 		static ColorRGBA 	getColor4f	();
 		static bool 		getSetting	(E_rasterizerSetting setting) throw();
-		 /*----------*/
-		/* mutator  */
-	   /*----------*/
+
+		#pragma endregion //!accessor
+
+		#pragma region mutator
 
 		//to set color of rasterizer between 0.f and 1.0f (less perform  than function setColor4ub())
 		static void setColor4f	( float r, float g, float b, float a);
@@ -86,26 +92,32 @@ class Rasterizer
 		//
 		static void setSetting	(E_rasterizerSetting setting, bool data) throw();
 
-		 /*----------*/
-		/* operator */
-	   /*----------*/
+		#pragma endregion //!mutator
 
-		 /*----------*/
-		/* convertor*/ 
-	   /*----------*/
+		#pragma region operator
+		#pragma endregion //!operator
 
-
-		//public variable (get and set with no effect for class)
+		#pragma region convertor
+		#pragma endregion //!convertor
 
 	protected:
 
+		#pragma region attribut
+		#pragma endregion //!attribut
 
-	//few setting
-	static ColorRGBA 	color; 					//Color of shape, by default in white
-	static bool			drawEdge;				//by default in false 
-	static bool			drawZBuffer;			//by default in false
-	static bool			drawShapeFill;			//by default in true
-	static bool			drawMutliColor;			//by default in false
+		#pragma region static attribut
+
+		//few setting
+		static ColorRGBA 	color; 					//Color of shape, by default in white
+		static bool			drawEdge;				//by default in false 
+		static bool			drawZBuffer;			//by default in false
+		static bool			drawShapeFill;			//by default in true
+		static bool			drawMutliColor;			//by default in false
+
+		#pragma endregion //! static attribut
+
+		#pragma region methods
+		#pragma endregion //!methods
 	
 	private:
 

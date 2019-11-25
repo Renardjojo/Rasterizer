@@ -31,7 +31,7 @@ float crossProduct(Vertex& v1, Vertex& v2)
     return v1.position_.x_ * v2.position_.y_ - v1.position_.y_ * v2.position_.x_;
 }
 
-void Rasterizer::drawLine(Texture &target, Vertex &v1, Vertex &v2, const ColorRGBA&& c)
+void Rasterizer::drawLine(Texture &target, Vertex &v1, Vertex &v2)
 {
     Vertex pV1 = v1;
     Vertex pV2 = v2;
@@ -64,11 +64,11 @@ void Rasterizer::drawLine(Texture &target, Vertex &v1, Vertex &v2, const ColorRG
     {
         if (steep)
         {
-            target.setPixelColor(y, x, c);
+            target.setPixelColor(y, x, color);
         }
         else
         {
-            target.setPixelColor(x, y, c);
+            target.setPixelColor(x, y, color);
         }
 
         error -= dy;
@@ -126,7 +126,7 @@ void Rasterizer::drawTriangle(Texture &target, const Vertex &v1, const Vertex &v
 					{
 						target.setPixelColor(x, y, {0, 0, 0, 255}, zValue);
 					}
-				/*	else if (drawEdge && (w1 < 0.03f || w2 < 0.03f || w3 < 0.03f))
+				    /*else if (drawEdge && (w1 < 0.03f || w2 < 0.03f || w3 < 0.03f))
 					{
 						target.setPixelColor(x, y, {0, 0, 0, 100}, zValue);
 					}*/ //TODO: AAfunction When apha was implement

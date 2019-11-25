@@ -40,8 +40,8 @@ void 			Scene::draw				(Texture& RenBuffer) const noexcept
 {
 	for (unsigned int i = 0; i < entities_.size(); i++)
 	{
+		entities_[i]->getTransform().displayAxis(RenBuffer);
 		entities_[i]->drawFill(RenBuffer);
-		//entities_[i].drawLine(RenBuffer, (i == 0) ? (ColorRGBA){255,0,0,255} : (ColorRGBA){0,255,0,255});
 	}
 }
 

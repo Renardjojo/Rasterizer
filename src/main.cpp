@@ -44,6 +44,35 @@ do
 			break;
 		}
 
+		if (input.keyboard.isDown[SDL_SCANCODE_F1])
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_EDGE, true);
+		}
+		else
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_EDGE, false);
+		}
+
+		if (input.keyboard.isDown[SDL_SCANCODE_F2])
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_MULTI_COLOR, true);
+		}
+		else
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_MULTI_COLOR, false);
+		}
+
+
+		if (input.keyboard.isDown[SDL_SCANCODE_F3])
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_DEPTH_BUFFER, true);
+		}
+		else
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_DEPTH_BUFFER, false);
+		}
+
+
 		Rasterizer::setColor4ub(0, 255, 255, 0);
 		scene.getEntity(id).getTransform().rotate({0.1f * time.dtf_, 0.f, 0.5f* time.dtf_});
 		scene.getEntity(id).getTransform().translate({0.f * time.dtf_, 0.f, 0.2f* time.dtf_});

@@ -11,13 +11,16 @@
 class Scene
 {
 	public:
+
+		#pragma region constructor/destructor
+		
 		Scene ();
 		Scene (const Scene& other) 	= default;
 		~Scene () 					= default;
 
-		 /*----------*/
-		/* methode  */
-	   /*----------*/
+		#pragma endregion //!constructor/destructor
+
+		#pragma region methods
 
 		/**
 		* function : addEntity
@@ -45,33 +48,38 @@ class Scene
 		//this function draw all entities of the scene in function of there referential. It take in parameter th buffer of renderer
 		void 			draw				(Texture& RenBuffer) const noexcept;
 
-		 /*----------*/
-		/* accessor */
-	   /*----------*/
+		#pragma endregion //!methods
+
+		#pragma region accessor
 
 		const Entity& 		getEntity		(unsigned int id) const throw();
 		Entity& 			getEntity		(unsigned int id) throw();
 
-		 /*----------*/
-		/* mutator  */
-	   /*----------*/
+		#pragma endregion //!accessor
 
-		 /*----------*/
-		/* operator */
-	   /*----------*/
+		#pragma region mutator
 
-		 /*----------*/
-		/* convertor*/ 
-	   /*----------*/
+		#pragma endregion //!mutator
 
-		//public variable (get and set with no effect for class)
+		#pragma region operator
+
+		#pragma endregion //!operator
+
+		#pragma region convertor
+
+		#pragma endregion //!convertor
 
 	protected:
-			std::vector<std::unique_ptr<Entity>>	entities_;	//TODO: Must be replace by map or set conteneur
-			Ref3				world; 		//world referential of scene. Do not move.
+
+		#pragma region attribut
+
+		std::vector<std::unique_ptr<Entity>>	entities_;	//TODO: Must be replace by map or set conteneur
+		Ref3									world; 		//world referential of scene. Do not move.
+
+		#pragma endregion //!attribut
+
 
 	private:
 };
-
 
 #endif // _SCENE_H
