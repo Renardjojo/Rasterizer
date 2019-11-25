@@ -6,6 +6,7 @@
 #include "vec3.hpp"
 #include "mat4.hpp"
 #include "texture.hpp"
+#include "light.hpp"
 
 class Scene
 {
@@ -42,6 +43,9 @@ class Scene
 		//delete entity of scene in function of id in parameter. Error if Id doesn't exist
 		void 			deleteEntity		(unsigned int id) throw();
 
+		//delete light of scene in function of id in parameter. Error if Id doesn't exist
+		void 			deleteLight		(unsigned int id) throw();
+
 		//this function draw all entities of the scene in function of there referential. It take in parameter th buffer of renderer
 		void 			draw				(Texture& RenBuffer) const noexcept;
 
@@ -51,6 +55,9 @@ class Scene
 
 		const Entity& 		getEntity		(unsigned int id) const throw();
 		Entity& 			getEntity		(unsigned int id) throw();
+
+		const Light& 		getLight		(unsigned int id) const throw();
+		Light& 				getLight		(unsigned int id) throw();
 
 		 /*----------*/
 		/* mutator  */
@@ -68,6 +75,7 @@ class Scene
 
 	protected:
 			std::vector<Entity>	entities_;	//TODO: Must be replace by map or set conteneur
+			std::vector<Light>	light_;
 			Ref3				world; 		//world referential of scene. Do not move.
 
 	private:

@@ -5,7 +5,8 @@ using namespace math;
 
 Scene::Scene ()
 	: 	entities_	(),
-		world		()
+		world		(),
+		light_		()
 {
 	entities_.reserve(50);	
 }
@@ -34,6 +35,14 @@ void 			Scene::deleteEntity	(unsigned int id) throw()
 	entities_.erase(entities_.begin() + id);
 }
 
+void 			Scene::deleteLight	(unsigned int id) throw()
+{
+	if (id > light_.size())
+		throw range_error("ID does not exist to destroy light");
+
+	light_.erase(light_.begin() + id);
+}
+
 void 			Scene::draw				(Texture& RenBuffer) const noexcept
 {
 	for (auto& entity : entities_)
@@ -60,3 +69,18 @@ Entity& 			Scene::getEntity		(unsigned int id) throw()
 	return entities_[id - 1];
 }
 
+const Light& 			Scene::getLight		(unsigned int id) const throw()
+{
+	if (id > entities_.size())
+		throw range_error("ID does not exist to destroy light");
+
+	return entities_[id - 1];
+}
+
+Light& 			Scene::getLight		(unsigned int id) throw()
+{
+	if (id > entities_.size())
+		throw range_error("ID does not exist to destroy light");
+
+	return entities_[id - 1];
+}

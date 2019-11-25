@@ -77,7 +77,6 @@ void 		Referential3D::displayAxis 	(Texture& RenBuffer) const noexcept
 	axisX = {((vec.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
 			(RenBuffer.heigth() - (( vec.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vec.z_};
 	
-
 	Vertex axisY = {0.f, 1.f, 0.f};
 	Vec4 vec1(axisY.position_);
 	vec1 = TRSMat_ * vec1;
