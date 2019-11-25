@@ -81,7 +81,7 @@ void Rasterizer::drawLine(Texture &target, Vertex &v1, Vertex &v2)
 }
 
 void Rasterizer::drawTriangle(Texture &target, const Vertex &v1, const Vertex &v2, const Vertex &v3)
-{
+{   
     // Get the bounding box of the triangle
     float maxX, minX, maxY, minY = 0;
     //float maxZ = -5;
@@ -93,14 +93,14 @@ void Rasterizer::drawTriangle(Texture &target, const Vertex &v1, const Vertex &v
     minY = min(min(v1.position_.y_, v2.position_.y_), v3.position_.y_);
 
     // Spanning vectors of edge (pV1,pV2) and (pV1,v3)
-    Vertex vs1 = {v2.position_.x_ - v1.position_.x_, v2.position_.y_ - v1.position_.y_, 0};
-    Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0};
+    Vertex vs1 = {v2.position_.x_ - v1.position_.x_, v2.position_.y_ - v1.position_.y_, 0.f};
+    Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0.f};
 
     for (int x = minX; x < maxX; x++)
     {
         for (int y = minY; y < maxY; y++)
         {
-            Vertex q = {x - v1.position_.x_, y - v1.position_.y_, 0};
+            Vertex q = {x - v1.position_.x_, y - v1.position_.y_, 0.f};
 
             float crossproductV1V2 = crossProduct(vs1, vs2);
             if (crossproductV1V2 == 0.f)
@@ -147,7 +147,10 @@ void Rasterizer::drawTriangle(Texture &target, const Vertex &v1, const Vertex &v
 					}
 					else
 					{
-					  	 target.setPixelColor(x, y, color, zValue);
+					    target.setPixelColor(x, y, {static_cast<ubyte>(w1 * v1.color_.r),
+					                                static_cast<ubyte>(w2 * v2.color_.g),
+					                                static_cast<ubyte>(w3 * v3.color_.b),
+					                                255}, zValue);
 					}
 				}
             }
@@ -157,7 +160,13 @@ void Rasterizer::drawTriangle(Texture &target, const Vertex &v1, const Vertex &v
 
 ColorRGBA Rasterizer::getColor4f	()
 {
-	return {color.r, color.r, color.r, color.r};
+	return {static_cast<ubyte> (color.r / 255.f), static_cast<ubyte> (color.g / 255.f), 
+            static_cast<ubyte> (color.b / 255.f), static_cast<ubyte> (color.a / 255.f)};
+}
+
+ColorRGBA 	Rasterizer::getColor4ub	()
+{
+    return color;
 }
 
 bool 		Rasterizer::getSetting	(E_rasterizerSetting setting) throw()
@@ -199,7 +208,9 @@ void Rasterizer::setColor4f	( float r, float g, float b, float a)
 
 void Rasterizer::setColor4ub	( ubyte r, ubyte g, ubyte b, ubyte a)
 {
+    std::cout << r << std::endl;
 	color = {r, g, b, a};
+    std::cout << (unsigned char)color.r << std::endl;
 }
 
 void 	 Rasterizer::setSetting	(E_rasterizerSetting setting, bool data) throw()

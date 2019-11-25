@@ -71,6 +71,7 @@ class Rasterizer
 		#pragma region accessor
 
 		static ColorRGBA 	getColor4f	();
+		static ColorRGBA 	getColor4ub	();
 		static bool 		getSetting	(E_rasterizerSetting setting) throw();
 
 		#pragma endregion //!accessor

@@ -29,7 +29,7 @@ void Texture::setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, 
 {
 	//assert(x < width_ && y < heigth_);
 
-	//TODO: Add opacity function oin function of depth
+	//TODO: Add opacity function in function of depth
 	if (x < width_ && y < heigth_ && z > zBuffer_[width_ * y + x])
 	{
 		pPixels_[width_ * y + x] = c;

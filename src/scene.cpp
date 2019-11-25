@@ -5,10 +5,11 @@ using namespace math;
 
 Scene::Scene ()
 	: 	entities_	(),
-		world		(),
-		light_		()
+		light_		(),
+		world		()
 {
-	entities_.reserve(50);	
+	entities_.reserve(50);
+	light_.reserve(10);
 }
 
 unsigned int 	Scene::addEntity(const Vec3&  originVec, const Vec3& orientationVec, const Vec3& scaleVec, Primitive3D primitive) noexcept
@@ -72,16 +73,16 @@ Entity& 			Scene::getEntity		(unsigned int id) throw()
 
 const Light& 			Scene::getLight		(unsigned int id) const throw()
 {
-	if (id > entities_.size())
+	if (id > light_.size())
 		throw range_error("ID does not exist to destroy light");
 
-	return entities_[id - 1];
+	return light_[id - 1];
 }
 
 Light& 			Scene::getLight		(unsigned int id) throw()
 {
-	if (id > entities_.size())
+	if (id > light_.size())
 		throw range_error("ID does not exist to destroy light");
 
-	return entities_[id - 1];
+	return light_[id - 1];
 }
