@@ -1,7 +1,9 @@
 #include "referential.hpp"
+#include "vertex.hpp"
+#include "rasterizer.hpp"
+#include "entity.hpp"
 
 using namespace math;
-
 
 Referential3D::Referential3D ()
 	:	name_			("World"),
@@ -58,12 +60,39 @@ Referential3D::Referential3D 	(const Referential3D& other)
 void 		Referential3D::addChildReferential (Referential3D& child) noexcept
 {
 	childRef_.	push_back(&child);
-	child.		updateTRSMat();		//update TRS matrix of each of his child because of the new dependace.
+	child.		updateTRSMat();		//update TRS matrix of each of his child because of the new dependance.
 }
 
-void 		Referential3D::displayAxis 	(Texture& RenBuffer) 			noexcept
+void 		Referential3D::displayAxis 	(Texture& RenBuffer) const noexcept
 {
+	Vertex origin	= getLocalOrigin();
+	Vec4 vecO(origin.position_);
+	vecO = TRSMat_ * vecO;
+	origin = {((vecO.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
+			(RenBuffer.heigth() - (( vecO.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vecO.z_};
+	
+	Vertex axisX = {1.f, 0.f, 0.f};
+	Vec4 vec(axisX.position_);
+	vec = TRSMat_ * vec;
+	axisX = {((vec.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
+			(RenBuffer.heigth() - (( vec.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vec.z_};
+	
 
+	Vertex axisY = {0.f, 1.f, 0.f};
+	Vec4 vec1(axisY.position_);
+	vec1 = TRSMat_ * vec1;
+	axisY = {((vec1.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
+			(RenBuffer.heigth() - (( vec1.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vec1.z_};
+
+	Vertex axisZ = {0.f, 0.f, 1.f};
+	Vec4 vec2(axisZ.position_);
+	vec2 = TRSMat_ * vec2;
+	axisZ = {((vec2.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
+			(RenBuffer.heigth() - (( vec2.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vec2.z_};
+
+	Rasterizer::drawLine(RenBuffer, axisX, origin); // (Ox)
+	Rasterizer::drawLine(RenBuffer, axisY, origin); // (Oy)
+	Rasterizer::drawLine(RenBuffer, axisZ, origin); // (Oz)
 }
 
 void 		Referential3D::updateTRSMat	() 			noexcept
@@ -128,4 +157,3 @@ std::ostream& 	operator<<(std::ostream& out, const Ref3& ref)
 
 	return out;
 }
-
