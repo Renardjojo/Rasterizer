@@ -1,38 +1,64 @@
 #include "light.hpp"
 
-Light::Light(math::Vec3& pos, float ambient, float diffuse, float specular)
+Light::Light(const math::Vec3& pos, float ambient, float diffuse, float specular)
 {
     position_               = pos;
-    ambientComponent_       = ambient;
-    diffuseComponent_       = diffuse;
-    specularComponent_      = specular;
+    setAmbientIntensity     (ambient);
+    setDiffuseIntensity     (diffuse);
+    setSpecularIntensity    (specular);
 }
 
-Light::Light(const Light& other)
-    :
-        position_           (other.getPosition()),
-        ambientComponent_   (other.getAmbientComponent()),
-        diffuseComponent_   (other.getDiffuseComponent()),
-        specularComponent_  (other.getSpecularComponent())
 
-{}
+void Light::computLightComponent(ColorRGBA& colorIntensity, const math::Vec3& normal, float shininessCoef) const
+{
+    computAmbiantComponent      (colorIntensity);
+    computDiffuseComponent      (colorIntensity, normal);
+    computSpecularComponent     (colorIntensity, shininessCoef);
+}
 
 void Light::setPosition(math::Vec3 pos) noexcept
 {
     position_ = pos;
 }
 
-void Light::setAmbientComponent(float ambientCompo) noexcept
+void Light::setAmbientIntensity(float ambientCompo) noexcept
 {
-    ambientComponent_ = ambientCompo;
+    assert(ambientCompo <= 1.f && ambientCompo >= 0.f);
+    ambientComponent_.kr =  ambientComponent_.kg = ambientComponent_.kb = ambientCompo;
 }
 
-void Light::setDiffuseComponent(float diffuseCompo) noexcept
+void Light::setDiffuseIntensity(float diffuseCompo) noexcept
 {
-    diffuseComponent_ = diffuseCompo;
+    assert(diffuseCompo <= 1.f && diffuseCompo >= 0.f);
+    diffuseComponent_.kr =  diffuseComponent_.kg = diffuseComponent_.kb = diffuseCompo;
 }
 
-void Light::setSpecularComponent(float specularCompo) noexcept
+void Light::setSpecularIntensity(float specularCompo) noexcept
 {
-    specularComponent_ = specularCompo;
+    std::cout << specularCompo << std::endl;
+    assert(specularCompo <= 1.f && specularCompo >= 0.f);
+    specularComponent_.kr =  specularComponent_.kg = specularComponent_.kb = specularCompo;
+}
+
+void Light::computAmbiantComponent     (ColorRGBA& colorIntensity) const
+{
+    colorIntensity.r *= ambientComponent_.kr;
+    colorIntensity.g *= ambientComponent_.kg;
+    colorIntensity.b *= ambientComponent_.kb;
+}
+
+void Light::computDiffuseComponent     (ColorRGBA& colorIntensity, const math::Vec3& normal) const
+{
+    float cosTeta = position_.dot_product(normal);
+
+    colorIntensity.r = colorIntensity.r * diffuseComponent_.kr * cosTeta;
+    colorIntensity.g = colorIntensity.g * diffuseComponent_.kg * cosTeta;
+    colorIntensity.b = colorIntensity.b * diffuseComponent_.kb * cosTeta;
+}
+
+void Light::computSpecularComponent     (ColorRGBA& colorIntensity, float shininessCoef)  const
+{
+
+
+
 }

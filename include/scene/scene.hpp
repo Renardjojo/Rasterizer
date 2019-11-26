@@ -23,6 +23,10 @@ class Scene
 
 		#pragma region methods
 
+
+		//this function add ligth to the scene and return it id
+		unsigned int 	addLigth			(const math::Vec3& originVec, float ambient, float diffuse, float specular) noexcept;
+
 		/**
 		* function : addEntity
 		*
@@ -40,6 +44,7 @@ class Scene
 												const math::Vec3&  	orientationVec, 										
 												const math::Vec3&  	scaleVec,
 												Primitive3D 		primitive 			= E_primitive3D::NONE) noexcept;
+
 		//this function deplace entity into scene. Use std::move, so the previous pointor must be destroy and nerver use.
 		unsigned int 	moveEntityInto		(	std::unique_ptr<Entity>& pEntityMove) noexcept;
 

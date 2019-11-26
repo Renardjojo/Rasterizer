@@ -9,7 +9,15 @@ Scene::Scene ()
 		light_		(),
 		world		()
 {
-	entities_.reserve(50);	
+	entities_.reserve(50);
+	light_.reserve(10);
+}
+
+unsigned int 	Scene::addLigth			(const math::Vec3& originVec, float ambient, float diffuse, float specular) noexcept
+{
+	light_.emplace_back(originVec, ambient, diffuse, specular);
+	return light_.size();
+
 }
 
 unsigned int 	Scene::addEntity(const Vec3&  originVec, const Vec3& orientationVec, const Vec3& scaleVec, Primitive3D primitive) noexcept
@@ -56,7 +64,7 @@ void 			Scene::draw				(Texture& RenBuffer) const noexcept
 		}
 
 		entities_[i]->getTransform().displayAxis(RenBuffer);
-		entities_[i]->drawFill(RenBuffer);
+		entities_[i]->drawFillWithLigths(RenBuffer, light_);
 	}
 }
 
@@ -78,7 +86,7 @@ Entity& 			Scene::getEntity		(unsigned int id) throw()
 
 const Light& 			Scene::getLight		(unsigned int id) const throw()
 {
-	if (id > entities_.size())
+	if (id > light_.size())
 		throw range_error("ID does not exist to destroy light");
 
 	return light_[id - 1];
@@ -86,7 +94,7 @@ const Light& 			Scene::getLight		(unsigned int id) const throw()
 
 Light& 			Scene::getLight		(unsigned int id) throw()
 {
-	if (id > entities_.size())
+	if (id > light_.size())
 		throw range_error("ID does not exist to destroy light");
 
 	return light_[id - 1];

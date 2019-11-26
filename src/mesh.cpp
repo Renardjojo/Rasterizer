@@ -20,7 +20,7 @@ void 	Mesh::drawNormal(Texture& RenBuffer, const math::Mat4& TRSMatrix) 	const
 		axis = {((vec.x_ / 5) + 1) * 0.5f * RenBuffer.width(),
 				(RenBuffer.heigth() - (( vec.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vec.z_};
 		
-		Rasterizer::setColor4ub(0, 255, 0, 255);
+		Rasterizer::setColor4ub(0, 255, 255, 255);
 		Rasterizer::drawLine(RenBuffer, origin, axis);
 	}
 }
@@ -29,26 +29,26 @@ shared_ptr<Mesh> Mesh::createCube	()
 {
 	shared_ptr<Mesh> mesh = make_shared<Mesh>();
 
-	//cube contain 8 vertex
+	// Cube contain 8 vertex
 	mesh->getVertices().reserve(8);
 
-	//cube is center arround local zero
-	//Start with point of front face
-	mesh->getVertices().push_back({ 0.5f,  0.5f, 0.5, 1.f, 1.f, 1.f});
-	mesh->getVertices().push_back({ 0.5f, -0.5f, 0.5, 1.f, -1.f, 1.f});
-	mesh->getVertices().push_back({-0.5f, -0.5f, 0.5, -1.f, -1.f, 1.f});
-	mesh->getVertices().push_back({-0.5f,  0.5f, 0.5, -1.f, 1.f, 1.f});
+	// Cube is center arround local zero
+	// Start with point of front face
+	mesh->getVertices().push_back({{0.5f,  0.5f, 0.5}, {1.f, 1.f, 1.f}, Rasterizer::getColor4ub()});
+	mesh->getVertices().push_back({{0.5f, -0.5f, 0.5}, {1.f, -1.f, 1.f}, Rasterizer::getColor4ub()});
+	mesh->getVertices().push_back({{-0.5f, -0.5f, 0.5}, {-1.f, -1.f, 1.f}, Rasterizer::getColor4ub()});
+	mesh->getVertices().push_back({{-0.5f,  0.5f, 0.5}, {-1.f, 1.f, 1.f}, Rasterizer::getColor4ub()});
 	
-	//point of back face
-	mesh->getVertices().push_back({ 0.5f,  0.5f, -0.5, 1.f, 1.f, -1.f});
-	mesh->getVertices().push_back({ 0.5f, -0.5f, -0.5, 1.f, -1.f, -1.f});
-	mesh->getVertices().push_back({-0.5f, -0.5f, -0.5, -1.f, -1.f, -1.f});
-	mesh->getVertices().push_back({-0.5f,  0.5f, -0.5, -1.f, 1.f, -1.f});
+	// Point of back face
+	mesh->getVertices().push_back({{0.5f,  0.5f, -0.5}, {1.f, 1.f, -1.f}, Rasterizer::getColor4ub()});
+	mesh->getVertices().push_back({{0.5f, -0.5f, -0.5}, {1.f, -1.f, -1.f}, Rasterizer::getColor4ub()});
+	mesh->getVertices().push_back({{-0.5f, -0.5f, -0.5}, {-1.f, -1.f, -1.f}, Rasterizer::getColor4ub()});
+	mesh->getVertices().push_back({{-0.5f,  0.5f, -0.5}, {-1.f, 1.f, -1.f}, Rasterizer::getColor4ub()});
 
-	//cube contain 12 triangles this 3 indices. Cube contain 36 indices
+	// Cube contain 12 triangles this 3 indices. Cube contain 36 indices
 	mesh->getIndices().reserve(36);
 
-	//front
+	// Front
 	mesh->getIndices().push_back(0);
 	mesh->getIndices().push_back(1);
 	mesh->getIndices().push_back(2);
@@ -56,7 +56,7 @@ shared_ptr<Mesh> Mesh::createCube	()
 	mesh->getIndices().push_back(0);
 	mesh->getIndices().push_back(3);
 
-	//left
+	// Left
 	mesh->getIndices().push_back(3);
 	mesh->getIndices().push_back(2);
 	mesh->getIndices().push_back(6);
@@ -64,7 +64,7 @@ shared_ptr<Mesh> Mesh::createCube	()
 	mesh->getIndices().push_back(3);
 	mesh->getIndices().push_back(7);
 
-	//back
+	// Back
 	mesh->getIndices().push_back(7);
 	mesh->getIndices().push_back(6);
 	mesh->getIndices().push_back(5);
@@ -72,7 +72,7 @@ shared_ptr<Mesh> Mesh::createCube	()
 	mesh->getIndices().push_back(7);
 	mesh->getIndices().push_back(4);
 
-	//up
+	// Up
 	mesh->getIndices().push_back(4);
 	mesh->getIndices().push_back(7);
 	mesh->getIndices().push_back(3);
@@ -80,7 +80,7 @@ shared_ptr<Mesh> Mesh::createCube	()
 	mesh->getIndices().push_back(4);
 	mesh->getIndices().push_back(0);
 
-	//right
+	// Right
 	mesh->getIndices().push_back(0);
 	mesh->getIndices().push_back(4);
 	mesh->getIndices().push_back(5);
@@ -88,7 +88,7 @@ shared_ptr<Mesh> Mesh::createCube	()
 	mesh->getIndices().push_back(0);
 	mesh->getIndices().push_back(1);
 
-	//down
+	// Down
 	mesh->getIndices().push_back(1);
 	mesh->getIndices().push_back(5);
 	mesh->getIndices().push_back(6);
@@ -126,12 +126,9 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 				posY = xy * sinf(latitudeAngle);
 
 				// vertex position (x, y, z)
-				mesh->getVertices().push_back({	posX, 
-												posY, 
-												posZ,
-												posX * 2.f,
-												posY * 2.f,
-												posZ * 2.f}); //point * radius
+				mesh->getVertices().push_back({ { posX, posY, posZ},
+												{ posX * 2.f, posY * 2.f, posZ * 2.f},
+												Rasterizer::getColor4ub()}); //point * radius
 			}
 		}
 	}

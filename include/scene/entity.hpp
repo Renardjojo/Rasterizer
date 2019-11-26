@@ -10,6 +10,7 @@
 #include "texture.hpp"
 #include "referential.hpp"
 #include "color.hpp"
+#include "light.hpp"
 
 typedef enum E_primitive3D
 {
@@ -46,6 +47,7 @@ class Entity
 		void			drawPoint				(Texture& RenBuffer) const noexcept;
 		void 			drawLine				(Texture &RenBuffer) const noexcept;
 		void 			drawFill				(Texture &RenBuffer) const noexcept;
+		void 			drawFillWithLigths		(Texture &RenBuffer, const std::vector<Light>& light) const noexcept;
 
 		//this function update TRS matrix of entity in function of dependante matrix. If entity depende of world, put in paramter the world TRS matrix.
 		//This function must be update each time that his parent TRS matrix change (rotation, scale, translatoin...)

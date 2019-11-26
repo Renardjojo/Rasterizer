@@ -38,14 +38,14 @@ Entity::Entity(const math::Vec3 &translVec,
 
 vector<Vertex> Entity::transformLocalToGlobal(const Mat4 &matTRS, unsigned int winW, unsigned int winH) const
 {
-	vector<Vertex> vertexGlobal;
-	for (auto &vertex : pMesh_->getVertices())
+	vector<Vertex> vertexGlobal = pMesh_->getVertices();
+	for (auto &vertex : vertexGlobal)
 	{
 		Vec4 vec(vertex.position_);
 		vec = matTRS * vec;
-		vertexGlobal.push_back({static_cast<float>(((vec.x_ / 5) + 1) * 0.5f * winW),
-								static_cast<float>(winH - ((vec.y_ / 5) + 1) * 0.5 * winH),
-								vec.z_});
+		vertex.position_ = {static_cast<float>(((vec.x_ / 5) + 1) * 0.5f * winW),
+							static_cast<float>(winH - ((vec.y_ / 5) + 1) * 0.5 * winH),
+							vec.z_};
 	}
 	return vertexGlobal;
 }
@@ -109,6 +109,24 @@ void Entity::drawFill(Texture &RenBuffer) const noexcept
 								 globalVertex[pMesh_->getIndices()[i + 2]]);
 	}
 }
+
+void Entity::drawFillWithLigths		(Texture &RenBuffer, const std::vector<Light>& light) const noexcept
+{
+	if (pMesh_ == nullptr)
+		return;
+
+	// Transform all the Mesh's Vertices to Vec4
+	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), RenBuffer.width(), RenBuffer.heigth());
+
+	for (size_t i = 0; i < pMesh_->getIndices().size() ; i += 3)
+	{
+		Rasterizer::drawTriangleWithLights(RenBuffer, light,
+								 globalVertex[pMesh_->getIndices()[i]],
+								 globalVertex[pMesh_->getIndices()[i + 1]],
+								 globalVertex[pMesh_->getIndices()[i + 2]]);
+	}
+}
+
 /*
 void Entity::updateTRS (const math::Mat4& TRSMatDep)
 {

@@ -6,13 +6,8 @@
 #include "vertex.hpp"
 #include "texture.hpp"
 #include "color.hpp"
-/*
-//private function
-float		min					(float, float);
-float		max					(float, float);
-float		dotProduct			(Vertex&, Vertex&);
-Vertex		projectVertex		(Vertex&);
-*/
+#include "light.hpp"
+
 
 enum E_rasterizerSetting
 {
@@ -62,7 +57,8 @@ class Rasterizer
 		 *
 		 * brief : this function draw colorfull triangle. Use algorythme of barycenter triangle.
 		 */
-		static void		drawTriangle		(Texture&, const Vertex& , const Vertex& , const Vertex&);
+		static void		drawTriangle				(Texture&, const Vertex& , const Vertex& , const Vertex&);
+		static void		drawTriangleWithLights		(Texture&, const std::vector<Light>& lights, const Vertex& v1, const Vertex& v2, const Vertex& v3);
 
 		#pragma endregion //!methods
 
@@ -72,6 +68,7 @@ class Rasterizer
 		#pragma region accessor
 
 		static ColorRGBA 	getColor4f	();
+		static ColorRGBA 	getColor4ub	();
 		static bool 		getSetting	(E_rasterizerSetting setting) throw();
 
 		#pragma endregion //!accessor
