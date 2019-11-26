@@ -26,7 +26,7 @@ Entity::Entity(const math::Vec3 &translVec,
 
 	case E_primitive3D::SPHERE:
 		if (pMeshSphere == nullptr)
-			pMeshSphere = Mesh::createSphere(10, 10);
+			pMeshSphere = Mesh::createSphere(20, 20);
 
 		pMesh_ = pMeshSphere;
 		break;
@@ -46,6 +46,12 @@ vector<Vertex> Entity::transformLocalToGlobal(const Mat4 &matTRS, unsigned int w
 		vertex.position_ = {static_cast<float>(((vec.x_ / 5) + 1) * 0.5f * winW),
 							static_cast<float>(winH - ((vec.y_ / 5) + 1) * 0.5 * winH),
 							vec.z_};
+
+		Vec4 vecN(vertex.normal_);
+		vecN = matTRS * vecN;
+		vertex.normal_  = {vecN.x_, vecN.y_, vecN.z_};
+
+		vertex.normal_.normalize();
 	}
 	return vertexGlobal;
 }

@@ -165,8 +165,8 @@ void	Rasterizer::drawTriangleWithLights(Texture& target, const std::vector<Light
 {
     // Get the bounding box of the triangle
     float maxX, minX, maxY, minY = 0;
-    //float maxZ = -5;
-   // float minZ = +5;
+    float Znear = 0.f;
+    float Zfar  = 5.f;
 
     maxX = max(max(v1.position_.x_, v2.position_.x_), v3.position_.x_);
     minX = min(min(v1.position_.x_, v2.position_.x_), v3.position_.x_);
@@ -199,8 +199,16 @@ void	Rasterizer::drawTriangleWithLights(Texture& target, const std::vector<Light
                 //maxZ = depth > maxZ ? depth : maxZ;
                 //minZ = depth < minZ ? depth : minZ;
 
-                unsigned int zValue = -((-depth - 1) / 2) * 0xffffffff;
-                
+                //if (v2.position_.z_ < 0)
+                  //  std::cout << depth << std::endl;
+
+                if (depth < Znear || depth > Zfar)
+                    continue;
+
+               // unsigned int zValue = -((-depth - 1) / 2) * 0xffffffff;  
+                unsigned int zValue = ((depth / Zfar) * 0xffffffff);
+
+
 				if (drawShapeFill)
 				{	
 					if (drawEdge && (w1 < 0.02f || w2 < 0.02f || w3 < 0.02f))
@@ -213,7 +221,8 @@ void	Rasterizer::drawTriangleWithLights(Texture& target, const std::vector<Light
 					}*/ //TODO: AAfunction When apha was implement
 					else if (drawZBuffer)
 					{
-					    ubyte color = (depth + 1) / 2 * 255;
+					    //ubyte color = (depth + 1) / 2 * 255;
+                        ubyte color =  255 - (depth / Zfar * 255); // 10 is Z far 
 					    target.setPixelColor(x, y, {static_cast<ubyte>(color),
 					                                static_cast<ubyte>(color),
 					                                static_cast<ubyte>(color),
@@ -236,7 +245,7 @@ void	Rasterizer::drawTriangleWithLights(Texture& target, const std::vector<Light
 
                         for (auto& light : lights)
                         {
-                            light.computLightComponent(color, (w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_), 10.f);
+                            light.computLightComponent(color, ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(), 10.f);
                         }
 
 					    target.setPixelColor(x, y, color, zValue);

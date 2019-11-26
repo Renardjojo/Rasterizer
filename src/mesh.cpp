@@ -14,12 +14,15 @@ void 	Mesh::drawNormal(Texture& RenBuffer, const math::Mat4& TRSMatrix) 	const
 		origin = {((vecO.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
 				(RenBuffer.heigth() - (( vecO.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vecO.z_};
 		
-		Vertex axis = {vertices_[i].normal_.x_, vertices_[i].normal_.y_, vertices_[i].normal_.z_};
+		Vertex axis = {	(vertices_[i].normal_.x_ * 0.5f + vertices_[i].position_.x_),
+						(vertices_[i].normal_.y_ * 0.5f + vertices_[i].position_.y_),
+						(vertices_[i].normal_.z_ * 0.5f + vertices_[i].position_.z_)};
+						
 		Vec4 vec(axis.position_);
 		vec = TRSMatrix * vec;
 		axis = {((vec.x_ / 5) + 1) * 0.5f * RenBuffer.width(),
-				(RenBuffer.heigth() - (( vec.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vec.z_};
-		
+				(RenBuffer.heigth() - (( vec.y_/ 5) + 1) * 0.5f * RenBuffer.heigth()), vec.z_};
+
 		Rasterizer::setColor4ub(0, 255, 255, 255);
 		Rasterizer::drawLine(RenBuffer, origin, axis);
 	}
@@ -127,8 +130,10 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 
 				// vertex position (x, y, z)
 				mesh->getVertices().push_back({ { posX, posY, posZ},
-												{ posX * 2.f, posY * 2.f, posZ * 2.f},
+												{ posX * radius, posY * radius, posZ * radius},
 												Rasterizer::getColor4ub()}); //point * radius
+				
+				mesh->getVertices().back().normal_.normalize();
 			}
 		}
 	}
