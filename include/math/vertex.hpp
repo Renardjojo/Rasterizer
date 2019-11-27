@@ -18,7 +18,7 @@ class Vertex
 		Vertex () 			 			= default;
 		Vertex (float x, float y, float z, float nx = 0.f, float ny = 0.f, float nz = 0.f,	ubyte r = 255, ubyte g = 255, 
 																							ubyte b = 255, ubyte a = 255);
-		Vertex (const math::Vec3& position, const math::Vec3& normal, ColorRGBA& color);
+		Vertex (const math::Vec3& position, const math::Vec3& normal, ColorRGBA color);
 
 		Vertex (const Vertex& other) 	= default;
 		~Vertex () 						= default;

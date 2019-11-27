@@ -1,5 +1,6 @@
 #include "scene.hpp"
 #include "referential.hpp"
+#include "rasterizer.hpp"
 
 using namespace math;
 
@@ -10,6 +11,13 @@ Scene::Scene ()
 {
 	entities_.reserve(50);
 	light_.reserve(10);
+}
+
+unsigned int 	Scene::addLigth			(const math::Vec3& originVec, float ambient, float diffuse, float specular) noexcept
+{
+	light_.emplace_back(originVec, ambient, diffuse, specular);
+	return light_.size();
+
 }
 
 unsigned int 	Scene::addEntity(const Vec3&  originVec, const Vec3& orientationVec, const Vec3& scaleVec, Primitive3D primitive) noexcept
@@ -50,8 +58,13 @@ void 			Scene::draw				(Texture& RenBuffer) const noexcept
 {
 	for (unsigned int i = 0; i < entities_.size(); i++)
 	{
+		if (Rasterizer::getSetting(R_DRAW_NORMAL))
+		{
+			entities_[i]->getpMesh()->drawNormal(RenBuffer, entities_[i]->getTransform().getTRSMatrix());
+		}
+
 		entities_[i]->getTransform().displayAxis(RenBuffer);
-		entities_[i]->drawFill(RenBuffer);
+		entities_[i]->drawFillWithLigths(RenBuffer, light_);
 	}
 }
 

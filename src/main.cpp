@@ -24,14 +24,14 @@ int main()
 	TimeManager		time;
 	bool 			running = true;
 
+	Rasterizer::setColor4ub(255, 255, 0, 255);
 	int id = scene.addEntity({2.f, 2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
 	int id2 = scene.addEntity({-2.f, -2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
+
+	Rasterizer::setColor4ub(255, 0, 0, 255);
 	int id3 = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::CUBE);
 	int id4 = scene.addEntity({2.f, -2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::CUBE);
-
-
-	Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_EDGE, true);
-	Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_MULTI_COLOR, true);
+	scene.addLigth({1.f, 1.f, 1.f}, 0.2f, 0.7f, 1.f);
 
 do
 	{
@@ -72,13 +72,39 @@ do
 			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_DEPTH_BUFFER, false);
 		}
 
+		if (input.keyboard.isDown[SDL_SCANCODE_F4])
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_NORMAL, true);
+		}
+		else
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_NORMAL, false);
+		}
+
+		if (input.keyboard.isDown[SDL_SCANCODE_F5])
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_SHAPE_FILL, false);
+		}
+		else
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_SHAPE_FILL, true);
+		}
+
 
 		Rasterizer::setColor4ub(0, 255, 255, 0);
 		scene.getEntity(id).getTransform().rotate({0.1f * time.dtf_, 0.f, 0.5f* time.dtf_});
-		scene.getEntity(id).getTransform().translate({0.f * time.dtf_, 0.f, 0.2f* time.dtf_});
+		scene.getEntity(id).getTransform().translate({0.f * time.dtf_, 0.f, 1.f* time.dtf_});
 		scene.getEntity(id2).getTransform().rotate({0.5f* time.dtf_, 0.f, 0.1f* time.dtf_});
 		scene.getEntity(id3).getTransform().rotate({0.5f* time.dtf_, 0.5f* time.dtf_, 0.f* time.dtf_});
 		scene.getEntity(id4).getTransform().rotate({0.05f* time.dtf_, 0.05f* time.dtf_, 0.05f* time.dtf_});	
+
+
+		static float rot = 0.f;
+		rot += 0.03f;
+
+
+	//	scene.getLight(1).setDiffuseIntensity(abs(cosf(rot)));
+		scene.getLight(1).setPosition({10.f * cosf(rot), 0.f,  10.f * sin(rot)});
 
 		//display
 		ren.clear ();

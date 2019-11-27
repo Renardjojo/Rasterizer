@@ -8,6 +8,7 @@
 #include "color.hpp"
 #include "light.hpp"
 
+<<<<<<< HEAD
 /*
 //private function
 float		min					(float, float);
@@ -15,13 +16,16 @@ float		max					(float, float);
 float		dotProduct			(Vertex&, Vertex&);
 Vertex		projectVertex		(Vertex&);
 */
+=======
+>>>>>>> 6ddfd3f94761a8fd43982e387bd71a27efaf23c7
 
 enum E_rasterizerSetting
 {
 	R_DRAW_EDGE,
 	R_DRAW_DEPTH_BUFFER,
 	R_DRAW_SHAPE_FILL,
-	R_DRAW_MULTI_COLOR
+	R_DRAW_MULTI_COLOR,
+	R_DRAW_NORMAL
 
 };
 
@@ -64,7 +68,7 @@ class Rasterizer
 		 * brief : this function draw colorfull triangle. Use algorythme of barycenter triangle.
 		 */
 		static void		drawTriangle				(Texture&, const Vertex& , const Vertex& , const Vertex&);
-		static void		drawTriangleWithLights		(Texture&, const std::vector<Light>&, const Vertex& , const Vertex& , const Vertex&);
+		static void		drawTriangleWithLights		(Texture&, const std::vector<Light>& lights, const Vertex& v1, const Vertex& v2, const Vertex& v3);
 
 		#pragma endregion //!methods
 
@@ -93,6 +97,7 @@ class Rasterizer
 		// R_DRAW_DEPTH_BUFFER		: Allow to draw depth buffer. This buffer is relative to the distance between user and objet and allow to draw correctely the shape. by default to false 
 		// R_DRAW_SHAPE_FILL		: Allow to draw the shape fill in mode drawTriangle(). By default to true.
 		// R_DRAW_MULTI_COLOR		: Allow to drawn shape in multi color in mode drawTriangle(). By default to false.
+		// R_DRAW_NORMAL			: Allow to draw the normal of each vertexe.
 		//
 		static void setSetting	(E_rasterizerSetting setting, bool data) throw();
 
@@ -117,6 +122,7 @@ class Rasterizer
 		static bool			drawZBuffer;			//by default in false
 		static bool			drawShapeFill;			//by default in true
 		static bool			drawMutliColor;			//by default in false
+		static bool			drawNormal;				//by default in false
 
 		#pragma endregion //! static attribut
 
