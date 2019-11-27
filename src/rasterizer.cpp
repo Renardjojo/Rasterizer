@@ -165,8 +165,8 @@ void	Rasterizer::drawTriangleWithLights(Texture& target, const std::vector<Light
 {
     // Get the bounding box of the triangle
     float maxX, minX, maxY, minY = 0;
-    float Znear = 0.f;
-    float Zfar  = 5.f;
+    float Znear = -2.f;
+    float Zfar  = 2.f;
 
     maxX = max(max(v1.position_.x_, v2.position_.x_), v3.position_.x_);
     minX = min(min(v1.position_.x_, v2.position_.x_), v3.position_.x_);
@@ -206,8 +206,7 @@ void	Rasterizer::drawTriangleWithLights(Texture& target, const std::vector<Light
                     continue;
 
                // unsigned int zValue = -((-depth - 1) / 2) * 0xffffffff;  
-                unsigned int zValue = ((depth / Zfar) * 0xffffffff);
-
+                unsigned int zValue = (((depth - Znear)/ (Zfar + abs(Znear))) * 0xffffffff);
 
 				if (drawShapeFill)
 				{	
@@ -222,7 +221,7 @@ void	Rasterizer::drawTriangleWithLights(Texture& target, const std::vector<Light
 					else if (drawZBuffer)
 					{
 					    //ubyte color = (depth + 1) / 2 * 255;
-                        ubyte color =  255 - (depth / Zfar * 255); // 10 is Z far 
+                        ubyte color =  (((depth - Znear)/ (Zfar + abs(Znear))) * 255); // 10 is Z far 
 					    target.setPixelColor(x, y, {static_cast<ubyte>(color),
 					                                static_cast<ubyte>(color),
 					                                static_cast<ubyte>(color),
