@@ -9,7 +9,7 @@ public:
     Light()             =  default;
     Light(math::Vec3&, float, float, float);
 
-    // Copy constructor
+    // Copy constructor 
     Light(const Light& other);
 
     virtual ~Light()    = default;
@@ -35,9 +35,9 @@ public:
 	/*----------*/
 
     void 		            setPosition				(math::Vec3 pos)					noexcept;
-	void 		            setAmbientComponent     (float ambientCompo)				noexcept;
-	void 		            setDiffuseComponent     (float diffuseCompo)				noexcept;
-    void 		            setSpecularComponent	(float specularCompo)				noexcept;
+	void 		            setAmbientComponent     (float kA, float intensityA)		noexcept;
+	void 		            setDiffuseComponent     (float kD, float intensityD)		noexcept;
+    void 		            setSpecularComponent	(float kS, float intensityS)		noexcept;
 
 
 protected:

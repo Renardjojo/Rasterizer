@@ -6,6 +6,8 @@
 #include "vertex.hpp"
 #include "texture.hpp"
 #include "color.hpp"
+#include "light.hpp"
+
 /*
 //private function
 float		min					(float, float);
@@ -61,7 +63,8 @@ class Rasterizer
 		 *
 		 * brief : this function draw colorfull triangle. Use algorythme of barycenter triangle.
 		 */
-		static void		drawTriangle		(Texture&, const Vertex& , const Vertex& , const Vertex&);
+		static void		drawTriangle				(Texture&, const Vertex& , const Vertex& , const Vertex&);
+		static void		drawTriangleWithLights		(Texture&, const std::vector<Light>&, const Vertex& , const Vertex& , const Vertex&);
 
 		#pragma endregion //!methods
 

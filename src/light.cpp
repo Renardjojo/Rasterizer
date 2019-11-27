@@ -1,3 +1,6 @@
+#include <cassert>
+#include <cstdlib>
+#include <iostream>
 #include "light.hpp"
 
 Light::Light(math::Vec3& pos, float ambient, float diffuse, float specular)
@@ -22,17 +25,26 @@ void Light::setPosition(math::Vec3 pos) noexcept
     position_ = pos;
 }
 
-void Light::setAmbientComponent(float ambientCompo) noexcept
+void Light::setAmbientComponent(float kA, float intensityA) noexcept
 {
-    ambientComponent_ = ambientCompo;
+    // kA must be between 0 and 1
+    assert(kA < 1 && kA > 0);
+
+    ambientComponent_ = kA * intensityA;
 }
 
-void Light::setDiffuseComponent(float diffuseCompo) noexcept
+void Light::setDiffuseComponent(float kD, float intensityD) noexcept
 {
-    diffuseComponent_ = diffuseCompo;
+    // kD must be between 0 and 1
+    assert(kD < 1 && kD > 0);
+
+    diffuseComponent_ = kD * intensityD;
 }
 
-void Light::setSpecularComponent(float specularCompo) noexcept
+void Light::setSpecularComponent(float kS, float intensityS) noexcept
 {
-    specularComponent_ = specularCompo;
+    // kS must be between 0 and 1
+    assert(kS < 1 && kS > 0);
+
+    specularComponent_ = kS * intensityS;
 }
