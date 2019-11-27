@@ -147,16 +147,115 @@ void Rasterizer::drawTriangle(Texture &target, const Vertex &v1, const Vertex &v
 					}
 					else
 					{
-					    target.setPixelColor(x, y, {static_cast<ubyte>(w1 * v1.color_.r),
-					                                static_cast<ubyte>(w2 * v2.color_.g),
-					                                static_cast<ubyte>(w3 * v3.color_.b),
-					                                255}, zValue);
+                        ColorRGBA color;
+                        color.r = w1 * v2.color_.r + w2 * v3.color_.r + w3 * v1.color_.r;
+                        color.g = (w1 * v2.color_.g) + (w2 * v3.color_.g) + (w3 * v1.color_.g);
+                        color.b = (w1 * v2.color_.b) + (w2 * v3.color_.b) + (w3 * v1.color_.b);
+                        color.a = w1 * v2.color_.a + w2 * v3.color_.a + w3 * v1.color_.a;
+
+					    target.setPixelColor(x, y, color, zValue);
 					}
 				}
             }
         }
     }
 }
+
+void	Rasterizer::drawTriangleWithLights(Texture& target, const std::vector<Light>& lights, const Vertex& v1, const Vertex& v2, const Vertex& v3)
+{
+    // Get the bounding box of the triangle
+    float maxX, minX, maxY, minY = 0;
+    float Znear = 0.f;
+    float Zfar  = 5.f;
+
+    maxX = max(max(v1.position_.x_, v2.position_.x_), v3.position_.x_);
+    minX = min(min(v1.position_.x_, v2.position_.x_), v3.position_.x_);
+    maxY = max(max(v1.position_.y_, v2.position_.y_), v3.position_.y_);
+    minY = min(min(v1.position_.y_, v2.position_.y_), v3.position_.y_);
+
+    // Spanning vectors of edge (pV1,pV2) and (pV1,v3)
+    Vertex vs1 = {v2.position_.x_ - v1.position_.x_, v2.position_.y_ - v1.position_.y_, 0.f};
+    Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0.f};
+
+    for (int x = minX; x < maxX; x++)
+    {
+        for (int y = minY; y < maxY; y++)
+        {
+            Vertex q = {x - v1.position_.x_, y - v1.position_.y_, 0.f};
+
+            float crossproductV1V2 = crossProduct(vs1, vs2);
+            if (crossproductV1V2 == 0.f)
+                continue;
+
+            float w1 = crossProduct(q, vs2) / crossproductV1V2;
+            float w2 = crossProduct(vs1, q) / crossproductV1V2;
+            float w3 = 1.f - w1 - w2;
+
+            // If inside of the triangle
+            if ((w1 >= 0) && (w2 >= 0) && (w3 >= 0))
+            {
+                float depth = (w1 * v2.position_.z_ + w2 * v3.position_.z_ + w3 * v1.position_.z_);
+                
+                //maxZ = depth > maxZ ? depth : maxZ;
+                //minZ = depth < minZ ? depth : minZ;
+
+                //if (v2.position_.z_ < 0)
+                  //  std::cout << depth << std::endl;
+
+                if (depth < Znear || depth > Zfar)
+                    continue;
+
+               // unsigned int zValue = -((-depth - 1) / 2) * 0xffffffff;  
+                unsigned int zValue = ((depth / Zfar) * 0xffffffff);
+
+
+				if (drawShapeFill)
+				{	
+					if (drawEdge && (w1 < 0.02f || w2 < 0.02f || w3 < 0.02f))
+					{
+						target.setPixelColor(x, y, {0, 0, 0, 255}, zValue);
+					}
+				    /*else if (drawEdge && (w1 < 0.03f || w2 < 0.03f || w3 < 0.03f))
+					{
+						target.setPixelColor(x, y, {0, 0, 0, 100}, zValue);
+					}*/ //TODO: AAfunction When apha was implement
+					else if (drawZBuffer)
+					{
+					    //ubyte color = (depth + 1) / 2 * 255;
+                        ubyte color =  255 - (depth / Zfar * 255); // 10 is Z far 
+					    target.setPixelColor(x, y, {static_cast<ubyte>(color),
+					                                static_cast<ubyte>(color),
+					                                static_cast<ubyte>(color),
+					                                255}, zValue);
+			        }
+					else if (drawMutliColor)
+					{
+					    target.setPixelColor(x, y, {static_cast<ubyte>(w1 * 255),
+					                                static_cast<ubyte>(w2 * 255),
+					                                static_cast<ubyte>(w3 * 255),
+					                                255}, zValue);
+					}
+					else
+					{
+                        ColorRGBA color;
+                        color.r = w1 * v2.color_.r + w2 * v3.color_.r + w3 * v1.color_.r;
+                        color.g = (w1 * v2.color_.g) + (w2 * v3.color_.g) + (w3 * v1.color_.g);
+                        color.b = (w1 * v2.color_.b) + (w2 * v3.color_.b) + (w3 * v1.color_.b);
+                        color.a = w1 * v2.color_.a + w2 * v3.color_.a + w3 * v1.color_.a;
+
+                        for (auto& light : lights)
+                        {
+                            light.computLightComponent(color, ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(), 10.f);
+                        }
+
+					    target.setPixelColor(x, y, color, zValue);
+					}
+				}
+            }
+        }
+    }
+}
+
 
 ColorRGBA Rasterizer::getColor4f	()
 {
@@ -189,6 +288,10 @@ bool 		Rasterizer::getSetting	(E_rasterizerSetting setting) throw()
 			return drawMutliColor;
 		break;
 
+        case (E_rasterizerSetting::R_DRAW_NORMAL) :
+			return drawNormal;
+		break;
+
 		default :
 			throw runtime_error("Setting doesn't implemented");
 		break;
@@ -208,9 +311,7 @@ void Rasterizer::setColor4f	( float r, float g, float b, float a)
 
 void Rasterizer::setColor4ub	( ubyte r, ubyte g, ubyte b, ubyte a)
 {
-    std::cout << r << std::endl;
 	color = {r, g, b, a};
-    std::cout << (unsigned char)color.r << std::endl;
 }
 
 void 	 Rasterizer::setSetting	(E_rasterizerSetting setting, bool data) throw()
@@ -233,6 +334,10 @@ void 	 Rasterizer::setSetting	(E_rasterizerSetting setting, bool data) throw()
 			drawMutliColor = data;
 		break;
 
+        case (E_rasterizerSetting::R_DRAW_NORMAL) :
+			drawNormal = data;
+		break;
+
 		default :
 			throw runtime_error("Setting doesn't implemented");
 		break;
@@ -245,3 +350,4 @@ bool Rasterizer::drawEdge 			(false);
 bool Rasterizer::drawZBuffer		(false);
 bool Rasterizer::drawShapeFill		(true);
 bool Rasterizer::drawMutliColor		(false);
+bool Rasterizer::drawNormal		    (false);

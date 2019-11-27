@@ -1,7 +1,32 @@
 #include "mesh.hpp"
 #include "rasterizer.hpp"
 
+using namespace math;
 using namespace std;
+
+void 	Mesh::drawNormal(Texture& RenBuffer, const math::Mat4& TRSMatrix) 	const
+{
+	for (size_t i = 0; i < vertices_.size(); i++)
+	{
+		Vertex origin (vertices_[i].position_.x_, vertices_[i].position_.y_, vertices_[i].position_.z_);
+		Vec4 vecO(origin.position_);
+		vecO = TRSMatrix * vecO;
+		origin = {((vecO.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
+				(RenBuffer.heigth() - (( vecO.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vecO.z_};
+		
+		Vertex axis = {	(vertices_[i].normal_.x_ * 0.5f + vertices_[i].position_.x_),
+						(vertices_[i].normal_.y_ * 0.5f + vertices_[i].position_.y_),
+						(vertices_[i].normal_.z_ * 0.5f + vertices_[i].position_.z_)};
+						
+		Vec4 vec(axis.position_);
+		vec = TRSMatrix * vec;
+		axis = {((vec.x_ / 5) + 1) * 0.5f * RenBuffer.width(),
+				(RenBuffer.heigth() - (( vec.y_/ 5) + 1) * 0.5f * RenBuffer.heigth()), vec.z_};
+
+		Rasterizer::setColor4ub(0, 255, 255, 255);
+		Rasterizer::drawLine(RenBuffer, origin, axis);
+	}
+}
 
 shared_ptr<Mesh> Mesh::createCube	()
 {
@@ -10,24 +35,18 @@ shared_ptr<Mesh> Mesh::createCube	()
 	// Cube contain 8 vertex
 	mesh->getVertices().reserve(8);
 
-	// Color
-	Rasterizer::setColor4ub((ubyte)255, 0, 0, 255);
-	ColorRGBA c = Rasterizer::getColor4ub();
-
-	std::cout << c.r << std::endl;
-
 	// Cube is center arround local zero
 	// Start with point of front face
-	mesh->getVertices().push_back({{0.5f,  0.5f, 0.5}, {1.f, 1.f, 1.f}, c});
-	mesh->getVertices().push_back({{0.5f, -0.5f, 0.5}, {1.f, -1.f, 1.f}, c});
-	mesh->getVertices().push_back({{-0.5f, -0.5f, 0.5}, {-1.f, -1.f, 1.f}, c});
-	mesh->getVertices().push_back({{-0.5f,  0.5f, 0.5}, {-1.f, 1.f, 1.f}, c});
+	mesh->getVertices().push_back({{0.5f,  0.5f, 0.5}, {1.f, 1.f, 1.f}, Rasterizer::getColor4ub()});
+	mesh->getVertices().push_back({{0.5f, -0.5f, 0.5}, {1.f, -1.f, 1.f}, Rasterizer::getColor4ub()});
+	mesh->getVertices().push_back({{-0.5f, -0.5f, 0.5}, {-1.f, -1.f, 1.f}, Rasterizer::getColor4ub()});
+	mesh->getVertices().push_back({{-0.5f,  0.5f, 0.5}, {-1.f, 1.f, 1.f}, Rasterizer::getColor4ub()});
 	
 	// Point of back face
-	mesh->getVertices().push_back({{0.5f,  0.5f, -0.5}, {1.f, 1.f, -1.f}, c});
-	mesh->getVertices().push_back({{0.5f, -0.5f, -0.5}, {1.f, -1.f, -1.f}, c});
-	mesh->getVertices().push_back({{-0.5f, -0.5f, -0.5}, {-1.f, -1.f, -1.f}, c});
-	mesh->getVertices().push_back({{-0.5f,  0.5f, -0.5}, {-1.f, 1.f, -1.f}, c});
+	mesh->getVertices().push_back({{0.5f,  0.5f, -0.5}, {1.f, 1.f, -1.f}, Rasterizer::getColor4ub()});
+	mesh->getVertices().push_back({{0.5f, -0.5f, -0.5}, {1.f, -1.f, -1.f}, Rasterizer::getColor4ub()});
+	mesh->getVertices().push_back({{-0.5f, -0.5f, -0.5}, {-1.f, -1.f, -1.f}, Rasterizer::getColor4ub()});
+	mesh->getVertices().push_back({{-0.5f,  0.5f, -0.5}, {-1.f, 1.f, -1.f}, Rasterizer::getColor4ub()});
 
 	// Cube contain 12 triangles this 3 indices. Cube contain 36 indices
 	mesh->getIndices().reserve(36);
@@ -95,7 +114,6 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 		float xy;
 		float latitudeAngle, longitudeAngle;
 		float radius = 1.f; 			// radius of 1
-		float radiusInv = 1.f / radius; // for more perform
 		float posX, posY, posZ; 		//position of point
 
 		for(unsigned int i = 0; i <= static_cast<unsigned int>(longitudeCount); i++)
@@ -110,17 +128,12 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 				posX = xy * cosf(latitudeAngle);
 				posY = xy * sinf(latitudeAngle);
 
-				// Color
-				Rasterizer::setColor4ub((ubyte)255, 0, 0, 255);
-				ColorRGBA c = Rasterizer::getColor4ub();
-
 				// vertex position (x, y, z)
-				mesh->getVertices().push_back({	{posX, 
-												posY, 
-												posZ},
-												{posX * radiusInv,
-												posY * radiusInv,
-												posZ * radiusInv}, c}); //point * radius
+				mesh->getVertices().push_back({ { posX, posY, posZ},
+												{ posX * radius, posY * radius, posZ * radius},
+												Rasterizer::getColor4ub()}); //point * radius
+				
+				mesh->getVertices().back().normal_.normalize();
 			}
 		}
 	}

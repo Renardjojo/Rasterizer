@@ -8,8 +8,8 @@ Vertex::Vertex (float x, float y, float z, float nx, float ny, float nz, ubyte r
 		color_		{r, g, b, a}
 {}
 
-Vertex::Vertex (const Vec3& position, const Vec3& normal, ColorRGBA& color)
+Vertex::Vertex (const Vec3& position, const Vec3& normal, ColorRGBA color)
 	: 	position_	(position),
 		normal_		(normal),
-		color_		(color)
+		color_		{color.r, color.g, color.b, color.a}
 {}
