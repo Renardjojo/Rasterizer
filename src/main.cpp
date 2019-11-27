@@ -104,7 +104,7 @@ do
 
 
 	//	scene.getLight(1).setDiffuseIntensity(abs(cosf(rot)));
-		scene.getLight(1).setPosition({10.f * cosf(rot), 0.f,  10.f * sin(rot)});
+		scene.getLight(1).setPosition({10.f * cosf(rot), -2.f,  10.f * sin(rot)});
 
 		//display
 		ren.clear ();

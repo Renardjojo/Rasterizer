@@ -103,9 +103,13 @@ public:
         //This function compute the diffuse component of pixel in function of k diffuse
         void    computDiffuseComponent     (ColorRGBA& colorIntensity, const math::Vec3& normal)    const;
 
-        //This function compute the specular component of pixel in function of k specular
-        void    computSpecularComponent     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
+        //This function compute the specular component of pixel in function of k specular with the Phong model
+        void    computSpecularPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
                                                                         float shininessCoef)        const;
+
+        //This function compute the specular component of pixel in function of k specular with the Blinn-Phong model
+        void    computSpecularBlinnPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
+                                                                        float shininessCoef)        const;                                                                
     
         //THis function compute the reflexion vector of light in function of his direction and in function of normal of surface
         math::Vec3    getRefectionVector    (const math::Vec3& normal)                              const;
