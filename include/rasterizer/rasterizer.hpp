@@ -8,16 +8,6 @@
 #include "color.hpp"
 #include "light.hpp"
 
-<<<<<<< HEAD
-/*
-//private function
-float		min					(float, float);
-float		max					(float, float);
-float		dotProduct			(Vertex&, Vertex&);
-Vertex		projectVertex		(Vertex&);
-*/
-=======
->>>>>>> 6ddfd3f94761a8fd43982e387bd71a27efaf23c7
 
 enum E_rasterizerSetting
 {

@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-#include <cassert>
-#include <cstdlib>
-#include <iostream>
-=======
 #include <cmath>
->>>>>>> 6ddfd3f94761a8fd43982e387bd71a27efaf23c7
 #include "light.hpp"
 
 using namespace math;
@@ -52,7 +46,9 @@ void Light::setDiffuseIntensity(float diffuseCompo) noexcept
 void Light::setSpecularIntensity(float specularCompo) noexcept
 {
     assert(specularCompo <= 1.f && specularCompo >= 0.f);
-    specularComponent_.kr = specularComponent_.kg = specularComponent_.kb = specularCompo;
+    specularComponent_.kr = specularComponent_.kb = 0.f;
+    specularComponent_.kg = specularCompo;
+    
 }
 
 void Light::computAmbiantComponent     (ColorRGBA& colorIntensity) const
@@ -78,7 +74,7 @@ void Light::computDiffuseComponent     (ColorRGBA& colorIntensity, const math::V
 void Light::computSpecularComponent     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
                                                                     float shininessCoef)  const
 {
-    math::Vec3 posN         = position_.getNormalize();
+    /*math::Vec3 posN         = position_.getNormalize();
     math::Vec3 reflexionR   = 2 * normal.dot_product(posN) * normal - posN;
     reflexionR              = position_.getNormalize();
 
@@ -91,10 +87,19 @@ void Light::computSpecularComponent     (ColorRGBA& colorIntensity, const math::
     colorIntensity.r = 255 * specularComponent_.kr * powf(cosGamma, shininessCoef);
     colorIntensity.g = 255 * specularComponent_.kg * powf(cosGamma, shininessCoef);
     colorIntensity.b = 255 * specularComponent_.kb * powf(cosGamma, shininessCoef);
-
-    /*
+    */
+    
 
     math::Vec3 posN         = position_.getNormalize();
+
+    // If the angle between the normal and the light direction is greater than 90 degrees, 
+    // then we force the specular term to zero. 
+    if (posN.dot_product(normal) / (posN.length() * normal.length()) > 90)
+    {
+        colorIntensity.r =colorIntensity.g = colorIntensity.b = 0;
+        return;
+    }
+
     math::Vec3 add          = posN + (Vec3){0.f, 0.f, 1.f};
 
     // H: The halfway vector between the viewer and light-source vectors
@@ -111,5 +116,4 @@ void Light::computSpecularComponent     (ColorRGBA& colorIntensity, const math::
     colorIntensity.g = 255 * specularComponent_.kg * powf(cosGamma, shininessCoef);
     colorIntensity.b = 255 * specularComponent_.kb * powf(cosGamma, shininessCoef);
     
-    */
 }
