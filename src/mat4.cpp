@@ -113,6 +113,21 @@ Mat4 Mat4::createTRSMatrix(const Vec3& scaleVec, const Vec3& rotVec, const Vec3&
 			createScaleMatrix (scaleVec);
 }
 
+Mat4 Mat4::createOrthoMatrix	(float left, float right, float bottom, float top, float nearVal, float farVal)
+{
+	Mat4 oMat;
+
+	oMat[0][0] = 2.f / (right - left);
+	oMat[1][1] = 2.f / (top - bottom);
+	oMat[2][2] = -2.f / (farVal - nearVal);
+
+	oMat[0][3] = (right + left) / (right - left);
+	oMat[1][3] = (top + bottom) / (top - bottom);
+	oMat[2][3] = (farVal + nearVal)/ (farVal - nearVal);
+
+	return oMat;
+}
+
 Mat4 Mat4::createProjectionMatrix		(float distance)
 {
 	Mat4 pMat;

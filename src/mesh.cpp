@@ -106,6 +106,8 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 {
 	shared_ptr<Mesh> mesh = make_shared<Mesh>();
 
+	latitudeCount *= 2.f;
+
 	float latitudeStep = 2.f * M_PI / latitudeCount;
 	float longitudeStep = M_PI / longitudeCount;
 

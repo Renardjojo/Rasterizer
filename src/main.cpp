@@ -27,7 +27,6 @@ int main()
 	Rasterizer::setColor4ub(255, 255, 0, 255);
 	int id = scene.addEntity({2.f, 2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
 	int id2 = scene.addEntity({-2.f, -2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
-
 	Rasterizer::setColor4ub(255, 0, 0, 255);
 	int id3 = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::CUBE);
 	int id4 = scene.addEntity({2.f, -2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::CUBE);
@@ -89,11 +88,19 @@ do
 		{
 			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_SHAPE_FILL, true);
 		}
+		if (input.keyboard.isDown[SDL_SCANCODE_F6])
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_REFERENTIAL, true);
+		}
+		else
+		{
+			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_REFERENTIAL, false);
+		}
 
 
 		Rasterizer::setColor4ub(0, 255, 255, 0);
 		scene.getEntity(id).getTransform().rotate({0.1f * time.dtf_, 0.f, 0.5f* time.dtf_});
-		scene.getEntity(id).getTransform().translate({0.f * time.dtf_, 0.f, 1.f* time.dtf_});
+		//scene.getEntity(id).getTransform().translate({0.f * time.dtf_, 0.f, -1.f* time.dtf_});
 		scene.getEntity(id2).getTransform().rotate({0.5f* time.dtf_, 0.f, 0.1f* time.dtf_});
 		scene.getEntity(id3).getTransform().rotate({0.5f* time.dtf_, 0.5f* time.dtf_, 0.f* time.dtf_});
 		scene.getEntity(id4).getTransform().rotate({0.05f* time.dtf_, 0.05f* time.dtf_, 0.05f* time.dtf_});	
@@ -102,8 +109,6 @@ do
 		static float rot = 0.f;
 		rot += 0.03f;
 
-
-	//	scene.getLight(1).setDiffuseIntensity(abs(cosf(rot)));
 		scene.getLight(1).setPosition({10.f * cosf(rot), -2.f,  10.f * sin(rot)});
 
 		//display

@@ -6,12 +6,13 @@
 #include <math.h>
 #include <cassert>
 
-#include "vec2.hpp"
-
 using namespace std;
 
 namespace math
 {
+
+class Vec2;
+class Vec4;
 
 class Vec3
 {	
@@ -20,6 +21,8 @@ class Vec3
 	Vec3();
 	Vec3(float x, float y, float z);
 	Vec3(float bothValue);
+
+	Vec3(const Vec4& other);
 	Vec3(const Vec3& other) = default;
 	Vec3(const Vec2& other, float z = 1.f);
 

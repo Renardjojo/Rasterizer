@@ -6,12 +6,12 @@
 #include <math.h>
 #include <cassert>
 
-#include "vec3.hpp"
-
 using namespace std;
 
 namespace math
 {
+
+class Vec3;
 
 class Vec4
 {	
