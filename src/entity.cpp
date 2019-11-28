@@ -26,7 +26,7 @@ Entity::Entity(const math::Vec3 &translVec,
 
 	case E_primitive3D::SPHERE:
 		if (pMeshSphere == nullptr)
-			pMeshSphere = Mesh::createSphere(20, 20);
+			pMeshSphere = Mesh::createSphere(10, 10);
 
 		pMesh_ = pMeshSphere;
 		break;

@@ -1,6 +1,6 @@
 OUTPUT=bin/exe
 IDIR=-Iinclude -Iinclude/math -Iinclude/rasterizer -Iinclude/scene -Iinclude/renderer
-CXXFLAGS= -g -O0 -Wall -Werror -Wno-unknown-pragmas $(IDIR)
+CXXFLAGS=-O3 -Wall -Werror -Wno-unknown-pragmas $(IDIR)
 VFLAG=--leak-check=full --show-leak-kinds=all
 #LIBSGL=-lGL -lGLU -ldl
 LIBSDL2=-lSDL2 -lSDL2_image -lSDL2_ttf

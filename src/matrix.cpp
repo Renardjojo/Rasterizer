@@ -4,19 +4,17 @@
 
 #include "matrix.hpp"
 
-
 using namespace std;
 using namespace math;
-
 
 Matrix::Matrix 	(unsigned int line, unsigned int column, float value)
 	: 	line_	(line),
 		column_	(column),
 		matrix_	(new float[line_*column_])
 {
-	for ( size_t i = 0; i < line_; i++ )
+	for ( size_t i = 0; i < line_; i++)
 	{
-	    for ( size_t j = 0; j < column_; j++ )
+	    for ( size_t j = 0; j < column_; j++)
 		{
 			(*this)[i][j] = value;
 		}
@@ -353,12 +351,12 @@ bool		Matrix::adjointMatrixIsReversible		() const
 	return true;
 }
 
-inline float*		Matrix::operator[]		(unsigned int indexLine) const
+float*		Matrix::operator[]		(unsigned int indexLine) const
 {
 	return &matrix_[indexLine*(column_)];
 }
 
-inline float*		Matrix::operator[]		(unsigned int indexLine)
+float*		Matrix::operator[]		(unsigned int indexLine)
 {
 	return &matrix_[indexLine*(column_)];
 }

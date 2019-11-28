@@ -1,4 +1,6 @@
 #include "vec3.hpp"
+#include "vec2.hpp"
+#include "vec4.hpp"
 
 using namespace std;
 using namespace math;
@@ -19,6 +21,12 @@ Vec3::Vec3(float bothValue)
 	: 	x_(bothValue),
 		y_(bothValue),
 		z_(bothValue)
+{}
+
+Vec3::Vec3(const Vec4& other)
+	: 	x_(other.x_),
+		y_(other.y_),
+		z_(other.z_)
 {}
 
 Vec3::Vec3(const Vec2& other, float z)

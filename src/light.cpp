@@ -6,6 +6,7 @@ using namespace math;
 Light::Light(const math::Vec3& pos, float ambient, float diffuse, float specular)
 {
     position_               = pos;
+    normalizePosition_      = pos.getNormalize();
     setAmbientIntensity     (ambient);
     setDiffuseIntensity     (diffuse);
     setSpecularIntensity    (specular);
@@ -14,21 +15,26 @@ Light::Light(const math::Vec3& pos, float ambient, float diffuse, float specular
 
 void Light::computLightComponent(ColorRGBA& colorIntensity, const math::Vec3& normal, float shininessCoef) const
 {
-    ColorRGBA colorIntensity1 = colorIntensity;
-    ColorRGBA colorIntensity2 = colorIntensity;
-    ColorRGBA colorIntensity3 = colorIntensity;
+    ColorRGBA colorIntensityDiffuse = colorIntensity;
+    ColorRGBA colorIntensitySpec = colorIntensity;
+    
+    computAmbiantComponent      (colorIntensity);
 
+    float cosTeta = normalizePosition_.dot_product(normal);
 
-    computAmbiantComponent      (colorIntensity1);
-    computDiffuseComponent      (colorIntensity2, normal);
-    computSpecularComponent     (colorIntensity3, normal, 2);
+	if (cosTeta < 0.f)
+		return;
 
-    colorIntensity = colorIntensity1 + colorIntensity2 + colorIntensity3;
+	computDiffuseComponent      (colorIntensityDiffuse, normal, cosTeta);
+	computSpecularBlinnPhong    (colorIntensitySpec, normal, 16, cosTeta);		
+	
+    colorIntensity = colorIntensity + colorIntensityDiffuse + colorIntensitySpec;
 }
 
 void Light::setPosition(math::Vec3 pos) noexcept
 {
     position_ = pos;
+    normalizePosition_ = pos.getNormalize();
 }
 
 void Light::setAmbientIntensity(float ambientCompo) noexcept
@@ -47,7 +53,6 @@ void Light::setSpecularIntensity(float specularCompo) noexcept
 {
     assert(specularCompo <= 1.f && specularCompo >= 0.f);
     specularComponent_.kr = specularComponent_.kb = specularComponent_.kg = specularCompo;
-    
 }
 
 void Light::computAmbiantComponent     (ColorRGBA& colorIntensity) const
@@ -57,59 +62,47 @@ void Light::computAmbiantComponent     (ColorRGBA& colorIntensity) const
     colorIntensity.b *= ambientComponent_.kb;
 }
 
-void Light::computDiffuseComponent     (ColorRGBA& colorIntensity, const math::Vec3& normal) const
+void Light::computDiffuseComponent     (ColorRGBA& colorIntensity, const math::Vec3& normal, float cosTeta) const
 {
-    math::Vec3 posN = position_.getNormalize();
-    float cosTeta = posN.dot_product(normal);
-
-    if (cosTeta < 0.f)
-        cosTeta = 0.f;
-
     colorIntensity.r = colorIntensity.r * diffuseComponent_.kr * cosTeta;
     colorIntensity.g = colorIntensity.g * diffuseComponent_.kg * cosTeta;
     colorIntensity.b = colorIntensity.b * diffuseComponent_.kb * cosTeta;
 }
 
 void Light::computSpecularBlinnPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
-                                                                    float shininessCoef)  const
-{
-    math::Vec3 posN         = position_.getNormalize();
-    
+                                                                    float shininessCoef, float cosTeta)  const
+{    
     // If the angle between the normal and the light direction is greater than 90 degrees, 
-    // then we force the specular term to zero. 
-    if (posN.dot_product(normal) / (posN.length() * normal.length()) > 90)
+    // then we force the specular term to zero.
+ 
+    if (cosTeta / (normalizePosition_.length() * normal.length()) > 90)
     {
-        colorIntensity.r =colorIntensity.g = colorIntensity.b = 0;
+        colorIntensity.r = colorIntensity.g = colorIntensity.b = 0;
         return;
     }
 
-    math::Vec3 add          = posN + (Vec3){0.f, 0.f, 1.f};
+   // math::Vec3 add          = normalizePosition_ + (Vec3){0.f, 0.f, 1.f};
 
-    // H: The halfway vector between the viewer and light-source vectors
-    math::Vec3 H = add / add.length();
-    H = position_.getNormalize();
-
+    //H: The halfway vector between the viewer and light-source vectors
     // Dot product of the normal and H of the camera
-    float cosGamma = normal.dot_product(H);
+   	//math::Vec3 H = add / add.length();
+    //math::Vec3 H = normalizePosition_;
 
-    if (cosGamma < 0.f)
-        cosGamma = 0.f;
-    
-    colorIntensity.r = 255 * specularComponent_.kr * powf(cosGamma, shininessCoef);
-    colorIntensity.g = 255 * specularComponent_.kg * powf(cosGamma, shininessCoef);
-    colorIntensity.b = 255 * specularComponent_.kb * powf(cosGamma, shininessCoef);
-    
+
+    float powCosGamCoefShiniMult255 = 255 * powf(cosTeta, shininessCoef);
+
+    colorIntensity.r = specularComponent_.kr * powCosGamCoefShiniMult255;
+    colorIntensity.g = specularComponent_.kg * powCosGamCoefShiniMult255;
+    colorIntensity.b = specularComponent_.kb * powCosGamCoefShiniMult255;
 }
 
 void Light::computSpecularPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
                                                                     float shininessCoef)  const
 {
-    math::Vec3 posN         = position_.getNormalize();
-    math::Vec3 reflexionR   = 2 * normal.dot_product(posN) * normal - posN;
-    reflexionR              = position_.getNormalize();
+  //  math::Vec3 reflexionR   = 2 * normal.dot_product(normalizePosition_) * normal - normalizePosition_;
 
     // Dot product of reflexionR and the position of the camera
-    float cosGamma = reflexionR.dot_product({0.f, 0.f, 1.f});
+    float cosGamma = normalizePosition_.dot_product({0.f, 0.f, 1.f});
 
     if (cosGamma < 0.f)
         cosGamma = 0.f;

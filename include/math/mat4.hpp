@@ -76,6 +76,12 @@ namespace math
 			//Same as creat transform Matrix
 			static Mat4 createTRSMatrix(const Vec3& scaleVec, const Vec3& rotVec, const Vec3& translVec);
 
+			//static function that create projection in orthographinc matrix
+			static Mat4 createOrthoMatrix	(float left, float right, float bottom, float top, float nearVal, float farVal);
+
+			//static function that create projection in perspective matrix
+			//static Mat4 createPerspectMatrix	(float left, float right, float bottom, float top, float nearVal, float farVal);
+
 			//static function that return projection matrix to pass from 3D to 2D.
 			//Distance in parameter is the distance between pin hole and user.
 			static Mat4 createProjectionMatrix (float distance);

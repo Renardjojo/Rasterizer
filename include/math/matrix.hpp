@@ -408,6 +408,4 @@ namespace math
 	std::ostream& 	operator<<		(std::ostream& out, const Mat& mat);
 };
 
-
-
 #endif // _MATRIX_H

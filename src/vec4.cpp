@@ -1,4 +1,5 @@
 #include "vec4.hpp"
+#include "vec3.hpp"
 #include <stdexcept> // To use runtime_error 
 
 using namespace std;

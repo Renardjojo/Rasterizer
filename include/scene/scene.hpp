@@ -61,11 +61,13 @@ class Scene
 
 		#pragma region accessor
 
-		const Entity& 		getEntity		(unsigned int id) const throw();
-		Entity& 			getEntity		(unsigned int id) throw();
+		const Entity& 									getEntity		(unsigned int id) 	const throw();
+		Entity& 										getEntity		(unsigned int id) 	throw();
+		const std::vector<std::unique_ptr<Entity>>& 	getEntities		()  				const noexcept		{return entities_;}
 
-		const Light& 		getLight		(unsigned int id) const throw();
-		Light& 				getLight		(unsigned int id) throw();
+		const Light& 				getLight		(unsigned int id) const throw();
+		Light& 						getLight		(unsigned int id) throw();
+		const std::vector<Light>& 	getLights		() 				  const noexcept	{return light_;}
 
 		#pragma endregion //!accessor
 

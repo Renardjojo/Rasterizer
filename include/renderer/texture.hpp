@@ -2,6 +2,7 @@
 #define _TEXTURE_H
 
 #include <vector>
+#include <string>
 #include <SDL2/SDL.h>
 #include "color.hpp"
 
@@ -11,8 +12,9 @@ class Texture
 		Texture () = delete;
 
 		//create black sized texture 
-		Texture (unsigned int width, unsigned int height);		
+		Texture (unsigned int width, unsigned int height);	
 		Texture (const Texture& other) = delete; //TODO
+		Texture (std::string addressPNG);
 		~Texture ();
 
 		 /*----------*/

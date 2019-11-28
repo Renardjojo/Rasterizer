@@ -85,6 +85,7 @@ public:
         #pragma region attribut
 
         math::Vec3              position_;
+        math::Vec3              normalizePosition_;
         
         AmbiantComponent        ambientComponent_;
         DiffuseComponent        diffuseComponent_;
@@ -101,17 +102,19 @@ public:
         void    computAmbiantComponent     (ColorRGBA& colorIntensity)                              const;
 
         //This function compute the diffuse component of pixel in function of k diffuse
-        void    computDiffuseComponent     (ColorRGBA& colorIntensity, const math::Vec3& normal)    const;
+        void    computDiffuseComponent     (ColorRGBA& colorIntensity, const math::Vec3& normal, float cosTeta)    const;
 
         //This function compute the specular component of pixel in function of k specular with the Phong model
         void    computSpecularPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
                                                                         float shininessCoef)        const;
 
         //This function compute the specular component of pixel in function of k specular with the Blinn-Phong model
+        //cos Teta represent the dot product between nromalize vector position and normal. In paramter for more optimisation
         void    computSpecularBlinnPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
-                                                                        float shininessCoef)        const;                                                                
+                                                                        float shininessCoef, float cosTeta)        const;                                                                
     
         //THis function compute the reflexion vector of light in function of his direction and in function of normal of surface
+        //cos Teta represent the dot product between nromalize vector position and normal. In paramter for more optimisation
         math::Vec3    getRefectionVector    (const math::Vec3& normal)                              const;
 
         #pragma endregion //!methods
