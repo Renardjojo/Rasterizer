@@ -1,5 +1,6 @@
 #include "mesh.hpp"
 #include "rasterizer.hpp"
+#include <cassert>
 
 using namespace math;
 using namespace std;
@@ -104,6 +105,8 @@ shared_ptr<Mesh> Mesh::createCube	()
 		
 shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 {
+	assert(latitudeCount > 2 && longitudeCount > 2);
+
 	shared_ptr<Mesh> mesh = make_shared<Mesh>();
 
 	latitudeCount *= 2.f;
@@ -177,6 +180,101 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 			}
 		}
 	}
+
+	return mesh;
+}
+
+shared_ptr<Mesh> Mesh::createCylindre(unsigned int prescision)
+{
+	assert(prescision > 2);
+
+	shared_ptr<Mesh> mesh = make_shared<Mesh>();
+
+	// Cylindre contain prescision * 2 + 2
+	mesh->getVertices().reserve(prescision * 2 + 2);
+
+	float angleRad = M_PI*2 / prescision;
+
+	//near face
+
+	//middle of near face is in front
+	mesh->getVertices().push_back({ { 0.f, 0.f, 0.5f}, { 0.f, 0.f, 1.f}, Rasterizer::getColor4ub()});
+	for(unsigned int i = 0; i < prescision; i++)
+	{
+		mesh->getVertices().push_back({ { 	0.5f * cosf(i * angleRad), 
+											0.5f * sinf(i * angleRad),
+											0.5f},
+											{ cosf(i * angleRad), sinf(i * angleRad), 1.f},
+											Rasterizer::getColor4ub()});
+		mesh->getVertices().back().normal_.normalize();
+	}
+	
+	//far face
+	for(unsigned int i = 0; i < prescision; i++)
+	{
+		mesh->getVertices().push_back({ { 	0.5f * cosf(i * angleRad), 
+											0.5f * sinf(i * angleRad),
+											-0.5f},
+											{ cosf(i * angleRad), sinf(i * angleRad), -1.f},
+											Rasterizer::getColor4ub()});
+		mesh->getVertices().back().normal_.normalize();
+	}
+
+	//middle of far face is in back
+	mesh->getVertices().push_back({ { 0.f, 0.f, -0.5f}, { 0.f, 0.f, -1.f}, Rasterizer::getColor4ub()});
+
+
+	//calcul indice of mesh : 
+
+	//near face triangle indice
+	for(unsigned int i = 1; i < prescision; i++)
+	{
+		mesh->getIndices().push_back(0);
+		mesh->getIndices().push_back(i);
+		mesh->getIndices().push_back(i + 1);
+	}
+		
+	mesh->getIndices().push_back(0);
+	mesh->getIndices().push_back(prescision);
+	mesh->getIndices().push_back(1);
+
+	//side face triangle indice
+	for(unsigned int i = 1; i < prescision ; i++)
+	{
+		//face is blit in 2 triangle : 
+		mesh->getIndices().push_back(i);
+		mesh->getIndices().push_back(i + 1);
+		mesh->getIndices().push_back(i + prescision);
+
+		//triangle 2 : 
+		mesh->getIndices().push_back(i + prescision);
+		mesh->getIndices().push_back(i + prescision + 1);
+		mesh->getIndices().push_back(i + 1);
+	}
+
+	//face is blit in 2 triangle : 
+	mesh->getIndices().push_back(prescision);
+	mesh->getIndices().push_back(1);
+	mesh->getIndices().push_back(prescision + prescision);
+
+	//triangle 2 : 
+	mesh->getIndices().push_back(prescision + prescision);
+	mesh->getIndices().push_back(prescision + 1);
+	mesh->getIndices().push_back(1);
+
+	float middleFarPointIndice = prescision * 2 + 1;
+
+	//far face triangle indice
+	for(unsigned int i = prescision + 1; i < prescision + prescision; i++)
+	{
+		mesh->getIndices().push_back(middleFarPointIndice);
+		mesh->getIndices().push_back(i);
+		mesh->getIndices().push_back(i + 1);
+	}
+
+	mesh->getIndices().push_back(middleFarPointIndice);
+	mesh->getIndices().push_back(prescision + prescision);
+	mesh->getIndices().push_back(prescision + 1);
 
 	return mesh;
 }

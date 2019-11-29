@@ -22,14 +22,21 @@ Entity::Entity(const math::Vec3 &translVec,
 			pMeshCube = Mesh::createCube();
 
 		pMesh_ = pMeshCube;
-		break;
+	break;
 
 	case E_primitive3D::SPHERE:
 		if (pMeshSphere == nullptr)
 			pMeshSphere = Mesh::createSphere(10, 10);
 
 		pMesh_ = pMeshSphere;
-		break;
+	break;
+
+	case E_primitive3D::CYLINDRE:
+		if (pMeshCylindre == nullptr)
+			pMeshCylindre = Mesh::createCylindre(15);
+
+		pMesh_ = pMeshCylindre;
+	break;
 
 	default:
 		break;
@@ -142,3 +149,4 @@ void Entity::updateTRS (const math::Mat4& TRSMatDep)
 
 shared_ptr<Mesh> Entity::pMeshCube(nullptr);
 shared_ptr<Mesh> Entity::pMeshSphere(nullptr);
+shared_ptr<Mesh> Entity::pMeshCylindre(nullptr);

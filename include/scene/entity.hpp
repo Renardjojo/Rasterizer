@@ -16,7 +16,8 @@ typedef enum E_primitive3D
 {
 	NONE 	=	-1,
 	CUBE	= 	 0,
-	SPHERE	=	 1 //level of quality of sphere. 1 for higth quality, 4 for low.
+	SPHERE	=	 1,
+	CYLINDRE=	 2 
 
 } Primitive3D;
 
@@ -95,6 +96,7 @@ class Entity
 
 		static shared_ptr<Mesh> pMeshCube;
 		static shared_ptr<Mesh> pMeshSphere;
+		static shared_ptr<Mesh> pMeshCylindre;
 
 		#pragma endregion //! static attribut
 

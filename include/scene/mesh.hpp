@@ -22,8 +22,8 @@ class Mesh
 
 		#pragma region methods
 
-		//this function draw normal vector of vertex. THis function use buffer of pixel and use TRSMatrix of object to display normal in good emplace.
-		void 	drawNormal(Texture& RenBuffer, const math::Mat4& TRSMatrix) 	const ;
+		//this function draw normal vector of vertex. This function use buffer of pixel and use TRSMatrix of object to display normal in good emplace.
+		void 	drawNormal(Texture& RenBuffer, const math::Mat4& TRSMatrix) 	const;
 
 		#pragma endregion //!methods
 
@@ -34,6 +34,9 @@ class Mesh
 		
 		//create sphere of radius 1 and return it mesh.	Sphere is centered on the origin	
 		static std::shared_ptr<Mesh> createSphere(int latitudeCount, int longitudeCount);
+
+		//this function return pointor to mesh of Cylindre with x precision
+		static std::shared_ptr<Mesh> createCylindre(unsigned int prescision);
 
 		#pragma endregion //!static methods
 
