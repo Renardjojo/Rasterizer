@@ -76,6 +76,9 @@ class Entity
 
 		#pragma region mutator
 
+		//this function allow to integret texture in entity. Texture must be shared ptr initilize outside with make shared to don't load multiple same texture
+		void setTexture (shared_ptr<Texture>& pTexture)			noexcept   {pTexture_ = pTexture;};
+
 		#pragma endregion //!mutator
 
 		#pragma region operator
@@ -90,9 +93,9 @@ class Entity
 
 		#pragma region attribut
 
-		//std::vector<Entity>		dependantEntities_;	
 		shared_ptr<Mesh>		pMesh_;				//pointor toward mesh (allow to not duplicate vertex)
 		Ref3					transform_;			//local referential of entity. Entity is clip into another referntial and dependant of it.
+		shared_ptr<Texture>		pTexture_;			//texture of entity. Nullptr if texture doesn't have any texture.
 		float					alpha_ = 1;
 
 		#pragma endregion //!attribut
@@ -101,12 +104,8 @@ class Entity
 
 		static shared_ptr<Mesh> pMeshCube;
 		static shared_ptr<Mesh> pMeshSphere;
-<<<<<<< HEAD
-		
-=======
 		static shared_ptr<Mesh> pMeshCylindre;
 
->>>>>>> 1f738bef897cccbc6b813f2042db44410bb3fa34
 		#pragma endregion //! static attribut
 
 		#pragma region methods

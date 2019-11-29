@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL.h>
 #include <GL/glu.h>
 
 Texture::Texture (unsigned int width, unsigned int height)
@@ -17,19 +18,25 @@ Texture::Texture (unsigned int width, unsigned int height)
 		zBuffer_[i] = 0; //uint limit
 	}
 }
-/*
-Texture::Texture (std::string addressPNG) 
-{
-	SDL_Surface* image = IMG_Load(addressPNG.c_str);
 
-<<<<<<< HEAD
-	assert(image);
+Texture::Texture (const char* addressPNG) 
+{
+	SDL_Surface* image = IMG_Load(addressPNG);
+
+	if (image == nullptr)
+	{
+		std::cerr << "Image not initilized with path : " << addressPNG << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	if (image->format->format != SDL_PIXELFORMAT_RGBA8888) 
+	{
+		std::cerr << "Texture only support RGBA format, other texture is not implemented. Path : " << addressPNG << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	pPixels_ = static_cast<ColorRGBA*>(image->pixels);
 }
-=======
-	//
-	//asssert(image);
-}*/
->>>>>>> 1f738bef897cccbc6b813f2042db44410bb3fa34
 
 Texture::~Texture ()
 {
@@ -50,10 +57,6 @@ void Texture::setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, 
 		pPixels_[width_ * y + x] = c;
 		zBuffer_[width_ * y + x] = z;
 	}
-}
-
-void Texture::setTexture(Mesh& mesh)
-{
 }
 
 void Texture::clear		()
