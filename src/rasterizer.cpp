@@ -178,11 +178,11 @@ bool faceIsVisible(const Vertex &v1, const Vertex &v2, const Vertex &v3)
 
 void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light> &lights, const Vertex &v1, const Vertex &v2, const Vertex &v3)
 {
-    float zNear = -2.f;
-    float zFar  = 2.f;
+    float zNear = 0.f;
+    float zFar  = 100.f;
     
-    if (!faceIsVisible(v1, v2, v3))
-        return;
+    //if (!faceIsVisible(v1, v2, v3))
+      // return;
 
     // Get the bounding box of the triangle
     float maxX = max(max(v1.position_.x_, v2.position_.x_), v3.position_.x_);
@@ -227,13 +227,15 @@ void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light
             if ((w1 >= 0) && (w2 >= 0) && (w3 >= 0))
             {
                 float depth = (w1 * v2.position_.z_ + w2 * v3.position_.z_ + w3 * v1.position_.z_);
+                //std::cout << depth << std::endl;
 
                 if (depth < zNear || depth > zFar)
                 {
                     continue;
                 }
 
-                unsigned int zValue = ((depth - zNear) / (zFar + abs(zNear))) * 0xffffffff;
+                unsigned int zValue = 0xffffffff - (depth * 0xffffffff / (zFar - abs(zNear)));
+               // unsigned int zValue = ((depth - zNear) / (zFar + abs(zNear))) * 0xffffffff;
                //unsigned int zValue = (((depth - Znear) / (Zfar + abs(Znear))) * 0xffffffff);
 
                 if (drawShapeFill)
@@ -249,7 +251,8 @@ void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light
                     //TODO: AAfunction When apha was implement
                     else if (drawZBuffer)
                     {
-                        ubyte color = ((depth - zNear) / (zFar + abs(zNear))) * 255;
+                        //ubyte color = ((depth - zNear) / (zFar + abs(zNear))) * 255;
+                        ubyte color = 255 - (depth * 255 / (zFar - abs(zNear)));
                         //ubyte color = (((depth - Znear) / (Zfar + abs(Znear))) * 255); // 10 is Z far
                         target.setPixelColor(x, y, {static_cast<ubyte>(color), static_cast<ubyte>(color), static_cast<ubyte>(color), 255}, zValue);
                     }
@@ -267,7 +270,7 @@ void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light
 
                         for (auto &light : lights)
                         {
-                            light.computLightComponent(color, ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(), 10.f);
+                            light.computLightComponent(color, ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(), 200.f);
                         }
 
                         target.setPixelColor(x, y, color, zValue);
@@ -278,23 +281,25 @@ void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light
     }
 }
 
-Vertex convertVertexLocalToGlobalAndApplyProjection(Vertex vertex, const Mat4 &projectionMatrix, const Mat4 &TRSMat, bool& error)
+Vertex convertVertexLocalToGlobalAndApplyProjection(Vertex vertex, const Mat4 &projectionMatrix, const Mat4 &TRSMat)
 {
     //Aplly transformation and projection to get vector in 4D
-    Vec4 clipBoard = (Matrix)projectionMatrix * (Matrix)TRSMat * vertex.position_;
+    Vec4 clipBoard = TRSMat * vertex.position_;
+    
+    clipBoard = projectionMatrix * clipBoard;
 
     //convert vector in 4D to 3D this homogenize
-    if (clipBoard.w_ >= 1.f)
-        clipBoard.homogenize();
-    else
+    if (clipBoard.w_ != 0.f && clipBoard.w_ != 1.f)
     {
-        error = true;
-        return vertex;
+       clipBoard.homogenize();
     }
+
     //adapte vertex to 2D
     vertex.position_.x_ = static_cast<float>(((clipBoard.x_ / 5) + 1) * 0.5f * 800);
     vertex.position_.y_ = static_cast<float>(600 - ((clipBoard.y_ / 5) + 1) * 0.5 * 600);
     vertex.position_.z_ = clipBoard.z_;
+
+   // std::cout << vertex.position_.x_ << "   "  << vertex.position_.z_ << std::endl;
 
     Vec4 vecN(vertex.normal_);
     vecN = TRSMat * vecN;
@@ -323,25 +328,20 @@ void Rasterizer::renderScene(Texture& renBuffer, const Scene& scene, const math:
 
         for (size_t ent = 0; ent < scene.getEntities()[i]->getpMesh()->getIndices().size(); ent += 3)
         {
-            bool error = false;
-
             Vertex v1 = convertVertexLocalToGlobalAndApplyProjection(
                 scene.getEntities()[i]->getpMesh()->getVertices()[scene.getEntities()[i]->getpMesh()->getIndices()[ent]],
                 projectionMatrix,
-                scene.getEntities()[i]->getTransform().getTRSMatrix(), error);
+                scene.getEntities()[i]->getTransform().getTRSMatrix());
 
             Vertex v2 = convertVertexLocalToGlobalAndApplyProjection(
                 scene.getEntities()[i]->getpMesh()->getVertices()[scene.getEntities()[i]->getpMesh()->getIndices()[ent + 1]],
                 projectionMatrix,
-                scene.getEntities()[i]->getTransform().getTRSMatrix(), error);
+                scene.getEntities()[i]->getTransform().getTRSMatrix());
 
             Vertex v3 = convertVertexLocalToGlobalAndApplyProjection(
                 scene.getEntities()[i]->getpMesh()->getVertices()[scene.getEntities()[i]->getpMesh()->getIndices()[ent + 2]],
                 projectionMatrix,
-                scene.getEntities()[i]->getTransform().getTRSMatrix(), error);
-
-            if (error)
-                continue;
+                scene.getEntities()[i]->getTransform().getTRSMatrix());
 
             Rasterizer::drawTriangleWithLights(renBuffer, scene.getLights(), v1, v2, v3);
         }
@@ -351,28 +351,34 @@ void Rasterizer::renderScene(Texture& renBuffer, const Scene& scene, const math:
 Mat4 Rasterizer::CreatePerspectiveProjectionMatrix(int width, int height, float near, float far, float fov)
 {
     float scale = tanf(fov * 0.5f * M_PI / 180.f) * near;
-    float imageAspectRatio = (float)width / (float)height;
+    float imageAspectRatio = width / (float)height;
     float rigth = imageAspectRatio * scale;
     float left = -rigth;
     float top = scale;
     float bottom = -scale;
 
     Mat4 PMM;
-    PMM[0][0] = 2.f * near / (rigth - left); 
-    PMM[0][2] = (rigth + left) / (rigth - left); 
+    
+    PMM[0][0] = 2 * near / (rigth - left); 
+    PMM[0][1] = 0; 
+    PMM[0][2] = 0; 
+    PMM[0][3] = 0; 
  
-    PMM[1][1] = 2.f * near / (top - bottom); 
-    PMM[1][2] = (top + bottom) / (top - bottom); 
- 
+    PMM[1][0] = 0; 
+    PMM[1][1] = 2 * near / (top - bottom); 
+    PMM[1][2] = 0; 
+    PMM[1][3] = 0;
+
+    PMM[2][0] = (rigth + left) / (rigth - left); 
+    PMM[2][1] = (top + bottom) / (top - bottom); 
     PMM[2][2] = -(far + near) / (far - near); 
-    PMM[2][3] = -2.f * far * near / (far - near); 
- 
-    PMM[3][2] = -1; 
-    PMM[3][3] = 0;
+    PMM[2][3] = -1;
 
-PMM.display();
-std::cout << left << "   " << right << std::endl;
-
+    PMM[3][0] = 0; 
+    PMM[3][1] = 0; 
+    PMM[3][2] = -2 * far * near / (far - near); 
+    PMM[3][3] = 0; 
+    
     return PMM;
 }
 

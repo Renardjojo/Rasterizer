@@ -56,8 +56,8 @@ void 			Scene::deleteLight	(unsigned int id) throw()
 
 void 			Scene::draw				(Texture& RenBuffer) const noexcept
 {
-	//Rasterizer::renderScene(RenBuffer, *this, Mat4::createOrthoMatrix(-1.f, 1.f, -1.f, 1.f, -1.f, 1.f));
-	Rasterizer::renderScene(RenBuffer, *this, Rasterizer::CreatePerspectiveProjectionMatrix(800, 600, 1.f, -1.f, 90.f));
+	//Rasterizer::renderScene(RenBuffer, *this, Mat4::createOrthoMatrix(-1.f, 1.f, -1.f, 1.f, 0.f, -100.f));
+	Rasterizer::renderScene(RenBuffer, *this, Rasterizer::CreatePerspectiveProjectionMatrix(800, 600, 0.01f, 100.f, 150.f));
 }
 
 const Entity& 			Scene::getEntity		(unsigned int id) const throw()
