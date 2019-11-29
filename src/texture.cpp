@@ -17,13 +17,19 @@ Texture::Texture (unsigned int width, unsigned int height)
 		zBuffer_[i] = 0; //uint limit
 	}
 }
-
+/*
 Texture::Texture (std::string addressPNG) 
 {
 	SDL_Surface* image = IMG_Load(addressPNG.c_str);
 
+<<<<<<< HEAD
 	assert(image);
 }
+=======
+	//
+	//asssert(image);
+}*/
+>>>>>>> 1f738bef897cccbc6b813f2042db44410bb3fa34
 
 Texture::~Texture ()
 {

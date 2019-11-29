@@ -26,7 +26,7 @@ void Light::computLightComponent(ColorRGBA& colorIntensity, const math::Vec3& no
 		return;
 
 	computDiffuseComponent      (colorIntensityDiffuse, normal, cosTeta);
-	computSpecularBlinnPhong    (colorIntensitySpec, normal, 16, cosTeta);		
+	computSpecularBlinnPhong    (colorIntensitySpec, normal, shininessCoef, cosTeta);		
 	
     colorIntensity = colorIntensity + colorIntensityDiffuse + colorIntensitySpec;
 }
