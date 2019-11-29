@@ -62,10 +62,14 @@ class Entity
 
 		#pragma region accessor
 
-	   const Ref3& 		getTransform()				const noexcept { return transform_;}
-	   Ref3& 			getTransform()					  noexcept { return transform_;}
+	   const Ref3& 				getTransform()				const noexcept	{ return transform_;}
+	   Ref3& 					getTransform()					  noexcept	{ return transform_;}
 
-	   const shared_ptr<Mesh>& getpMesh	()			const noexcept { return pMesh_; }	
+	   const shared_ptr<Mesh>&	getpMesh	()				const noexcept	{ return pMesh_;}
+	   shared_ptr<Mesh>&		getpMesh	()					  noexcept	{ return pMesh_;}
+
+	   const float				getAlpha	()				const noexcept	{ return alpha_;}
+	   float					getAlpha	()					  noexcept	{ return alpha_;}	
 
 		#pragma endregion //!accessor
 
@@ -88,6 +92,7 @@ class Entity
 		//std::vector<Entity>		dependantEntities_;	
 		shared_ptr<Mesh>		pMesh_;				//pointor toward mesh (allow to not duplicate vertex)
 		Ref3					transform_;			//local referential of entity. Entity is clip into another referntial and dependant of it.
+		float					alpha_ = 1;
 
 		#pragma endregion //!attribut
 
@@ -95,7 +100,7 @@ class Entity
 
 		static shared_ptr<Mesh> pMeshCube;
 		static shared_ptr<Mesh> pMeshSphere;
-
+		
 		#pragma endregion //! static attribut
 
 		#pragma region methods

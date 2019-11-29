@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <SDL2/SDL_image.h>
+#include <GL/glu.h>
 
 Texture::Texture (unsigned int width, unsigned int height)
 	:	width_	(width),
@@ -19,10 +20,9 @@ Texture::Texture (unsigned int width, unsigned int height)
 
 Texture::Texture (std::string addressPNG) 
 {
-	//SDL_Surface* image = IMG_Load(addressPNG);
+	SDL_Surface* image = IMG_Load(addressPNG.c_str);
 
-	//
-	//asssert(image);
+	assert(image);
 }
 
 Texture::~Texture ()
@@ -44,6 +44,10 @@ void Texture::setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, 
 		pPixels_[width_ * y + x] = c;
 		zBuffer_[width_ * y + x] = z;
 	}
+}
+
+void Texture::setTexture(Mesh& mesh)
+{
 }
 
 void Texture::clear		()

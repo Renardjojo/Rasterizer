@@ -176,7 +176,8 @@ bool faceIsVisible(const Vertex &v1, const Vertex &v2, const Vertex &v3)
     return  v1.normal_.z_ < 0.f || v2.normal_.z_ < 0.f || v3.normal_.z_ < 0.f; 
 }
 
-void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light> &lights, const Vertex &v1, const Vertex &v2, const Vertex &v3)
+void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light> &lights,
+                                        const Vertex &v1, const Vertex &v2, const Vertex &v3)
 {
     float zNear = -2.f;
     float zFar  = 2.f;
@@ -278,6 +279,11 @@ void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light
     }
 }
 
+void drawTriangleWithTexture(Texture* tex, const Vertex& v1, const Vertex& v2, const Vertex& v3)
+{
+    
+}
+
 Vertex convertVertexLocalToGlobalAndApplyProjection(Vertex vertex, const Mat4 &projectionMatrix, const Mat4 &TRSMat, bool& error)
 {
     //Aplly transformation and projection to get vector in 4D
@@ -370,8 +376,8 @@ Mat4 Rasterizer::CreatePerspectiveProjectionMatrix(int width, int height, float 
     PMM[3][2] = -1; 
     PMM[3][3] = 0;
 
-PMM.display();
-std::cout << left << "   " << right << std::endl;
+    PMM.display();
+    std::cout << left << "   " << right << std::endl;
 
     return PMM;
 }
