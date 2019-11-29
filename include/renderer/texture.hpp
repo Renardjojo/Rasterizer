@@ -5,6 +5,7 @@
 #include <string>
 #include <SDL2/SDL.h>
 #include "color.hpp"
+#include "vertex.hpp"
 
 class Texture
 {
@@ -14,7 +15,7 @@ class Texture
 		//create black sized texture 
 		Texture (unsigned int width, unsigned int height);	
 		Texture (const Texture& other) = delete; //TODO
-		Texture (std::string addressPNG);
+		Texture (const char* addressPNG);
 		~Texture ();
 
 		 /*----------*/
@@ -22,8 +23,7 @@ class Texture
 	   /*----------*/
 
 		//color pixel of matrix. Z paraqmter correspond to the depth of pixel in zBuffer
-		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, unsigned int z = __INT_MAX__ * 2U + 1);
-
+		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, unsigned int z = 0xffffffff);
 
 		/**
 		 * function : clear

@@ -62,7 +62,7 @@ class Rasterizer
 		 */
 		static void		drawTriangle				(Texture&, const Vertex& , const Vertex& , const Vertex&);
 		static void		drawTriangleWithLights		(Texture&, const std::vector<Light>& lights, const Vertex& v1, const Vertex& v2, const Vertex& v3);
-
+		static void		drawTriangleWithTexture		(Texture*, const Vertex& , const Vertex& , const Vertex&);
 
 		// This function draw each entity in scene
 		static void renderScene(Texture& renBuffer, const Scene& scene, const math::Mat4& projectionMatrix);

@@ -65,7 +65,6 @@ class Mesh
 
 		std::vector<Vertex> vertices_; //vertex buffer. Local vertices, doesn't change
 		std::vector<int>	indices_;  //indices buffer. Define triangle of mesh. It's a suit of triplet index
-		Texture*			pTexture = nullptr;
 
 		#pragma endregion //!attribut
 
