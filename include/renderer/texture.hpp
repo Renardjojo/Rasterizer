@@ -5,6 +5,8 @@
 #include <string>
 #include <SDL2/SDL.h>
 #include "color.hpp"
+#include "vertex.hpp"
+#include "vec3.hpp"
 
 class Texture
 {
@@ -14,16 +16,15 @@ class Texture
 		//create black sized texture 
 		Texture (unsigned int width, unsigned int height);	
 		Texture (const Texture& other) = delete; //TODO
-		Texture (std::string addressPNG);
+		Texture (const char* addressPNG);
 		~Texture ();
 
 		 /*----------*/
 		/* methode  */
 	   /*----------*/
 
-		//color pixel of matrix. Z paraqmter correspond to the depth of pixel in zBuffer
-		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, unsigned int z = __INT_MAX__ * 2U + 1);
-
+		//color pixel of matrix. Z paramater correspond to the depth of pixel in zBuffer
+		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, unsigned int z = 0xffffffff);
 
 		/**
 		 * function : clear
@@ -36,6 +37,9 @@ class Texture
 		 */
 		void		clear		();
 		
+
+
+		void bilinearFiltering(math::Vec3& vec);
 
 		 /*----------*/
 		/* accessor */

@@ -11,6 +11,7 @@
 #include "referential.hpp"
 #include "color.hpp"
 #include "light.hpp"
+#include "materials.hpp"
 
 typedef enum E_primitive3D
 {
@@ -45,11 +46,11 @@ class Entity
 		#pragma region methods
 
 		//display vextex in function of his matrix TRS
-		void			drawPoint				(Texture& RenBuffer) const noexcept;
-		void 			drawLine				(Texture &RenBuffer) const noexcept;
-		void 			drawFill				(Texture &RenBuffer) const noexcept;
-		void 			drawFillWithLigths		(Texture &RenBuffer, const std::vector<Light>& light) const noexcept;
-		void 			drawNormal				(Texture &RenBuffer) const noexcept;
+		void					drawPoint				(Texture& RenBuffer) const noexcept;
+		void 					drawLine				(Texture &RenBuffer) const noexcept;
+		void 					drawFill				(Texture &RenBuffer) const noexcept;
+		void 					drawFillWithLigths		(Texture &RenBuffer, const std::vector<Light>& light) const noexcept;
+		void 					drawNormal				(Texture &RenBuffer) const noexcept;
 
 		//this function update TRS matrix of entity in function of dependante matrix. If entity depende of world, put in paramter the world TRS matrix.
 		//This function must be update each time that his parent TRS matrix change (rotation, scale, translatoin...)
@@ -57,20 +58,22 @@ class Entity
 
 
 		//return the transformation of a vertex in a vec4
-		math::Vec4		transformVertexInVec4	(const Vertex&) const;
+		math::Vec4				transformVertexInVec4	(const Vertex&) const;
 
 		#pragma endregion //!methods
 
 		#pragma region accessor
 
-	   const Ref3& 		getTransform()				const noexcept { return transform_;}
-	   Ref3& 			getTransform()					  noexcept { return transform_;}
+	   const Ref3& 				getTransform()				const noexcept	{ return transform_;}
+	   Ref3& 					getTransform()					  noexcept	{ return transform_;}
 
-	   const shared_ptr<Mesh>& getpMesh	()			const noexcept { return pMesh_; }	
+	   const shared_ptr<Mesh>&	getpMesh	()				const noexcept	{ return pMesh_;}
+	   shared_ptr<Mesh>&		getpMesh	()					  noexcept	{ return pMesh_;}	
 
 		#pragma endregion //!accessor
 
 		#pragma region mutator
+
 
 		#pragma endregion //!mutator
 
@@ -86,9 +89,10 @@ class Entity
 
 		#pragma region attribut
 
-		//std::vector<Entity>		dependantEntities_;	
 		shared_ptr<Mesh>		pMesh_;				//pointor toward mesh (allow to not duplicate vertex)
 		Ref3					transform_;			//local referential of entity. Entity is clip into another referntial and dependant of it.
+		shared_ptr<Materials>	materials_;
+		
 
 		#pragma endregion //!attribut
 

@@ -1,8 +1,12 @@
-#include "texture.hpp"
 #include <cassert>
 #include <cstdlib>
+#include <cmath>
 #include <iostream>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL.h>
+#include <GL/glu.h>
+
+#include "texture.hpp"
 
 Texture::Texture (unsigned int width, unsigned int height)
 	:	width_	(width),
@@ -16,14 +20,25 @@ Texture::Texture (unsigned int width, unsigned int height)
 		zBuffer_[i] = 0; //uint limit
 	}
 }
-/*
-Texture::Texture (std::string addressPNG) 
-{
-	//SDL_Surface* image = IMG_Load(addressPNG);
 
-	//
-	//asssert(image);
-}*/
+Texture::Texture (const char* addressPNG) 
+{
+	SDL_Surface* image = IMG_Load(addressPNG);
+
+	if (image == nullptr)
+	{
+		std::cerr << "Image not initilized with path : " << addressPNG << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	if (image->format->format != SDL_PIXELFORMAT_RGBA8888) 
+	{
+		std::cerr << "Texture only support RGBA format, other texture is not implemented. Path : " << addressPNG << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	pPixels_ = static_cast<ColorRGBA*>(image->pixels);
+}
 
 Texture::~Texture ()
 {
@@ -61,6 +76,17 @@ void Texture::clear		()
 	{
 		zBuffer_[i] = 0; //uint limit
 	}
+}
+
+void Texture::bilinearFiltering(math::Vec3& vec)
+{
+	// Find the four nearest pixels of the pixel that we want interpolate
+	// To USE : lerp
+	math::Vec3 nearest11, nearest12, nearest22, nearest21;
+
+
+	int coef1 = (std::lerp())/ 
+
 }
 
 ColorRGBA*		Texture::operator[]		(unsigned int indexLine) const

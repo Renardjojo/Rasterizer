@@ -9,8 +9,9 @@ Entity::Entity(const math::Vec3 &translVec,
 			   const math::Vec3 &scaleVec,
 			   Ref3 &dependance,
 			   Primitive3D primitive)
-	: pMesh_(nullptr),
-	  transform_("Test", translVec, rotVec, scaleVec, dependance)
+	: pMesh_		(nullptr),
+	  transform_	("Test", translVec, rotVec, scaleVec, dependance),
+	  materials_	(nullptr)
 {
 	switch (primitive)
 	{
