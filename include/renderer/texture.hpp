@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 #include "color.hpp"
 #include "vertex.hpp"
+#include "vec3.hpp"
 
 class Texture
 {
@@ -22,7 +23,7 @@ class Texture
 		/* methode  */
 	   /*----------*/
 
-		//color pixel of matrix. Z paraqmter correspond to the depth of pixel in zBuffer
+		//color pixel of matrix. Z paramater correspond to the depth of pixel in zBuffer
 		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, unsigned int z = 0xffffffff);
 
 		/**
@@ -36,6 +37,9 @@ class Texture
 		 */
 		void		clear		();
 		
+
+
+		void bilinearFiltering(math::Vec3& vec);
 
 		 /*----------*/
 		/* accessor */

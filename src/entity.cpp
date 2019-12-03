@@ -11,7 +11,7 @@ Entity::Entity(const math::Vec3 &translVec,
 			   Primitive3D primitive)
 	: pMesh_		(nullptr),
 	  transform_	("Test", translVec, rotVec, scaleVec, dependance),
-	  pTexture		(nullptr)
+	  materials_	(nullptr)
 {
 	switch (primitive)
 	{
