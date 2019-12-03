@@ -30,4 +30,3 @@ ColorRGBA operator+(const ColorRGBA& otherColor1, const ColorRGBA& otherColor2)
     
 	return (ColorRGBA){	static_cast<ubyte>(r), static_cast<ubyte>(g),static_cast<ubyte>(b) ,static_cast<ubyte>(a)};
 }
-

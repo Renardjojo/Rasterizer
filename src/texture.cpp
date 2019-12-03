@@ -1,10 +1,12 @@
-#include "texture.hpp"
 #include <cassert>
 #include <cstdlib>
+#include <cmath>
 #include <iostream>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
 #include <GL/glu.h>
+
+#include "texture.hpp"
 
 Texture::Texture (unsigned int width, unsigned int height)
 	:	width_	(width),
@@ -74,6 +76,17 @@ void Texture::clear		()
 	{
 		zBuffer_[i] = 0; //uint limit
 	}
+}
+
+void Texture::bilinearFiltering(math::Vec3& vec)
+{
+	// Find the four nearest pixels of the pixel that we want interpolate
+	// To USE : lerp
+	math::Vec3 nearest11, nearest12, nearest22, nearest21;
+
+
+	int coef1 = (std::lerp())/ 
+
 }
 
 ColorRGBA*		Texture::operator[]		(unsigned int indexLine) const
