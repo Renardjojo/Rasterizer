@@ -176,7 +176,7 @@ bool faceIsVisible(const Vertex &v1, const Vertex &v2, const Vertex &v3)
     return  v1.normal_.z_ < 0.f || v2.normal_.z_ < 0.f || v3.normal_.z_ < 0.f; 
 }
 
-void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light> &lights, const Vertex &v1, const Vertex &v2, const Vertex &v3)
+void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light> &lights, const Vec3& entityPos, const Vertex &v1, const Vertex &v2, const Vertex &v3)
 {
     float zNear = 0.f;
     float zFar  = 100.f;
@@ -270,9 +270,11 @@ void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light
 
                         for (auto &light : lights)
                         {
-                            light.computLightComponent(color, ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(), 200.f);
+                            light.computLightComponent( color, 
+                                                        ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(), 
+                                                        entityPos,
+                                                        32.f);
                         }
-
                         target.setPixelColor(x, y, color, zValue);
                     }
                 }
@@ -281,11 +283,14 @@ void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light
     }
 }
 
-Vertex convertVertexLocalToGlobalAndApplyProjection(Vertex vertex, const Mat4 &projectionMatrix, const Mat4 &TRSMat)
+
+Vec4 creatModelViewVector(const Vec3& vecLocalPos, const Mat4 &TRSMat)
 {
-    //Aplly transformation and projection to get vector in 4D
-    Vec4 clipBoard = TRSMat * vertex.position_;
-    
+    return TRSMat * vecLocalPos;
+}
+
+Vec3 createProjectionVector (Vec4& clipBoard, const Mat4 &projectionMatrix)
+{
     clipBoard = projectionMatrix * clipBoard;
 
     //convert vector in 4D to 3D this homogenize
@@ -294,19 +299,58 @@ Vertex convertVertexLocalToGlobalAndApplyProjection(Vertex vertex, const Mat4 &p
        clipBoard.homogenize();
     }
 
-    //adapte vertex to 2D
-    vertex.position_.x_ = static_cast<float>(((clipBoard.x_ / 5) + 1) * 0.5f * 800);
-    vertex.position_.y_ = static_cast<float>(600 - ((clipBoard.y_ / 5) + 1) * 0.5 * 600);
-    vertex.position_.z_ = clipBoard.z_;
+    return Vec3{clipBoard.x_, clipBoard.y_, clipBoard.z_};
+}
 
-   // std::cout << vertex.position_.x_ << "   "  << vertex.position_.z_ << std::endl;
+void applyViewportTransformation (Vec3& vec, unsigned int winH, unsigned int winW)
+{
+    vec.x_ = static_cast<float>(((vec.x_ / 5) + 1) * 0.5f * winW);
+    vec.y_ = static_cast<float>(winH - ((vec.y_ / 5) + 1) * 0.5f * winH);
+}
 
-    Vec4 vecN(vertex.normal_);
-    vecN = TRSMat * vecN;
-    vertex.normal_  = {vecN.x_, vecN.y_, vecN.z_};
-    vertex.normal_.normalize();
+//draw normal of global vertex 
+void drawnNormal(Texture& renBuffer, Vertex& vertexLocal, Vertex& vertexGlobal, const Mat4 &projectionMatrix, const Mat4 &TRSMat)
+{
+    Vertex origin = vertexGlobal;
+	Vertex axis = {	(vertexLocal.normal_.x_ * 0.5f + vertexLocal.position_.x_),
+					(vertexLocal.normal_.y_ * 0.5f + vertexLocal.position_.y_),
+					(vertexLocal.normal_.z_ * 0.5f + vertexLocal.position_.z_)};
 
-    return vertex;
+    Vec4 modelViewV1 = creatModelViewVector(axis.position_, TRSMat);
+    Vec3 clipCoordV1 = createProjectionVector (modelViewV1, projectionMatrix);
+    applyViewportTransformation (clipCoordV1, renBuffer.heigth(), renBuffer.width());
+
+    axis.position_ = clipCoordV1;
+
+	Rasterizer::setColor4ub(0, 255, 255, 255);
+	Rasterizer::drawLine(renBuffer, origin, axis);
+}
+
+void updateNormalWithRotation(Vertex& vertex, const Vec3& rotation)
+{
+    vertex.normal_ = Mat4::createFixedAngleEulerRotationMatrix(rotation) * vertex.normal_;
+}
+
+vector<Vertex> convertLocalToGlobalVertex (const Entity& ent, const Mat4 &projectionMatrix, unsigned int winH, unsigned int winW)
+{
+    vector<Vertex> vertices = ent.getpMesh()->getVertices();
+
+    for (auto& vertex : vertices)
+    {
+        //Model & view transform
+        Vec4 modelViewV1 = creatModelViewVector(vertex.position_, ent.getTransform().getTRSMatrix());
+
+        //apply projection
+        Vec3 clipCoordV1 = createProjectionVector (modelViewV1, projectionMatrix);
+
+        //create viewport position
+        applyViewportTransformation (clipCoordV1 , winH, winW);
+        vertex.position_ = clipCoordV1;
+
+        //update the new normal in function of rotation only
+        updateNormalWithRotation(vertex, ent.getTransform().getLocalOrientation());
+    }
+    return vertices;
 }
 
 void Rasterizer::renderScene(Texture& renBuffer, const Scene& scene, const math::Mat4& projectionMatrix)
@@ -324,26 +368,28 @@ void Rasterizer::renderScene(Texture& renBuffer, const Scene& scene, const math:
         }
 
         if ( scene.getEntities()[i]->getpMesh() == nullptr)
-            continue; 
+            continue;
+
+        vector<Vertex> globalVertex = convertLocalToGlobalVertex(*scene.getEntities()[i].get(), projectionMatrix, renBuffer.heigth(), renBuffer.width());
 
         for (size_t ent = 0; ent < scene.getEntities()[i]->getpMesh()->getIndices().size(); ent += 3)
         {
-            Vertex v1 = convertVertexLocalToGlobalAndApplyProjection(
-                scene.getEntities()[i]->getpMesh()->getVertices()[scene.getEntities()[i]->getpMesh()->getIndices()[ent]],
-                projectionMatrix,
-                scene.getEntities()[i]->getTransform().getTRSMatrix());
+            Vertex& v1Global = globalVertex[scene.getEntities()[i]->getpMesh()->getIndices()[ent]];
+            Vertex& v2Global = globalVertex[scene.getEntities()[i]->getpMesh()->getIndices()[ent + 1]];
+            Vertex& v3Global = globalVertex[scene.getEntities()[i]->getpMesh()->getIndices()[ent + 2]];
 
-            Vertex v2 = convertVertexLocalToGlobalAndApplyProjection(
-                scene.getEntities()[i]->getpMesh()->getVertices()[scene.getEntities()[i]->getpMesh()->getIndices()[ent + 1]],
-                projectionMatrix,
-                scene.getEntities()[i]->getTransform().getTRSMatrix());
+            if (Rasterizer::getSetting(R_DRAW_NORMAL))
+            {
+                Vertex& v1Local  = scene.getEntities()[i]->getpMesh()->getVertices()[scene.getEntities()[i]->getpMesh()->getIndices()[ent]];
+                Vertex& v2Local  = scene.getEntities()[i]->getpMesh()->getVertices()[scene.getEntities()[i]->getpMesh()->getIndices()[ent + 1]];
+                Vertex& v3Local  = scene.getEntities()[i]->getpMesh()->getVertices()[scene.getEntities()[i]->getpMesh()->getIndices()[ent + 2]];
+                
+                drawnNormal(renBuffer, v1Local, v1Global, projectionMatrix, scene.getEntities()[i]->getTransform().getTRSMatrix());
+                drawnNormal(renBuffer, v2Local, v2Global, projectionMatrix, scene.getEntities()[i]->getTransform().getTRSMatrix());
+                drawnNormal(renBuffer, v3Local, v3Global, projectionMatrix, scene.getEntities()[i]->getTransform().getTRSMatrix());
+            }
 
-            Vertex v3 = convertVertexLocalToGlobalAndApplyProjection(
-                scene.getEntities()[i]->getpMesh()->getVertices()[scene.getEntities()[i]->getpMesh()->getIndices()[ent + 2]],
-                projectionMatrix,
-                scene.getEntities()[i]->getTransform().getTRSMatrix());
-
-            Rasterizer::drawTriangleWithLights(renBuffer, scene.getLights(), v1, v2, v3);
+            Rasterizer::drawTriangleWithLights(renBuffer, scene.getLights(), scene.getEntities()[i]->getTransform().getLocalOrigin() , v1Global, v2Global, v3Global);
         }
     }
 }

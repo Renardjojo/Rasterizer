@@ -133,7 +133,7 @@ void Entity::drawFillWithLigths		(Texture &RenBuffer, const std::vector<Light>& 
 
 	for (size_t i = 0; i < pMesh_->getIndices().size() ; i += 3)
 	{
-		Rasterizer::drawTriangleWithLights(RenBuffer, light,
+		Rasterizer::drawTriangleWithLights(RenBuffer, light, transform_.getLocalOrigin(),
 								 globalVertex[pMesh_->getIndices()[i]],
 								 globalVertex[pMesh_->getIndices()[i + 1]],
 								 globalVertex[pMesh_->getIndices()[i + 2]]);

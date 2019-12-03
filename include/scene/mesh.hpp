@@ -22,9 +22,6 @@ class Mesh
 
 		#pragma region methods
 
-		//this function draw normal vector of vertex. This function use buffer of pixel and use TRSMatrix of object to display normal in good emplace.
-		void 	drawNormal(Texture& RenBuffer, const math::Mat4& TRSMatrix) 	const;
-
 		#pragma endregion //!methods
 
 		#pragma region static methods

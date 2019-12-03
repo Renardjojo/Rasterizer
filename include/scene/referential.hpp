@@ -56,7 +56,7 @@ typedef class Referential3D
 		void 		addChildReferential (Referential3D& child) 	noexcept;
 
 		// few function to display entity of ref in function of his TRS matrix.
-		void 		displayAxis 		(Texture& RenBuffer)				const noexcept;
+		void 		displayAxis 		(Texture& RenBuffer)	const noexcept;
 
 		#pragma endregion //!methods
 

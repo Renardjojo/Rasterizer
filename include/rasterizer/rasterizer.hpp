@@ -61,7 +61,7 @@ class Rasterizer
 		 * brief : this function draw colorfull triangle. Use algorythme of barycenter triangle.
 		 */
 		static void		drawTriangle				(Texture&, const Vertex& , const Vertex& , const Vertex&);
-		static void		drawTriangleWithLights		(Texture&, const std::vector<Light>& lights, const Vertex& v1, const Vertex& v2, const Vertex& v3);
+		static void		drawTriangleWithLights		(Texture&, const std::vector<Light>& lights, const math::Vec3& entityPos, const Vertex& v1, const Vertex& v2, const Vertex& v3);
 
 
 		// This function draw each entity in scene

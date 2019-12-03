@@ -5,30 +5,6 @@
 using namespace math;
 using namespace std;
 
-void 	Mesh::drawNormal(Texture& RenBuffer, const math::Mat4& TRSMatrix) 	const
-{
-	for (size_t i = 0; i < vertices_.size(); i++)
-	{
-		Vertex origin (vertices_[i].position_.x_, vertices_[i].position_.y_, vertices_[i].position_.z_);
-		Vec4 vecO(origin.position_);
-		vecO = TRSMatrix * vecO;
-		origin = {((vecO.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
-				(RenBuffer.heigth() - (( vecO.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vecO.z_};
-		
-		Vertex axis = {	(vertices_[i].normal_.x_ * 0.5f + vertices_[i].position_.x_),
-						(vertices_[i].normal_.y_ * 0.5f + vertices_[i].position_.y_),
-						(vertices_[i].normal_.z_ * 0.5f + vertices_[i].position_.z_)};
-						
-		Vec4 vec(axis.position_);
-		vec = TRSMatrix * vec;
-		axis = {((vec.x_ / 5) + 1) * 0.5f * RenBuffer.width(),
-				(RenBuffer.heigth() - (( vec.y_/ 5) + 1) * 0.5f * RenBuffer.heigth()), vec.z_};
-
-		Rasterizer::setColor4ub(0, 255, 255, 255);
-		Rasterizer::drawLine(RenBuffer, origin, axis);
-	}
-}
-
 shared_ptr<Mesh> Mesh::createCube	()
 {
 	shared_ptr<Mesh> mesh = make_shared<Mesh>();
