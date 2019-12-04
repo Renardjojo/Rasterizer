@@ -78,14 +78,28 @@ void Texture::clear		()
 	}
 }
 
-void Texture::bilinearFiltering(math::Vec3& vec)
+void image(int, int)
+{}
+
+void Texture::nearestNeighborTexturing(Vertex& ver)
 {
-	// Find the four nearest pixels of the pixel that we want interpolate
-	// To USE : lerp
-	math::Vec3 nearest11, nearest12, nearest22, nearest21;
+	float Uint = ver.u + 0.5; 
+	float Vint = ver.v + 0.5;
+}
 
+void Texture::bilinearFiltering(Vertex& ver)
+{
+	int Uint = ver.u;
+	int Vint = ver.v;
 
-	int coef1 = (std::lerp())/ 
+	float Ufrac = ver.u - Uint;
+	float Vfrac = ver.v - Vint;
+
+	// float ??
+	float Cfinal =	C00 * (1 - Ufrac) * (1 - Vfrac) + C10 * Ufrac * (1 - Vfrac) + C01 * (1 - Ufrac) * Vfrac 
+					+ C11 * Ufrac * Vfrac;
+
+	// return Cfinal
 
 }
 

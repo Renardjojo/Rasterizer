@@ -24,7 +24,7 @@ class Texture
 	   /*----------*/
 
 		//color pixel of matrix. Z paramater correspond to the depth of pixel in zBuffer
-		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, unsigned int z = 0xffffffff);
+		void setPixelColor(unsigned int x, unsigned int y, const ColorRGB& c, unsigned int z = 0xffffffff);
 
 		/**
 		 * function : clear
@@ -37,9 +37,9 @@ class Texture
 		 */
 		void		clear		();
 		
-
-
-		void bilinearFiltering(math::Vec3& vec);
+		void image(int, int);
+		void nearestNeighborTexturing(Vertex& ver);
+		void bilinearFiltering(Vertex& ver);
 
 		 /*----------*/
 		/* accessor */
@@ -96,7 +96,7 @@ class Texture
 		
 		unsigned int 				width_;
 		unsigned int 				heigth_;
-		ColorRGBA*					pPixels_;
+		void*						pPixels;
 		unsigned int*				zBuffer_;	//Z buffer determined the depth of pixel. If 2 textures war add, Z buffer determined whitch pixel is hidden
 
 	private:
