@@ -273,6 +273,9 @@ void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light
                             light.computLightComponent(color, ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(), 200.f);
                         }
 
+                        if (color.a != 1)
+                        //color = alphaBlending(texture[y][x], color);
+
                         target.setPixelColor(x, y, color, zValue);
                     }
                 }

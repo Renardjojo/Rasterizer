@@ -19,13 +19,15 @@ public:
 
 	#pragma region methods
 
+	ColorRGBA alphaBlending(ColorRGB& Ca, ColorRGBA& Cb);
+
 	#pragma endregion //!methods
 
 	#pragma region accessor
 
 
-    ColorRGBA                       getColor() noexcept                         { return color_;}
-    const ColorRGBA                 getColor() const noexcept                   { return color_;}
+    ColorRGB                       getColor() noexcept                         { return colorRGB_;}
+    const ColorRGB                 getColor() const noexcept                   { return colorRGB_;}
 
     shared_ptr<Texture>	           	getTexture() noexcept                       { return pTexture_;}
     const shared_ptr<Texture>	   	getTexture() const noexcept                 { return pTexture_;}
@@ -40,7 +42,7 @@ public:
 	// This function allow to integret texture in entity. Texture must be shared ptr initilize outside 
 	// with make shared to don't load multiple same texture
 	void setTexture (shared_ptr<Texture>& pTexture)	noexcept   					{pTexture_ = pTexture;};
-	void setColor (ColorRGBA& color);
+	void setColor (ColorRGB& color);
 	void setAlpha (float alpha);
 
 
@@ -58,6 +60,7 @@ protected:
 
 	#pragma region attribut
     ColorRGBA               color_;
+	ColorRGB				colorRGB_;
     shared_ptr<Texture>		pTexture_; //texture of entity. Nullptr if texture doesn't have any texture.
 	float					alpha_ = 1;
 
