@@ -62,6 +62,12 @@ class Scene
 
 		//this function draw all entities of the scene in function of there referential. It take in parameter th buffer of renderer
 		void 			draw				(Renderer& ren) const noexcept;
+		
+		//few funciton to control camera
+		void			moveFront 	(float movement);
+		void 			moveBack 	(float movement);
+		void 			turnLeft 	(float rotation); //in rad
+		void 			turnRight	(float rotation); //in rad
 
 		#pragma endregion //!methods
 

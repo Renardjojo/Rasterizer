@@ -73,6 +73,38 @@ void 			Scene::draw				(Renderer& ren) const noexcept
 	Rasterizer::renderScene(ren, *this, Mat4::createPerspectiveMatrix(800/(float)600, 0.01f, 100.f, 150.f));
 }
 
+void			Scene::moveFront 	(float movement)
+{
+	for (auto& ent : entities_)
+	{
+		ent->getTransform().translate({0, 0, movement});
+	}
+}
+
+void 			Scene::moveBack 	(float movement)
+{
+	for (auto& ent : entities_)
+	{
+		ent->getTransform().translate({0, 0, -movement});
+	}
+}
+
+void 			Scene::turnLeft 	(float rotation)
+{
+	for (auto& ent : entities_)
+	{
+		ent->getTransform().translate({rotation, 0, 0});
+	}
+}
+
+void 			Scene::turnRight	(float rotation)
+{
+	for (auto& ent : entities_)
+	{
+		ent->getTransform().translate({-rotation, 0, 0});
+	}
+}
+
 const Entity& 			Scene::getEntity		(unsigned int id) const throw()
 {
 	if (id > entities_.size())

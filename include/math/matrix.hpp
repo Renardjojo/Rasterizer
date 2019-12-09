@@ -2,6 +2,8 @@
 #define _MATRIX_H
 
 #include <iostream>
+#include <cassert>
+#include <cmath>
 
 namespace math
 {
@@ -22,7 +24,19 @@ namespace math
 			 *
 			 * brief : create null matrix with x line en y column 
 			 */
-			Matrix 		(unsigned int line, unsigned int column, float value = 0.f);
+			inline Matrix 		(unsigned int line, unsigned int column, float value = 0.f)
+				: 	line_	(line),
+					column_	(column),
+					matrix_	(new float[line_*column_])
+			{
+				for ( size_t i = 0; i < line_; i++)
+				{
+					for ( size_t j = 0; j < column_; j++)
+					{
+						(*this)[i][j] = value;
+					}
+				}
+			}
 
 			/**
 			 * function : Matrix (constructor)
@@ -32,7 +46,20 @@ namespace math
 			 *
 			 * brief : construct identity matrix. This matrix is squart 
 			 */
-			Matrix		(unsigned int size);
+			inline Matrix		(unsigned int size)
+					: 	line_	(size),
+					column_	(size),
+					matrix_	(new float[line_*column_])
+			{
+				for ( size_t i = 0; i < size; i++ )
+				{
+					for ( size_t j = 0; j < size; j++ )
+					{
+						(*this)[i][j] = i == j ? 1.f : 0.f;
+					}
+				}
+			}
+
 
 			/**
 			 * function : Matrix (copy constructor)
@@ -42,14 +69,30 @@ namespace math
 			 *
 			 * brief : construct matrix in function of over matrix. The new matrix is a copy 
 			 */
-			Matrix (const Matrix& other);
+			inline Matrix (const Matrix& other)
+				: 	line_	(other.get_nbLine()),
+					column_	(other.get_nbColumn()),
+					matrix_	(new float[line_*column_])
+			{
+				for ( size_t i = 0; i < line_; i++ )
+				{
+					for ( size_t j = 0; j < column_; j++ )
+					{
+						(*this)[i][j] = other[i][j];
+					}
+				}
+			}
+
 		
 			/**
 			 * function : Matrix (destructor)
 			 *
 			 * brief : destroy matrix
 			 */
-			virtual ~Matrix ();
+			inline virtual ~Matrix ()
+			{
+				delete[] matrix_;
+			}
 
 			 /*----------*/
 			/* methode  */
@@ -82,8 +125,11 @@ namespace math
 			 *
 			 * brief : return true if matrix form is like X*X. Else return false
 			 */
-			bool		isSquare		() const;
-		
+			inline bool		isSquare		() const
+			{
+				return line_ == column_;
+			}
+					
 			/**
 			 * function : isEmpty
 
@@ -94,7 +140,10 @@ namespace math
 			 *
 			 * brief : return true if matrix is empty
 			 */
-			bool		isEmpty		() const;
+			inline bool		isEmpty		() const
+			{
+				return line_ + column_ == 0 || matrix_ == nullptr;
+			}
 
 			/**
 			 * function : isOrtho
@@ -168,9 +217,9 @@ namespace math
 			/* accessor */
 		   /*----------*/
 
-			unsigned int 	get_nbLine	()	const	{	return line_;	}
-			unsigned int 	get_nbColumn()	const	{	return column_;	}
-			unsigned int 	get_size	()	const	{	return column_*line_;	}
+			inline unsigned int 	get_nbLine	()	const	{	return line_;	}
+			inline unsigned int 	get_nbColumn()	const	{	return column_;	}
+			inline unsigned int 	get_size	()	const	{	return column_*line_;	}
 
 			 /*----------*/
 			/* mutator  */
@@ -191,7 +240,10 @@ namespace math
 			 * brief : this function return tab of float corresponding to line of matrix.
 			 * This form allow this call matrix[n][m]. Thirst element start to 0 : [0][0]. Max = [line-1][colomn-1]
 			 */
-			float*		operator[]		(unsigned int indexLine) const;
+			inline float*		operator[]		(unsigned int indexLine) const
+			{
+				return &matrix_[indexLine*(column_)];
+			}
 
 			/**
 			 * function : operator[]
@@ -204,7 +256,10 @@ namespace math
 			 * brief : this function return tab of float corresponding to line of matrix.
 			 * This form allow this call matrix[n][m]. Thirst element start to 0 : [0][0]. Max = [line-1][colomn-1]
 			 */
-			float*		operator[]		(unsigned int indexLine);
+			inline float*		operator[]		(unsigned int indexLine)
+			{
+				return &matrix_[indexLine*(column_)];
+			}
 
 
 			/**
@@ -217,7 +272,22 @@ namespace math
 			 *
 			 * brief : return true check if matrix A egal other matrix.
 			 */
-			bool	operator==		(const Matrix& other) const;
+			bool	operator==		(const Matrix& other) const
+			{
+				if (other.get_nbLine() != line_ && other.get_nbColumn() != column_)
+					return false;
+
+				for (unsigned int i = 0; i < line_; i++)
+				{
+					for (unsigned int j = 0; j < column_; j++)
+					{
+						if ((*this)[i][j] != other[i][j]) 
+							return false;
+					}
+				}
+
+				return true;
+			}
 
 			/**
 			 * function : operator=
@@ -229,8 +299,24 @@ namespace math
 			 *
 			 * brief : copy content of other matrix in matrix.
 			 */
-			Matrix&		operator=		(const Matrix& other);
-		
+			Matrix&		operator=		(const Matrix& other)
+			{
+				delete[] matrix_;
+				
+				line_	= other.get_nbLine();
+				column_	= other.get_nbColumn();
+				matrix_	= new float[line_*column_];
+
+				for ( size_t i = 0; i < line_; i++ )
+				{
+					for ( size_t j = 0; j < column_; j++ )
+					{
+						(*this)[i][j] = other[i][j];
+					}
+				}
+
+				return *this;
+			}		
 
 			/**
 			 * function : operator+=
@@ -243,7 +329,21 @@ namespace math
 			 * brief : add matrix en return result.
 	 	     * Assert is other matrix size is not egal to matrix
 			 */
-			Matrix&		operator+=		(const Matrix& other);
+			inline Matrix&		operator+=		(const Matrix& other)
+			{
+				assert(line_ == other.get_nbLine() &&  column_ == other.get_nbColumn());
+
+				for ( size_t i = 0; i < line_; i++ )
+				{
+					for ( size_t j = 0; j < column_; j++ )
+					{
+						(*this)[i][j] += other[i][j];
+					}
+				}
+					
+				return *this;
+			}
+
 
 			/**
 			 * function : operator-=
@@ -256,7 +356,20 @@ namespace math
 			 * brief : sub matrix en return result.
 	 	     * Assert is other matrix size is not egal to matrix
 			 */
-			Matrix&		operator-=		(const Matrix& other);
+			inline Matrix&		operator-=		(const Matrix& other)
+			{
+				assert(line_ == other.get_nbLine() &&  column_ == other.get_nbColumn());
+
+				for ( size_t i = 0; i < line_; i++ )
+				{
+					for ( size_t j = 0; j < column_; j++ )
+					{
+						(*this)[i][j] -= other[i][j];
+					}
+				}
+					
+				return *this;
+			}
 
 			/**
 			 * function : operator*=
@@ -269,8 +382,26 @@ namespace math
 			 * brief : multiplie matrix en return result.
 	 	     * Assert if other matrix line is not egal to matrx's column.
 			 */
-			Matrix&		operator*=		(const Matrix& other);
-		
+			Matrix&		operator*=		(const Matrix& other)
+			{
+				assert(column_ == other.get_nbLine());
+
+				for ( size_t i = 0; i < line_; i++ )
+				{
+					for ( size_t j = 0; j < column_; j++ )
+					{
+						float result = 0.f;
+
+						for ( size_t index = 0; index < column_; index++)
+						{
+							result += ((*this)[i][index] * other[index][j]);
+						}	
+					}
+				}
+					
+				return *this;
+			}
+					
 			/**
 			 * function : operator+
 			 *
@@ -282,7 +413,20 @@ namespace math
 			 * brief : create Matrix of adition between *this and other.
 	 	     * Assert is other matrix size is not egal to matrix
 			 */
-			Matrix		operator+		(Matrix other);
+			Matrix		operator+		(Matrix other)
+			{
+				assert(line_ == other.get_nbLine() &&  column_ == other.get_nbColumn());
+
+				for ( size_t i = 0; i < line_; i++ )
+				{
+					for ( size_t j = 0; j < column_; j++ )
+					{
+						other[i][j] += (*this)[i][j];
+					}
+				}
+					
+				return other;
+			}
 
 			/**
 			 * function : operator-
@@ -295,7 +439,20 @@ namespace math
 			 * brief : create Matrix of substraction between *this and other.
 	 	     * Assert is other matrix size is not egal to matrix
 			 */
-			Matrix		operator-		(Matrix other);
+			inline Matrix		operator-		(Matrix other)
+			{
+				assert(line_ == other.get_nbLine() &&  column_ == other.get_nbColumn());
+
+				for ( size_t i = 0; i < line_; i++ )
+				{
+					for ( size_t j = 0; j < column_; j++ )
+					{
+						other[i][j] -= (*this)[i][j];
+					}
+				}
+					
+				return other;
+			}
 		
 
 			/**
@@ -310,11 +467,28 @@ namespace math
 			 * New matrix (M) size with multiplication of A and B is egal to M[An][Am]
 	 	     * Assert if other matrix line is not egal to matrx's column.
 			 */
-			Matrix		operator*		(const Matrix& other);
-		
-			 /*----------*/
-			/* convertor*/ 
-		   /*----------*/
+			inline Matrix		operator*		(const Matrix& other)
+			{
+				assert(column_ == other.get_nbLine());
+
+				Matrix mResult (line_, other.get_nbColumn());
+				
+				for ( size_t i = 0; i < mResult.get_nbLine(); i++ )
+				{
+					for ( size_t j = 0; j < mResult.get_nbColumn(); j++ )
+					{
+						float result = 0.f;
+
+						for ( size_t index = 0; index < column_; index++)
+						{
+							result += ((*this)[i][index] * other[index][j]);
+						}
+						mResult[i][j] = result;
+					}
+				}
+
+				return mResult;
+			}
 
 		protected:
 			unsigned int 	line_;
@@ -330,11 +504,35 @@ namespace math
 			 *
 			 * brief : Few function to calcul the derteminant of square matrix X*X. Create assert if matrix too big.
 			 */
-			float		foundDeterminantMat1		() const;
-			float		foundDeterminantMat2		() const;
-			float		foundDeterminantMat3		() const;
-			float		foundDeterminantMat4		() const;
-			float 		foundDeterminantMatX		() const; //recursive function for X square matrix
+			inline float		foundDeterminantMat1		() const
+			{
+				assert(line_ == 1);
+				return *this[0][0];
+			}
+
+			inline float		foundDeterminantMat2		() const
+			{
+				assert(line_ == 2);
+
+				return (*this)[0][0] * (*this)[1][1] - (*this)[1][0] * (*this)[0][1];
+			}
+
+			inline float		foundDeterminantMat3		() const
+			{
+				assert(line_ == 3);
+
+				float determinantMat1 = (*this)[1][1] * (*this)[2][2] - (*this)[2][1] * (*this)[1][2];
+				float determinantMat2 = (*this)[0][1] * (*this)[2][2] - (*this)[2][1] * (*this)[0][2];
+				float determinantMat3 = (*this)[0][1] * (*this)[1][2] - (*this)[1][1] * (*this)[0][2];
+
+				return 	  (*this)[0][0] * determinantMat1 
+						- (*this)[1][0] * determinantMat2 
+						+ (*this)[2][0] * determinantMat3;
+			}
+
+
+			float				foundDeterminantMat4		() const;
+			float 				foundDeterminantMatX		() const; //recursive function for X square matrix
 
 
 			/**
@@ -363,7 +561,10 @@ namespace math
 			 *
 			 * brief : return the result of coeficient multipliate by his cofactor multipliate by the signe : (-1)^(i+j) * minor(i, j)
 			 */
-			float		getCofactor		(unsigned int i, unsigned int j) const;
+			inline float		getCofactor		(unsigned int i, unsigned int j) const
+			{
+				return pow(-1, i+j) * getMinor(i, j);
+			}
 				
 
 			/**
@@ -386,7 +587,11 @@ namespace math
 			 *
 			 * brief : transpose the cofactor matrix. Assert if is square
 			 */
-			void		tranformCoMatToAdjointMat		();
+			inline void		tranformCoMatToAdjointMat		()
+			{
+				assert (isSquare());
+				transpose();
+			}
 
 			/**
 			 * function : getCoMatrix
@@ -399,13 +604,24 @@ namespace math
 			 */
 			bool		adjointMatrixIsReversible		() const;
 		
-		
-
 		private:
 	} Mat;
 
 	//like display function. Display float this prescision of 3 number befor coma.
-	std::ostream& 	operator<<		(std::ostream& out, const Mat& mat);
+	inline std::ostream& 	operator<<		(std::ostream& out, const Mat& mat)
+	{
+		std::cout.precision(3);
+		for ( size_t i = 0; i < mat.get_nbLine(); i++ )
+		{
+			for ( size_t j = 0; j < mat.get_nbColumn(); j++ )
+		{
+			out << mat[i][j] << "	";
+		}
+		out << std::endl;
+		}
+		return out;
+	}
+
 };
 
 #endif // _MATRIX_H

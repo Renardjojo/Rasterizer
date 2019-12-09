@@ -288,24 +288,35 @@ shared_ptr<Mesh> Mesh::loadObj	(const char* path)
 		mesh->normal_.push_back({attrib.normals[i], attrib.normals[i + 1], attrib.normals[i + 2]});
 	}
 
-
-	for (unsigned int i = 0; i < attrib.texcoords.size() ; i+=2)
+	if (attrib.texcoords.empty())
 	{
-		mesh->textCoord_.push_back({attrib.texcoords[i], attrib.texcoords[i + 1]});
+		mesh->textCoord_.push_back({0, 0});
+		mesh->textCoord_.push_back({1, 0});
+		mesh->textCoord_.push_back({0, 1});
+		mesh->textCoord_.push_back({1, 1});
+	}
+	else
+	{	
+		for (unsigned int i = 0; i < attrib.texcoords.size() ; i+=2)
+		{
+			mesh->textCoord_.push_back({attrib.texcoords[i], attrib.texcoords[i + 1]});
+		}
 	}
 
 	for (const tinyobj::shape_t& shape : shapes)
 	{
+		bool firstFace = true;
 		for (unsigned int i = 0; i < shape.mesh.indices.size() ; i+=3)
 		{
 			const tinyobj::index_t& indexV1 = shape.mesh.indices[i];
 			const tinyobj::index_t& indexV2 = shape.mesh.indices[i + 1];
 			const tinyobj::index_t& indexV3 = shape.mesh.indices[i + 2];
 
-			mesh->facesIndices_.push_back({	{(unsigned int)indexV1.vertex_index, (unsigned int)indexV1.texcoord_index, (unsigned int)indexV1.normal_index},
-											{(unsigned int)indexV2.vertex_index, (unsigned int)indexV2.texcoord_index, (unsigned int)indexV2.normal_index},
-											{(unsigned int)indexV3.vertex_index, (unsigned int)indexV3.texcoord_index, (unsigned int)indexV3.normal_index}});
-	
+			mesh->facesIndices_.push_back({	{(unsigned int)indexV1.vertex_index, attrib.texcoords.empty() ? (firstFace ? 0 : 2) : (unsigned int)indexV1.texcoord_index, (unsigned int)indexV1.normal_index},
+											{(unsigned int)indexV2.vertex_index, attrib.texcoords.empty() ? (firstFace ? 1 : 3) : (unsigned int)indexV2.texcoord_index, (unsigned int)indexV2.normal_index},
+											{(unsigned int)indexV3.vertex_index, attrib.texcoords.empty() ? (firstFace ? 2 : 1) : (unsigned int)indexV3.texcoord_index, (unsigned int)indexV3.normal_index}});
+
+			firstFace = !firstFace;
 		}
 	}
 

@@ -5,6 +5,7 @@
 #include <math.h>
 #include <memory>
 #include <utility>
+#include <cassert>
 
 #include "vec2.hpp"
 #include "vec3.hpp"
@@ -76,7 +77,7 @@ class Mesh
 		unsigned int 					getNbTriangle	()				{ return facesIndices_.size();}
 
 		//return the number of triangle in the mesh
-		vector<Vertex> 					getVertices	()					
+		vector<Vertex> 					getVertices	()			
 		{
 			vector<Vertex> vertice;
 			vertice.reserve(facesIndices_.size() * 3);

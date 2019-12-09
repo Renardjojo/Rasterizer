@@ -75,6 +75,8 @@ class TimeManager
 		//update current time and add delay to correspond to the good FPS
 		void update();
 
+		bool secondIsPassing () { return FPS_.chrono.time_ == 0.f; }
+
 		/*----------*/
 		/* accessor */
 		/*----------*/

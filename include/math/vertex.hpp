@@ -34,6 +34,13 @@ class Vertex
 				color_		{color.r, color.g, color.b, color.a}
 		{}
 
+		Vertex (const math::Vec3&& position, const math::Vec3&& normal, const math::Vec2&& textCoord, ColorRGBA&& color = {255, 255, 255, 255})
+			: 	position_	(std::move(position)),
+				normal_		(std::move(normal)),
+				texCoords_	(std::move(textCoord)),
+				color_		{std::move(color.r), std::move(color.g), std::move(color.b), std::move(color.a)}
+		{}
+
 		Vertex (const Vertex& other) 	= default;
 		~Vertex () 						= default;
 

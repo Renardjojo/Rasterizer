@@ -28,27 +28,15 @@ class Rasterizer
 
 		#pragma region constructor/destructor
 
-		Rasterizer () = default;
-		Rasterizer (const Rasterizer& other) = default;
-		virtual ~Rasterizer () = default;
+		Rasterizer () = delete;
+		Rasterizer (const Rasterizer& other) = delete;
+		virtual ~Rasterizer () = delete;
 
 		#pragma endregion //!constructor/destructor
 
 		#pragma region methods
 
-		/**
-		 * function : drawLine
-		 *
-		 * parameter : 
-		 *  : 
-		 *  :
-		 *
-		 * return (type void):
-		 *
-		 * brief : 
-		 */
-		static void		drawLine		(Renderer&, Vertex&, Vertex&);
-		
+		static void		drawLine		(Renderer&, Vertex&, Vertex&);		
 
 		 //this function draw colorfull triangle. Use algorythme of barycenter triangle
 		static void		drawTriangle				(Renderer& , const Vertex& , const Vertex& , const Vertex&);
@@ -56,6 +44,8 @@ class Rasterizer
 
 		// This function draw each entity in scene
 		static void renderScene(Renderer& ren, const Scene& scene, const math::Mat4& projectionMatrix);
+
+		static void resetNbTriangleRender	() { nbTriangleRender = 0; }
 
 		#pragma endregion //!methods
 
@@ -67,6 +57,7 @@ class Rasterizer
 		static ColorRGBA 	getColor4f	();
 		static ColorRGBA 	getColor4ub	();
 		static bool 		getSetting	(E_rasterizerSetting setting) throw();
+		static unsigned int getNbTringleRender() { return nbTriangleRender; }
 
 		#pragma endregion //!accessor
 
@@ -112,6 +103,7 @@ class Rasterizer
 		static bool			drawMutliColor;			//	by default in false
 		static bool			drawNormal;				//	by default in false
 		static bool			drawReferential;		//	by default in false
+		static unsigned int nbTriangleRender;	
 
 		#pragma endregion //! static attribut
 

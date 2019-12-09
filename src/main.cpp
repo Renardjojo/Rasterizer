@@ -22,16 +22,19 @@ int main()
 	Input 			input;
 	Scene 			scene;
 	TimeManager		time;
+
 	bool 			running = true;
 
 	Rasterizer::setColor4ub(255, 255, 0, 255);
 	//int id = scene.addEntity({2.f, 2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
-	int light = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {0.3f, 0.3f, 0.3f}, E_primitive3D::NONE);
+	int light = scene.addEntity({0.f, 0.f, -2.f}, {0.f, 0.f, 0.f}, {0.3f, 0.3f, 0.3f}, E_primitive3D::CUBE);
 	Rasterizer::setColor4ub(255, 0, 0, 255);
 	//int id3 = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::CYLINDRE);
-	int id4 = scene.addEntity({0.f, 0.f, -10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, "./media/teapot.obj");
+	int id4 = scene.addEntity({1.f, 0.f, -10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, "./media/teapot.obj");
+	int id3 = scene.addEntity({0.f, -7.f, -30.f}, {0.f, 0.f, 0.f}, {0.13f, 0.13f, 0.13f}, "./media/Crash.obj");
 	scene.addLigth({1.f, 1.f, 1.f}, .2f, 0.5f, .5f);
-	//scene.getEntity(id4).setTexture("./media/crate.png");
+	scene.getEntity(id4).setTexture("./media/marber.jpg");
+	scene.getEntity(id3).setTexture("./media/crash5f.png");
 	scene.getEntity(light).setTexture("./media/moon1.bmp");
 
 	do
@@ -99,30 +102,59 @@ int main()
 			Rasterizer::setSetting(E_rasterizerSetting::R_DRAW_REFERENTIAL, false);
 		}
 
+		if (input.keyboard.isDown[SDL_SCANCODE_SPACE])
+		{
+			time.dtf_ = 0.f;
+		}
+
+		if (input.keyboard.isDown[SDL_SCANCODE_UP])
+		{
+			scene.moveFront(1);
+		}
+
+		if (input.keyboard.isDown[SDL_SCANCODE_DOWN])
+		{
+			scene.moveBack(1);
+		}
+
+		if (input.keyboard.isDown[SDL_SCANCODE_LEFT])
+		{
+			scene.turnLeft(1);
+		}
+
+		if (input.keyboard.isDown[SDL_SCANCODE_RIGHT])
+		{
+			scene.turnRight(1);
+		}
+
 		static float rot = 0.f;
-		rot += 0.03f;
+		rot += .5f * time.dtf_;
 
 		Rasterizer::setColor4ub(0, 255, 255, 0);
-		//scene.getEntity(id).getTransform().rotate({0.1f * time.dtf_, 0.f, 0.5f* time.dtf_});
-		//scene.getEntity(id).getTransform().translate({0.f * time.dtf_, 0.f, -1.f* time.dtf_});
-		scene.getEntity(light).getTransform().setOrigin({2.f * cos(rot), 0.f, -10.f + 2.f * sin(rot)});
-		//scene.getEntity(id3).getTransform().rotate({0.5f* time.dtf_, 1.f* time.dtf_, 0.f* time.dtf_});
-		scene.getEntity(id4).getTransform().rotate({1.f* time.dtf_, 1.5f* time.dtf_, 0.f* time.dtf_});	
-		//scene.getEntity(id4).getTransform().setOrigin({cos(rot), 0.f, -10.f + 5.f * sin(rot)});
+		scene.getEntity(light).getTransform().translate({2.f * cos(rot), 0.f, 20.f * sin(rot)});
+		scene.getEntity(id4).getTransform().rotate({1.f* time.dtf_, 1.5f* time.dtf_, 0.f});	
+		scene.getEntity(id4).getTransform().translate({5 * cos(rot) * time.dtf_, 0.f, 5 * sin(rot) * time.dtf_});
 
 		(void)id4;
 
 		//std::cout << __FILE__ << ":" <<__LINE__ << ": " << scene.getLight(1).getPosition().z_ << std::endl;
 
-		scene.getLight(1).setPosition({2.f * cos(rot), 0.f, -10.f + 2.f * sin(rot)});
+		scene.getLight(1).setPosition({2.f * cos(rot), 0.f, -40.f + 20.f * sin(rot)});
 
 		//display
 		ren.clear ();
 
 		scene.draw(ren);
+
 		ren.swapBuffer ();
 
 		time.update();
+
+		if (time.secondIsPassing())
+		{
+			std::cout << "NbTriangle Render this frame : " << Rasterizer::getNbTringleRender()<< std::endl;
+		}
+		Rasterizer::resetNbTriangleRender();
 
 	} 	while (running);
 
