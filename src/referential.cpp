@@ -63,37 +63,37 @@ void 		Referential3D::addChildReferential (Referential3D& child) noexcept
 	child.		updateTRSMat();		//update TRS matrix of each of his child because of the new dependance.
 }
 
-void 		Referential3D::displayAxis 	(Texture& RenBuffer) const noexcept
+void 		Referential3D::displayAxis 	(Renderer& ren) const noexcept
 {
 	Vertex origin (origin_.x_, origin_.y_, origin_.z_);
 	Vec4 vecO(origin.position_);
-	origin = {((vecO.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
-			(RenBuffer.heigth() - (( vecO.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vecO.z_};
+	origin = {((vecO.x_ / 5) + 1) * 0.5f * ren.width(), 
+			(ren.heigth() - (( vecO.y_/ 5) + 1) * 0.5f *ren.heigth()), vecO.z_};
 	
 	Vertex axisX = {1.f, 0.f, 0.f};
 	Vec4 vec(axisX.position_);
 	vec = TRSMat_ * vec;
-	axisX = {((vec.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
-			(RenBuffer.heigth() - (( vec.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vec.z_};
+	axisX = {((vec.x_ / 5) + 1) * 0.5f * ren.width(), 
+			(ren.heigth() - (( vec.y_/ 5) + 1) * 0.5f *ren.heigth()), vec.z_};
 	
 	Vertex axisY = {0.f, 1.f, 0.f};
 	Vec4 vec1(axisY.position_);
 	vec1 = TRSMat_ * vec1;
-	axisY = {((vec1.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
-			(RenBuffer.heigth() - (( vec1.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vec1.z_};
+	axisY = {((vec1.x_ / 5) + 1) * 0.5f * ren.width(), 
+			(ren.heigth() - (( vec1.y_/ 5) + 1) * 0.5f *ren.heigth()), vec1.z_};
 
 	Vertex axisZ = {0.f, 0.f, 1.f};
 	Vec4 vec2(axisZ.position_);
 	vec2 = TRSMat_ * vec2;
-	axisZ = {((vec2.x_ / 5) + 1) * 0.5f * RenBuffer.width(), 
-			(RenBuffer.heigth() - (( vec2.y_/ 5) + 1) * 0.5f *RenBuffer.heigth()), vec2.z_};
+	axisZ = {((vec2.x_ / 5) + 1) * 0.5f * ren.width(), 
+			(ren.heigth() - (( vec2.y_/ 5) + 1) * 0.5f *ren.heigth()), vec2.z_};
 
 	Rasterizer::setColor4ub(255, 0, 0, 255);
-	Rasterizer::drawLine(RenBuffer, axisX, origin); // (Ox)
+	Rasterizer::drawLine(ren, axisX, origin); // (Ox)
 	Rasterizer::setColor4ub(0, 255, 0, 255);
-	Rasterizer::drawLine(RenBuffer, axisY, origin); // (Oy)
+	Rasterizer::drawLine(ren, axisY, origin); // (Oy)
 	Rasterizer::setColor4ub(0, 0, 255, 255);
-	Rasterizer::drawLine(RenBuffer, axisZ, origin); // (Oz)
+	Rasterizer::drawLine(ren, axisZ, origin); // (Oz)
 }
 
 void 		Referential3D::updateTRSMat	() 			noexcept

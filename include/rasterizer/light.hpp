@@ -42,7 +42,7 @@ public:
 
         //This function comput the intensity of pixel in function of ligth coefficient (ambient, diffuse, specular). 
         //Function based on Phong model 
-        void computLightComponent(ColorRGBA& colorIntensity, const math::Vec3& normal, float shininessCoef) const;
+        void computLightComponent(ColorRGBA& colorIntensity, const math::Vec3& normal, const math::Vec3& position, float shininessCoef) const;
 
         #pragma endregion //!methods
 
@@ -105,13 +105,13 @@ public:
         void    computDiffuseComponent     (ColorRGBA& colorIntensity, const math::Vec3& normal, float cosTeta)    const;
 
         //This function compute the specular component of pixel in function of k specular with the Phong model
-        void    computSpecularPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
-                                                                        float shininessCoef)        const;
+        void    computSpecularPhong     (   ColorRGBA& colorIntensity, const math::Vec3& normal,  
+                                            float shininessCoef, const math::Vec3& normalPosLightWithObj)        const;
 
         //This function compute the specular component of pixel in function of k specular with the Blinn-Phong model
         //cos Teta represent the dot product between nromalize vector position and normal. In paramter for more optimisation
-        void    computSpecularBlinnPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
-                                                                        float shininessCoef, float cosTeta)        const;                                                                
+        void    computSpecularBlinnPhong     (  ColorRGBA& colorIntensity, const math::Vec3& normal, 
+                                                float shininessCoef, float cosTeta, const math::Vec3& normalPosLightWithObj)        const;                                                                
     
         //THis function compute the reflexion vector of light in function of his direction and in function of normal of surface
         //cos Teta represent the dot product between nromalize vector position and normal. In paramter for more optimisation

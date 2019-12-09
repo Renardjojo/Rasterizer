@@ -128,6 +128,28 @@ Mat4 Mat4::createOrthoMatrix	(float left, float right, float bottom, float top, 
 	return oMat;
 }
 
+Mat4 Mat4::createPerspectiveMatrix 	(float aspect, float near, float far, float fov)
+{
+    float scale = tanf(fov * 0.5f * M_PI / 180.f) * near;
+    float rigth = aspect * scale;
+    float left = -rigth;
+    float top = scale;
+    float bottom = -scale;
+
+    Mat4 oMat;
+    
+    oMat[0][0] = 2 * near / (rigth - left); 
+    oMat[1][1] = 2 * near / (top - bottom); 
+    oMat[2][0] = (rigth + left) / (rigth - left); 
+    oMat[2][1] = (top + bottom) / (top - bottom); 
+    oMat[2][2] = -(far + near) / (far - near); 
+    oMat[2][3] = -1;
+    oMat[3][2] = -2 * far * near / (far - near); 
+    oMat[3][3] = 0; 
+    
+    return oMat;
+}
+
 Mat4 Mat4::createProjectionMatrix		(float distance)
 {
 	Mat4 pMat;

@@ -57,9 +57,20 @@ class Renderer
 
 		Texture& getDrawBuffer() { return texBuffer_;}
 
+		//this function return the color of pixel in current renderer
+		const ColorRGB& 	getPixelColor(unsigned int x, unsigned int y) const noexcept	{ return *(static_cast<ColorRGB*>(texBuffer_[y]) + x); }
+		ColorRGB& 			getPixelColor(unsigned int x, unsigned int y) noexcept			{ return *(static_cast<ColorRGB*>(texBuffer_[y]) + x); }
+
+		unsigned int 	width	() const { return texBuffer_.width(); }
+		unsigned int 	heigth	() const { return texBuffer_.heigth(); }
+
+
 		 /*----------*/
 		/* mutator  */
 	   /*----------*/
+
+		//color pixel of matrix. Z paramater correspond to the depth of pixel in zBuffer
+		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, unsigned int z = 0xffffffff);
 
 		 /*----------*/
 		/* operator */
@@ -73,10 +84,10 @@ class Renderer
 
 	protected:
 
-		SDL_Renderer*	SDLRen_;
-		SDL_Texture*	SDLBuffer_;
-		Texture 		texBuffer_;
-			
+		SDL_Renderer*			SDLRen_;
+		SDL_Texture*			SDLBuffer_;
+		Texture			 		texBuffer_;
+		unsigned int*			zBuffer_;	//Z buffer determined the depth of pixel. If 2 textures war add, Z buffer determined whitch pixel is hidden
 
 	private:
 };

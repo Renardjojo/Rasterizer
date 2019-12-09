@@ -59,10 +59,9 @@ public:
 protected:
 
 	#pragma region attribut
-    ColorRGBA               color_;
-	ColorRGB				colorRGB_;
+    ColorRGBA               			color_;
     shared_ptr<Texture>		pTexture_; //texture of entity. Nullptr if texture doesn't have any texture.
-	float					alpha_ = 1;
+	float								alpha_ = 1;
 
 	#pragma endregion //!attribut
 

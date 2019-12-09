@@ -37,7 +37,7 @@ float crossProduct(const Vertex &v1, const Vertex &v2)
     return v1.position_.x_ * v2.position_.y_ - v1.position_.y_ * v2.position_.x_;
 }
 
-void Rasterizer::drawLine(Texture &target, Vertex &v1, Vertex &v2)
+void Rasterizer::drawLine(Renderer& ren, Vertex &v1, Vertex &v2)
 {
     Vertex pV1 = v1;
     Vertex pV2 = v2;
@@ -70,11 +70,11 @@ void Rasterizer::drawLine(Texture &target, Vertex &v1, Vertex &v2)
     {
         if (steep)
         {
-            target.setPixelColor(y, x, color);
+            ren.setPixelColor(y, x, color);
         }
         else
         {
-            target.setPixelColor(x, y, color);
+            ren.setPixelColor(x, y, color);
         }
 
         error -= dy;
@@ -86,7 +86,7 @@ void Rasterizer::drawLine(Texture &target, Vertex &v1, Vertex &v2)
     }
 }
 
-void Rasterizer::drawTriangle(Texture &target, const Vertex &v1, const Vertex &v2, const Vertex &v3)
+void Rasterizer::drawTriangle(Renderer& ren, const Vertex &v1, const Vertex &v2, const Vertex &v3)
 {
     // Get the bounding box of the triangle
     float maxX, minX, maxY, minY = 0;
@@ -130,7 +130,7 @@ void Rasterizer::drawTriangle(Texture &target, const Vertex &v1, const Vertex &v
                 {
                     if (drawEdge && (w1 < 0.02f || w2 < 0.02f || w3 < 0.02f))
                     {
-                        target.setPixelColor(x, y, {0, 0, 0, 255}, zValue);
+                        ren.setPixelColor(x, y, {0, 0, 0, 255}, zValue);
                     }
                     /*else if (drawEdge && (w1 < 0.03f || w2 < 0.03f || w3 < 0.03f))
 					{
@@ -140,21 +140,21 @@ void Rasterizer::drawTriangle(Texture &target, const Vertex &v1, const Vertex &v
                     else if (drawZBuffer)
                     {
                         ubyte color = (depth + 1) / 2 * 255;
-                        target.setPixelColor(x, y, {static_cast<ubyte>(color), static_cast<ubyte>(color), static_cast<ubyte>(color), 255}, zValue);
+                        ren.setPixelColor(x, y, {static_cast<ubyte>(color), static_cast<ubyte>(color), static_cast<ubyte>(color), 255}, zValue);
                     }
                     else if (drawMutliColor)
                     {
-                        target.setPixelColor(x, y, {static_cast<ubyte>(w1 * 255), static_cast<ubyte>(w2 * 255), static_cast<ubyte>(w3 * 255), 255}, zValue);
+                        ren.setPixelColor(x, y, {static_cast<ubyte>(w1 * 255), static_cast<ubyte>(w2 * 255), static_cast<ubyte>(w3 * 255), 255}, zValue);
                     }
                     else
-                    {
+                    {                          
                         ColorRGBA color;
                         color.r = w1 * v2.color_.r + w2 * v3.color_.r + w3 * v1.color_.r;
                         color.g = (w1 * v2.color_.g) + (w2 * v3.color_.g) + (w3 * v1.color_.g);
                         color.b = (w1 * v2.color_.b) + (w2 * v3.color_.b) + (w3 * v1.color_.b);
-                        color.a = w1 * v2.color_.a + w2 * v3.color_.a + w3 * v1.color_.a;
+                        color.a = w1 * v2.color_.a + w2 * v3.color_.a + w3 * v1.color_.a;                      
 
-                        target.setPixelColor(x, y, color, zValue);
+                        ren.setPixelColor(x, y, color, zValue);
                     }
                 }
             }
@@ -168,27 +168,36 @@ Vec3 crossProduct2(const Vertex &v1, const Vertex &v2)
             v1.position_.z_ * v2.normal_.x_ - v1.position_.x_ * v2.normal_.z_,
             v1.position_.x_ * v2.normal_.y_ - v1.position_.y_ * v2.normal_.x_};
 }
+/*
+Vec3 cross_product (const Vec3& a, const Vec3& b)
+{
+	return { (a.y_ * b.z_) - (a.z_ * b.y_), (a.z_ * b.x_) - (a.x_ * b.z_), (a.x_ * b.y_) - (a.y_ * b.x_) } ;
+}*/
+
+Vec3 cross_product_z (const Vec3& a, const Vec3& b)
+{
+	return { 0.f, 0.f, (a.x_ * b.y_) - (a.y_ * b.x_) } ;
+}
 
 bool faceIsVisible(const Vertex &v1, const Vertex &v2, const Vertex &v3)
 {
-    Vertex camDirection = {0, 0, 1};
-    
-    return  v1.normal_.z_ < 0.f || v2.normal_.z_ < 0.f || v3.normal_.z_ < 0.f; 
+    Vec3 test = cross_product_z((v2.position_ - v1.position_), (v3.position_ - v1.position_));
+    return test.z_ > 0.f;
 }
 
-void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light> &lights, const Vertex &v1, const Vertex &v2, const Vertex &v3)
+void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> &lights, const Vec3& entityPos, const Vertex &v1, const Vertex &v2, const Vertex &v3, const Texture* pTexture)
 {
     float zNear = 0.f;
     float zFar  = 100.f;
-    
-    //if (!faceIsVisible(v1, v2, v3))
-      // return;
+
+    if (faceIsVisible(v1, v2, v3))
+       return;
 
     // Get the bounding box of the triangle
     float maxX = max(max(v1.position_.x_, v2.position_.x_), v3.position_.x_);
 
-    if (maxX > target.width())
-       maxX = target.width();
+    if (maxX > ren.width())
+       maxX = ren.width();
 
     float minX = min(min(v1.position_.x_, v2.position_.x_), v3.position_.x_);
 
@@ -197,8 +206,8 @@ void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light
 
     float maxY = max(max(v1.position_.y_, v2.position_.y_), v3.position_.y_);
 
-    if (maxY > target.heigth())
-        maxY = target.heigth();
+    if (maxY > ren.heigth())
+        maxY = ren.heigth();
 
     float minY = min(min(v1.position_.y_, v2.position_.y_), v3.position_.y_);
 
@@ -242,7 +251,7 @@ void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light
                 {
                     if (drawEdge && (w1 < 0.02f || w2 < 0.02f || w3 < 0.02f))
                     {
-                        target.setPixelColor(x, y, {0, 0, 0, 255}, zValue);
+                        ren.setPixelColor(x, y, {0, 0, 0, 255}, zValue);
                     }
                     /*else if (drawEdge && (w1 < 0.03f || w2 < 0.03f || w3 < 0.03f))
 					{
@@ -254,29 +263,49 @@ void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light
                         //ubyte color = ((depth - zNear) / (zFar + abs(zNear))) * 255;
                         ubyte color = 255 - (depth * 255 / (zFar - abs(zNear)));
                         //ubyte color = (((depth - Znear) / (Zfar + abs(Znear))) * 255); // 10 is Z far
-                        target.setPixelColor(x, y, {static_cast<ubyte>(color), static_cast<ubyte>(color), static_cast<ubyte>(color), 255}, zValue);
+                        ren.setPixelColor(x, y, {static_cast<ubyte>(color), static_cast<ubyte>(color), static_cast<ubyte>(color), 255}, zValue);
                     }
                     else if (drawMutliColor)
                     {
-                        target.setPixelColor(x, y, {static_cast<ubyte>(w1 * 255), static_cast<ubyte>(w2 * 255), static_cast<ubyte>(w3 * 255), 255}, zValue);
+                        ren.setPixelColor(x, y, {static_cast<ubyte>(w1 * 255), static_cast<ubyte>(w2 * 255), static_cast<ubyte>(w3 * 255), 255}, zValue);
                     }
                     else
                     {
-                        ColorRGBA color;
-                        color.r = w1 * v2.color_.r + w2 * v3.color_.r + w3 * v1.color_.r;
-                        color.g = w1 * v2.color_.g + w2 * v3.color_.g + w3 * v1.color_.g;
-                        color.b = w1 * v2.color_.b + w2 * v3.color_.b + w3 * v1.color_.b;
-                        color.a = w1 * v2.color_.a + w2 * v3.color_.a + w3 * v1.color_.a;
+                        if (pTexture == nullptr) //color this color of vertex
+                        { 
+                            ColorRGBA color;
+                            color.r = w1 * v2.color_.r + w2 * v3.color_.r + w3 * v1.color_.r;
+                            color.g = w1 * v2.color_.g + w2 * v3.color_.g + w3 * v1.color_.g;
+                            color.b = w1 * v2.color_.b + w2 * v3.color_.b + w3 * v1.color_.b;
+                            color.a = w1 * v2.color_.a + w2 * v3.color_.a + w3 * v1.color_.a;
 
-                        for (auto &light : lights)
-                        {
-                            light.computLightComponent(color, ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(), 200.f);
+                            for (auto &light : lights)
+                            {
+                                light.computLightComponent( color, 
+                                                            ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(), 
+                                                            entityPos,
+                                                            32.f);
+                            }
+                    
+                            ren.setPixelColor(x, y, color, zValue);
                         }
+                        else //color with texture of entity
+                        {
+                            Vec2 coordText = w1 * v2.texCoords_ + w2 * v3.texCoords_ + w3 * v1.texCoords_;
+                            coordText.x_ *= (pTexture->width() - 1);
+                            coordText.y_ *= (pTexture->heigth() - 1);
 
-                        if (color.a != 1)
-                        //color = alphaBlending(texture[y][x], color);
+                            ColorRGBA color = pTexture->getRGBAPixelColor(coordText.x_, coordText.y_);
 
-                        target.setPixelColor(x, y, color, zValue);
+                            for (auto &light : lights)
+                            {
+                                light.computLightComponent( color, 
+                                                            ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(), 
+                                                            entityPos,
+                                                            32.f);
+                            }
+                            ren.setPixelColor(x, y, color, zValue);
+                        }
                     }
                 }
             }
@@ -284,11 +313,14 @@ void Rasterizer::drawTriangleWithLights(Texture &target, const std::vector<Light
     }
 }
 
-Vertex convertVertexLocalToGlobalAndApplyProjection(Vertex vertex, const Mat4 &projectionMatrix, const Mat4 &TRSMat)
+
+Vec4 creatModelViewVector(const Vec3& vecLocalPos, const Mat4 &TRSMat)
 {
-    //Aplly transformation and projection to get vector in 4D
-    Vec4 clipBoard = TRSMat * vertex.position_;
-    
+    return TRSMat * vecLocalPos;
+}
+
+Vec3 createProjectionVector (Vec4& clipBoard, const Mat4 &projectionMatrix)
+{
     clipBoard = projectionMatrix * clipBoard;
 
     //convert vector in 4D to 3D this homogenize
@@ -297,92 +329,93 @@ Vertex convertVertexLocalToGlobalAndApplyProjection(Vertex vertex, const Mat4 &p
        clipBoard.homogenize();
     }
 
-    //adapte vertex to 2D
-    vertex.position_.x_ = static_cast<float>(((clipBoard.x_ / 5) + 1) * 0.5f * 800);
-    vertex.position_.y_ = static_cast<float>(600 - ((clipBoard.y_ / 5) + 1) * 0.5 * 600);
-    vertex.position_.z_ = clipBoard.z_;
-
-   // std::cout << vertex.position_.x_ << "   "  << vertex.position_.z_ << std::endl;
-
-    Vec4 vecN(vertex.normal_);
-    vecN = TRSMat * vecN;
-    vertex.normal_  = {vecN.x_, vecN.y_, vecN.z_};
-    vertex.normal_.normalize();
-
-    return vertex;
+    return Vec3{clipBoard.x_, clipBoard.y_, clipBoard.z_};
 }
 
-void Rasterizer::renderScene(Texture& renBuffer, const Scene& scene, const math::Mat4& projectionMatrix)
+void applyViewportTransformation (Vec3& vec, unsigned int winH, unsigned int winW)
+{
+    vec.x_ = static_cast<float>(((vec.x_ / 5) + 1) * 0.5f * winW);
+    vec.y_ = static_cast<float>(winH - ((vec.y_ / 5) + 1) * 0.5f * winH);
+}
+
+//draw normal of global vertex 
+void drawnNormal(Renderer& ren, Vertex& vertexLocal, Vertex& vertexGlobal, const Mat4 &projectionMatrix, const Mat4 &TRSMat)
+{
+    Vertex origin = vertexGlobal;
+	Vertex axis = {	(vertexLocal.normal_.x_ * 0.5f + vertexLocal.position_.x_),
+					(vertexLocal.normal_.y_ * 0.5f + vertexLocal.position_.y_),
+					(vertexLocal.normal_.z_ * 0.5f + vertexLocal.position_.z_)};
+
+    Vec4 modelViewV1 = creatModelViewVector(axis.position_, TRSMat);
+    Vec3 clipCoordV1 = createProjectionVector (modelViewV1, projectionMatrix);
+    applyViewportTransformation (clipCoordV1, ren.heigth(), ren.width());
+
+    axis.position_ = clipCoordV1;
+
+	Rasterizer::setColor4ub(0, 255, 255, 255);
+	Rasterizer::drawLine(ren, origin, axis);
+}
+
+void updateNormalWithRotation(Vertex& vertex, const Vec3& rotation)
+{
+    vertex.normal_ = Mat4::createFixedAngleEulerRotationMatrix(rotation) * vertex.normal_;
+}
+
+vector<Vertex> convertLocalToGlobalVertex (const Entity& ent, const Mat4 &projectionMatrix, unsigned int winH, unsigned int winW)
+{
+    vector<Vertex> vertices = ent.getpMesh()->getVertices();
+
+    for (auto& vertex : vertices)
+    {
+        //Model & view transform
+        Vec4 modelViewV1 = creatModelViewVector(vertex.position_, ent.getTransform().getTRSMatrix());
+
+        //apply projection
+        Vec3 clipCoordV1 = createProjectionVector (modelViewV1, projectionMatrix);
+
+        //create viewport position
+        applyViewportTransformation (clipCoordV1 , winH, winW);
+        vertex.position_ = clipCoordV1;
+
+        //update the new normal in function of rotation only
+        updateNormalWithRotation(vertex, ent.getTransform().getLocalOrientation());
+    }
+    return vertices;
+}
+
+void Rasterizer::renderScene(Renderer& ren, const Scene& scene, const math::Mat4& projectionMatrix)
 {
     for (unsigned int i = 0; i < scene.getEntities().size(); i++)
     {
-        if (Rasterizer::getSetting(R_DRAW_NORMAL))
-        {
-            scene.getEntities()[i]->getpMesh()->drawNormal(renBuffer, scene.getEntities()[i]->getTransform().getTRSMatrix());
-        }
+        std::shared_ptr<Mesh> entMesh = scene.getEntities()[i]->getpMesh();
 
         if (Rasterizer::getSetting(R_DRAW_REFERENTIAL))
         {
-            scene.getEntities()[i]->getTransform().displayAxis(renBuffer);
+            scene.getEntities()[i]->getTransform().displayAxis(ren);
         }
 
-        if ( scene.getEntities()[i]->getpMesh() == nullptr)
-            continue; 
+        if ( entMesh == nullptr)
+            continue;
 
-        for (size_t ent = 0; ent < scene.getEntities()[i]->getpMesh()->getIndices().size(); ent += 3)
+        vector<Vertex> globalVertex = convertLocalToGlobalVertex(*scene.getEntities()[i].get(), projectionMatrix, ren.heigth(), ren.width());
+
+        for (size_t ent = 0; ent < globalVertex.size(); ent += 3)
         {
-            Vertex v1 = convertVertexLocalToGlobalAndApplyProjection(
-                scene.getEntities()[i]->getpMesh()->getVertices()[scene.getEntities()[i]->getpMesh()->getIndices()[ent]],
-                projectionMatrix,
-                scene.getEntities()[i]->getTransform().getTRSMatrix());
+            if (Rasterizer::getSetting(R_DRAW_NORMAL))
+            {
+                const Face triangle = entMesh->getFace(ent / 3);
+                Vertex v1Local  {triangle.v1.pos, triangle.v1.normal, triangle.v1.textCord};
+                Vertex v2Local  {triangle.v2.pos, triangle.v2.normal, triangle.v2.textCord};
+                Vertex v3Local  {triangle.v3.pos, triangle.v3.normal, triangle.v3.textCord};
+                
+                drawnNormal(ren, v1Local, globalVertex[ent], projectionMatrix, scene.getEntities()[i]->getTransform().getTRSMatrix());
+                drawnNormal(ren, v2Local, globalVertex[ent + 1], projectionMatrix, scene.getEntities()[i]->getTransform().getTRSMatrix());
+                drawnNormal(ren, v3Local, globalVertex[ent + 2], projectionMatrix, scene.getEntities()[i]->getTransform().getTRSMatrix());
+            }
 
-            Vertex v2 = convertVertexLocalToGlobalAndApplyProjection(
-                scene.getEntities()[i]->getpMesh()->getVertices()[scene.getEntities()[i]->getpMesh()->getIndices()[ent + 1]],
-                projectionMatrix,
-                scene.getEntities()[i]->getTransform().getTRSMatrix());
-
-            Vertex v3 = convertVertexLocalToGlobalAndApplyProjection(
-                scene.getEntities()[i]->getpMesh()->getVertices()[scene.getEntities()[i]->getpMesh()->getIndices()[ent + 2]],
-                projectionMatrix,
-                scene.getEntities()[i]->getTransform().getTRSMatrix());
-
-            Rasterizer::drawTriangleWithLights(renBuffer, scene.getLights(), v1, v2, v3);
+            Rasterizer::drawTriangleWithLights(ren, scene.getLights(), scene.getEntities()[i]->getTransform().getLocalOrigin() , globalVertex[ent], globalVertex[ent + 1], globalVertex[ent + 2], scene.getEntities()[i]->getpTexture().get());
         }
     }
-}
-
-Mat4 Rasterizer::CreatePerspectiveProjectionMatrix(int width, int height, float near, float far, float fov)
-{
-    float scale = tanf(fov * 0.5f * M_PI / 180.f) * near;
-    float imageAspectRatio = width / (float)height;
-    float rigth = imageAspectRatio * scale;
-    float left = -rigth;
-    float top = scale;
-    float bottom = -scale;
-
-    Mat4 PMM;
-    
-    PMM[0][0] = 2 * near / (rigth - left); 
-    PMM[0][1] = 0; 
-    PMM[0][2] = 0; 
-    PMM[0][3] = 0; 
- 
-    PMM[1][0] = 0; 
-    PMM[1][1] = 2 * near / (top - bottom); 
-    PMM[1][2] = 0; 
-    PMM[1][3] = 0;
-
-    PMM[2][0] = (rigth + left) / (rigth - left); 
-    PMM[2][1] = (top + bottom) / (top - bottom); 
-    PMM[2][2] = -(far + near) / (far - near); 
-    PMM[2][3] = -1;
-
-    PMM[3][0] = 0; 
-    PMM[3][1] = 0; 
-    PMM[3][2] = -2 * far * near / (far - near); 
-    PMM[3][3] = 0; 
-    
-    return PMM;
 }
 
 ColorRGBA Rasterizer::getColor4f()

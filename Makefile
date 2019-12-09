@@ -1,6 +1,6 @@
 OUTPUT=bin/exe
-IDIR=-Iinclude -Iinclude/math -Iinclude/rasterizer -Iinclude/scene -Iinclude/renderer
-CXXFLAGS=-g -O0 -Wall -Werror -Wno-unknown-pragmas $(IDIR)
+IDIR=-Iinclude -Iinclude/math -Iinclude/rasterizer -Iinclude/scene -Iinclude/renderer -Iinclude/tinyobjloader-master
+CXXFLAGS=-MMD -g -O3 -pg -no-pie -Wall -Werror -Wno-unknown-pragmas $(IDIR)
 VFLAG=--leak-check=full --show-leak-kinds=all
 #LIBSGL=-lGL -lGLU -ldl
 LIBSDL2=-lSDL2 -lSDL2_image -lSDL2_ttf
@@ -17,13 +17,17 @@ multi :
 
 %.o: %.cpp
 	g++ -c $(CXXFLAGS) $< -o $@
+
 %.o: %.c
 	gcc -c $(CXXFLAGS) $< -o $@
 
 $(OUTPUT): $(OBJS)
-	g++ $(LDLIBS) $^ -o $@
+	g++ $(LDLIBS) -pg -no-pie $^ -o $@
 
-run : $(OUTPUT)
+gprof :
+	gprof $(OUTPUT) gmon.out > output.txt
+
+run : $(OUTPUT) 
 	./$(OUTPUT)
 
 leak : 
@@ -36,7 +40,7 @@ cleanAll:
 	rm -rf $(OBJS) $(OBJS:.o=.d) $(OUTPUT)
 
 clean :
-	rm -rf $(OBJS) $(OBJS:.o=.d)
+	rm -rf $(OBJS) $(OBJS:.o=.d) gmon.out output.txt
 
 re : clean all
 

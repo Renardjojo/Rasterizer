@@ -8,23 +8,33 @@
 #include "vertex.hpp"
 #include "vec3.hpp"
 
+typedef enum E_PixelFormat
+{
+	RGB		= 3,
+	RGBA	= 4
+
+} PixelFormat;
+
 class Texture
 {
 	public:
+
+		#pragma region constructor/destructor
+
 		Texture () = delete;
 
 		//create black sized texture 
-		Texture (unsigned int width, unsigned int height);	
+		Texture (unsigned int width, unsigned int height, E_PixelFormat pixelFormat = E_PixelFormat::RGBA);
 		Texture (const Texture& other) = delete; //TODO
-		Texture (const char* addressPNG);
+		Texture (const char* path);
 		~Texture ();
 
-		 /*----------*/
-		/* methode  */
-	   /*----------*/
+		#pragma endregion //!constructor/destructor
+
+		#pragma region methods
 
 		//color pixel of matrix. Z paramater correspond to the depth of pixel in zBuffer
-		void setPixelColor(unsigned int x, unsigned int y, const ColorRGB& c, unsigned int z = 0xffffffff);
+		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA&);
 
 		/**
 		 * function : clear
@@ -37,26 +47,44 @@ class Texture
 		 */
 		void		clear		();
 		
-		void image(int, int);
-		void nearestNeighborTexturing(Vertex& ver);
-		void bilinearFiltering(Vertex& ver);
+		void bilinearFiltering(math::Vec3& vec);
 
-		 /*----------*/
-		/* accessor */
-	   /*----------*/
+		#pragma endregion //!methods
+
+		#pragma region static methods
+		#pragma endregion //!static methods
+
+		#pragma region accessor
 
 		unsigned int 	width	() const { return width_; }
 		unsigned int 	heigth	() const { return heigth_; }
 
-		 /*----------*/
-		/* mutator  */
-	   /*----------*/
+		ColorRGBA		getRGBAPixelColor (unsigned int x, unsigned int y) const noexcept
+		{ 
+			assert(x < width_ && y < heigth_);
+			unsigned int i = width_ * y + x;
 
-		 /*----------*/
-		/* operator */
-	   /*----------*/
+			if (pixelFormat_ == RGBA)
+			{
+				auto cRGBA = static_cast<ColorRGBA*>(pPixels_);
+				return ColorRGBA{cRGBA[i].r, cRGBA[i].g, cRGBA[i].b, cRGBA[i].a};
+			}
+			else
+			{
+				auto cRGB = static_cast<ColorRGB*>(pPixels_);
+				return (ColorRGBA){cRGB[i].r, cRGB[i].g, cRGB[i].b, 255};
+			}
+		}
 
-		
+		const PixelFormat& 	getPixelFormat () const noexcept 	{ return pixelFormat_;}		
+		PixelFormat& 		getPixelFormat () noexcept 			{ return pixelFormat_;}
+
+		#pragma endregion //!accessor
+
+		#pragma region mutator
+		#pragma endregion //!mutator
+
+		#pragma region operator
 
 		void operator=(const Texture& other) = delete; //TODO
 
@@ -71,7 +99,7 @@ class Texture
 		 * brief : this function return tab of float corresponding to line of texture.
 		 * This form allow this call texture[n][m]. Thirst element start to 0 : [0][0]. Max = [line-1][colomn-1]
 		 */
-		ColorRGBA*		operator[]		(unsigned int indexLine) const;
+		void*		operator[]		(unsigned int indexLine) const;
 
 		/**
 		 * function : operator[]
@@ -84,22 +112,33 @@ class Texture
 		 * brief : this function return tab of float corresponding to line of texture.
 		 * This form allow this call texture[n][m]. Thirst element start to 0 : [0][0]. Max = [line-1][colomn-1]
 		 */
-		ColorRGBA*		operator[]		(unsigned int indexLine);
+		void*		operator[]		(unsigned int indexLine); 
 
-		 /*----------*/
-		/* convertor*/ 
-	   /*----------*/
+		#pragma endregion //!operator
 
-		//public variable (get and set with no effect for class)
+		#pragma region convertor
+		#pragma endregion //!convertor
 
 	protected:
-		
-		unsigned int 				width_;
-		unsigned int 				heigth_;
-		void*						pPixels;
-		unsigned int*				zBuffer_;	//Z buffer determined the depth of pixel. If 2 textures war add, Z buffer determined whitch pixel is hidden
 
-	private:
+		#pragma region attribut
+
+		unsigned int 		width_;
+		unsigned int 		heigth_;
+		void*				pPixels_;
+		PixelFormat			pixelFormat_;
+
+		#pragma endregion //!attribut
+
+		#pragma region static attribut
+		#pragma endregion //! static attribut
+
+		#pragma region methods
+
+		//this function load texture only in PNG for moment
+		void loadTexture (const char* path);
+
+		#pragma endregion //!methods
 };
 
-#endif // _TEXTURE_H
+#endif //_TEXTURE_H

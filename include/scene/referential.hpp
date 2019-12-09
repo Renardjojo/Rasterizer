@@ -6,7 +6,7 @@
 #include <vector>
 #include "mat4.hpp"
 #include "vec3.hpp"
-#include "texture.hpp"
+#include "renderer.hpp"
 
 typedef class Referential3D
 {
@@ -56,7 +56,7 @@ typedef class Referential3D
 		void 		addChildReferential (Referential3D& child) 	noexcept;
 
 		// few function to display entity of ref in function of his TRS matrix.
-		void 		displayAxis 		(Texture& RenBuffer)				const noexcept;
+		void 		displayAxis 		(Renderer& ren)	const noexcept;
 
 		#pragma endregion //!methods
 

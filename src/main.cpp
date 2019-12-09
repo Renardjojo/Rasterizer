@@ -26,11 +26,13 @@ int main()
 
 	Rasterizer::setColor4ub(255, 255, 0, 255);
 	//int id = scene.addEntity({2.f, 2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
-	int ligth = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {0.3f, 0.3f, 0.3f}, E_primitive3D::SPHERE);
+	int light = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {0.3f, 0.3f, 0.3f}, E_primitive3D::NONE);
 	Rasterizer::setColor4ub(255, 0, 0, 255);
 	//int id3 = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::CYLINDRE);
-	int id4 = scene.addEntity({0.f, 0.f, -10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
-	scene.addLigth({1.f, 1.f, 1.f}, 0.2f, 0.7f, 1.f);
+	int id4 = scene.addEntity({0.f, 0.f, -10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, "./media/teapot.obj");
+	scene.addLigth({1.f, 1.f, 1.f}, .2f, 0.5f, .5f);
+	//scene.getEntity(id4).setTexture("./media/crate.png");
+	scene.getEntity(light).setTexture("./media/moon1.bmp");
 
 	do
 	{
@@ -103,19 +105,21 @@ int main()
 		Rasterizer::setColor4ub(0, 255, 255, 0);
 		//scene.getEntity(id).getTransform().rotate({0.1f * time.dtf_, 0.f, 0.5f* time.dtf_});
 		//scene.getEntity(id).getTransform().translate({0.f * time.dtf_, 0.f, -1.f* time.dtf_});
-		scene.getEntity(ligth).getTransform().setOrigin({5.f * cos(rot), 0.f, -10.f + 5.f * sin(rot)});
+		scene.getEntity(light).getTransform().setOrigin({2.f * cos(rot), 0.f, -10.f + 2.f * sin(rot)});
 		//scene.getEntity(id3).getTransform().rotate({0.5f* time.dtf_, 1.f* time.dtf_, 0.f* time.dtf_});
-		scene.getEntity(id4).getTransform().rotate({0.5f* time.dtf_, 0.5f* time.dtf_, 0.5f* time.dtf_});	
-	//	scene.getEntity(id4).getTransform().setOrigin({cos(rot), 0.f, -10.f + 5.f * sin(rot)});
+		scene.getEntity(id4).getTransform().rotate({1.f* time.dtf_, 1.5f* time.dtf_, 0.f* time.dtf_});	
+		//scene.getEntity(id4).getTransform().setOrigin({cos(rot), 0.f, -10.f + 5.f * sin(rot)});
 
-		//std::cout << __FILE__ << ":" <<__LINE__ << ": " << scene.getEntity(id4).getTransform().getLocalOrigin().z_ << std::endl;
+		(void)id4;
 
-		scene.getLight(1).setPosition({5.f * cos(rot), 0.f, -10.f + 5.f * sin(rot)});
+		//std::cout << __FILE__ << ":" <<__LINE__ << ": " << scene.getLight(1).getPosition().z_ << std::endl;
+
+		scene.getLight(1).setPosition({2.f * cos(rot), 0.f, -10.f + 2.f * sin(rot)});
 
 		//display
 		ren.clear ();
 
-		scene.draw(ren.getDrawBuffer());
+		scene.draw(ren);
 		ren.swapBuffer ();
 
 		time.update();

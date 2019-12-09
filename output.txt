@@ -1,0 +1,699 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 49.38      8.28     8.28  1987536     0.00     0.01  Rasterizer::drawTriangleWithLights(Renderer&, std::vector<Light, std::allocator<Light> > const&, math::Vec3 const&, Vertex const&, Vertex const&, Vertex const&, Texture const*)
+ 15.74     10.92     2.64 155307270     0.00     0.00  Light::computLightComponent(S_ColorRGBA&, math::Vec3 const&, math::Vec3 const&, float) const
+  7.45     12.17     1.25 11934036     0.00     0.00  math::Matrix::operator*(math::Matrix const&)
+  5.01     13.01     0.84 109990067     0.00     0.00  Texture::setPixelColor(unsigned int, unsigned int, S_ColorRGBA const&)
+  4.06     13.69     0.68 17887824     0.00     0.00  math::operator*(math::Mat4 const&, math::Vec4 const&)
+  3.52     14.28     0.59 155307270     0.00     0.00  Renderer::setPixelColor(unsigned int, unsigned int, S_ColorRGBA const&, unsigned int)
+  3.52     14.87     0.59 156235606     0.00     0.00  operator+(S_ColorRGBA const&, S_ColorRGBA const&)
+  2.03     15.21     0.34 613768160     0.00     0.00  math::Vec2::Vec2(float, float)
+  1.37     15.44     0.23 17897528     0.00     0.00  math::Matrix::Matrix(unsigned int)
+  1.25     15.65     0.21  5967900     0.00     0.00  math::Matrix::Matrix(math::Matrix const&)
+  1.07     15.83     0.18  5964372     0.00     0.00  math::Mat4::createFixedAngleEulerRotationMatrix(math::Vec3 const&)
+  1.07     16.01     0.18                             math::Matrix::adjointMatrixIsReversible() const
+  0.89     16.16     0.15      881     0.17     3.37  convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int)
+  0.83     16.30     0.14 286205184     0.00     0.00  math::Matrix::operator[](unsigned int) const
+  0.78     16.43     0.13                             math::Vec2::Vec2()
+  0.30     16.48     0.05        1    50.00    50.00  Light::Light(math::Vec3 const&, float, float, float)
+  0.24     16.52     0.04 89483212     0.00     0.00  math::Matrix::operator[](unsigned int)
+  0.24     16.56     0.04  5962608     0.00     0.00  math::Vec3::Vec3(math::Vec4 const&)
+  0.24     16.60     0.04                             Scene::~Scene()
+  0.18     16.63     0.03        1    30.00    30.00  Texture::~Texture()
+  0.18     16.66     0.03                             Renderer::clear()
+  0.12     16.68     0.02  5962608     0.00     0.00  math::Vec4::homogenize()
+  0.12     16.70     0.02                             std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) [clone .constprop.25]
+  0.06     16.71     0.01 11925216     0.00     0.00  math::Vec4::Vec4(math::Vec3 const&, float)
+  0.06     16.72     0.01  5967020     0.00     0.00  math::Mat4::~Mat4()
+  0.06     16.73     0.01                             math::Mat4::createProjectionMatrix(float)
+  0.06     16.74     0.01                             math::Vec4::Vec4(float)
+  0.06     16.75     0.01                             math::Matrix::Matrix(unsigned int, unsigned int, float)
+  0.06     16.76     0.01                             Input::~Input()
+  0.03     16.77     0.01 11925216     0.00     0.00  math::Vec2::Vec2(math::Vec2 const&)
+  0.03     16.77     0.01                             math::Vec2::Vec2(float)
+  0.00     16.77     0.00 35799464     0.00     0.00  math::Matrix::~Matrix()
+  0.00     16.77     0.00 17887824     0.00     0.00  math::Vec4::Vec4()
+  0.00     16.77     0.00  5962608     0.00     0.00  math::Vec4::operator=(math::Vec4 const&)
+  0.00     16.77     0.00    10818     0.00     0.00  std::vector<float, std::allocator<float> >::push_back(float const&)
+  0.00     16.77     0.00     7213     0.00     0.00  tinyobj::parseInt(char const**)
+  0.00     16.77     0.00     7212     0.00     0.00  tinyobj::parseReal(char const**, double)
+  0.00     16.77     0.00     6768     0.00     0.00  tinyobj::parseTriple(char const**, int, int, int, tinyobj::vertex_index_t*) [clone .constprop.566]
+  0.00     16.77     0.00     6768     0.00     0.00  std::vector<tinyobj::index_t, std::allocator<tinyobj::index_t> >::push_back(tinyobj::index_t const&)
+  0.00     16.77     0.00     4663     0.00     0.00  tinyobj::safeGetline(std::istream&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&)
+  0.00     16.77     0.00     4512     0.00     0.00  std::vector<tinyobj::vertex_index_t, std::allocator<tinyobj::vertex_index_t> >::vector(std::vector<tinyobj::vertex_index_t, std::allocator<tinyobj::vertex_index_t> > const&)
+  0.00     16.77     0.00     3528     0.00     0.00  math::Matrix::operator=(math::Matrix const&)
+  0.00     16.77     0.00     1764     0.00     0.00  math::Mat4::createTRSMatrix(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&)
+  0.00     16.77     0.00     1764     0.00     0.00  math::Mat4::Mat4(math::Matrix const&)
+  0.00     16.77     0.00     1205     0.00     0.00  tinyobj::parseReal(char const**, float*)
+  0.00     16.77     0.00     1202     0.00     0.00  tinyobj::parseReal3(float*, float*, float*, char const**, double, double, double)
+  0.00     16.77     0.00     1202     0.00     0.00  void std::vector<math::Vec3, std::allocator<math::Vec3> >::emplace_back<math::Vec3>(math::Vec3&&)
+  0.00     16.77     0.00      881     0.00    18.44  Rasterizer::renderScene(Renderer&, Scene const&, math::Mat4 const&)
+  0.00     16.77     0.00      881     0.00     0.00  math::Mat4::createPerspectiveMatrix(float, float, float, float)
+  0.00     16.77     0.00      881     0.00     0.00  Texture::clear()
+  0.00     16.77     0.00      881     0.00     0.00  Texture::operator[](unsigned int)
+  0.00     16.77     0.00      881     0.00     0.00  std::vector<Vertex, std::allocator<Vertex> >::reserve(unsigned long)
+  0.00     16.77     0.00       39     0.00     0.00  void std::vector<float, std::allocator<float> >::_M_emplace_back_aux<float const&>(float const&)
+  0.00     16.77     0.00       14     0.00     0.00  void std::vector<tinyobj::index_t, std::allocator<tinyobj::index_t> >::_M_emplace_back_aux<tinyobj::index_t const&>(tinyobj::index_t const&)
+  0.00     16.77     0.00       13     0.00     0.00  void std::vector<S_FaceIndices, std::allocator<S_FaceIndices> >::_M_emplace_back_aux<S_FaceIndices>(S_FaceIndices&&)
+  0.00     16.77     0.00       13     0.00     0.00  void std::vector<tinyobj::face_t, std::allocator<tinyobj::face_t> >::_M_emplace_back_aux<tinyobj::face_t const&>(tinyobj::face_t const&)
+  0.00     16.77     0.00       13     0.00     0.00  void std::vector<unsigned char, std::allocator<unsigned char> >::_M_emplace_back_aux<unsigned char>(unsigned char&&)
+  0.00     16.77     0.00       13     0.00     0.00  void std::vector<int, std::allocator<int> >::_M_emplace_back_aux<int>(int&&)
+  0.00     16.77     0.00       13     0.00     0.00  void std::vector<unsigned int, std::allocator<unsigned int> >::_M_emplace_back_aux<unsigned int const&>(unsigned int const&)
+  0.00     16.77     0.00        3     0.00     0.00  math::Mat4::Mat4()
+  0.00     16.77     0.00        2     0.00     0.65  Referential3D::updateTRSMat()
+  0.00     16.77     0.00        2     0.00     0.65  Referential3D::Referential3D(char const*, math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&)
+  0.00     16.77     0.00        2     0.00     0.65  Entity::Entity(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&, E_primitive3D)
+  0.00     16.77     0.00        2     0.00     0.00  std::vector<math::Vec3, std::allocator<math::Vec3> >::reserve(unsigned long)
+  0.00     16.77     0.00        2     0.00     0.00  void std::vector<Referential3D*, std::allocator<Referential3D*> >::_M_emplace_back_aux<Referential3D*>(Referential3D*&&)
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z3minff
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN13Referential3DC2Ev
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN4math4Mat4C2Ev
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN4math4Vec2C2Ev
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN4math4Vec3C2ERKNS_4Vec2Ef
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN4math4Vec4C2Ev
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN4math6MatrixC2Ejjf
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN5InputC2Ev
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN5LightC2ERKN4math4Vec3Efff
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN5SceneC2Ev
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6EntityC2ERKN4math4Vec3ES3_S3_R13Referential3D13E_primitive3D
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN7TextureC2Ejj13E_PixelFormat
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN7tinyobj14MaterialReaderD2Ev
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN8RendererC2EP10SDL_Windowii
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN9MaterialsC2Ev
+  0.00     16.77     0.00        1     0.00     0.00  _GLOBAL__sub_I_main
+  0.00     16.77     0.00        1     0.00     0.00  Referential3D::Referential3D()
+  0.00     16.77     0.00        1     0.00     0.00  Mesh::loadObj(char const*)
+  0.00     16.77     0.00        1     0.00     0.00  Texture::Texture(char const*)
+  0.00     16.77     0.00        1     0.00     0.00  Texture::Texture(unsigned int, unsigned int, E_PixelFormat)
+  0.00     16.77     0.00        1     0.00     0.00  tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, char const*, char const*, bool, bool)
+  0.00     16.77     0.00        1     0.00     0.00  tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool)
+  0.00     16.77     0.00        1     0.00     0.00  tinyobj::shape_t::shape_t(tinyobj::shape_t const&)
+  0.00     16.77     0.00        1     0.00     0.00  tinyobj::shape_t::~shape_t()
+  0.00     16.77     0.00        1     0.00     0.00  tinyobj::exportGroupsToShape(tinyobj::shape_t*, tinyobj::PrimGroup const&, std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, bool, std::vector<float, std::allocator<float> > const&)
+  0.00     16.77     0.00        1     0.00     0.00  std::__shared_ptr<Mesh, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<Mesh>>(std::_Sp_make_shared_tag, std::allocator<Mesh> const&)
+  0.00     16.77     0.00        1     0.00     0.00  std::_Sp_counted_ptr_inplace<Mesh, std::allocator<Mesh>, (__gnu_cxx::_Lock_policy)2>::_M_destroy()
+  0.00     16.77     0.00        1     0.00     0.00  std::_Sp_counted_ptr_inplace<Mesh, std::allocator<Mesh>, (__gnu_cxx::_Lock_policy)2>::_M_dispose()
+  0.00     16.77     0.00        1     0.00     0.00  std::vector<math::Vec2, std::allocator<math::Vec2> >::reserve(unsigned long)
+  0.00     16.77     0.00        1     0.00     0.00  std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> >::~vector()
+  0.00     16.77     0.00        1     0.00     0.00  std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> >::operator=(std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&)
+  0.00     16.77     0.00        1     0.00     0.00  void std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >::_M_emplace_back_aux<tinyobj::shape_t const&>(tinyobj::shape_t const&)
+  0.00     16.77     0.00        1     0.00     0.00  std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int>, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> > >::_M_erase(std::_Rb_tree_node<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> >*)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.06% of 16.77 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     96.9    0.00   16.24                 Scene::draw(Renderer&) const [1]
+                0.00   16.24     881/881         Rasterizer::renderScene(Renderer&, Scene const&, math::Mat4 const&) [2]
+                0.00    0.00     881/881         math::Mat4::createPerspectiveMatrix(float, float, float, float) [42]
+                0.00    0.00     881/5967020     math::Mat4::~Mat4() [28]
+                0.00    0.00     881/35799464     math::Matrix::~Matrix() [53]
+-----------------------------------------------
+                0.00   16.24     881/881         Scene::draw(Renderer&) const [1]
+[2]     96.9    0.00   16.24     881         Rasterizer::renderScene(Renderer&, Scene const&, math::Mat4 const&) [2]
+                8.28    5.00 1987536/1987536     Rasterizer::drawTriangleWithLights(Renderer&, std::vector<Light, std::allocator<Light> > const&, math::Vec3 const&, Vertex const&, Vertex const&, Vertex const&, Texture const*) [3]
+                0.15    2.82     881/881         convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+-----------------------------------------------
+                8.28    5.00 1987536/1987536     Rasterizer::renderScene(Renderer&, Scene const&, math::Mat4 const&) [2]
+[3]     79.2    8.28    5.00 1987536         Rasterizer::drawTriangleWithLights(Renderer&, std::vector<Light, std::allocator<Light> > const&, math::Vec3 const&, Vertex const&, Vertex const&, Vertex const&, Texture const*) [3]
+                2.64    0.59 155307270/155307270     Light::computLightComponent(S_ColorRGBA&, math::Vec3 const&, math::Vec3 const&, float) const [4]
+                0.59    0.84 155307270/155307270     Renderer::setPixelColor(unsigned int, unsigned int, S_ColorRGBA const&, unsigned int) [7]
+                0.34    0.00 607805552/613768160     math::Vec2::Vec2(float, float) [12]
+-----------------------------------------------
+                2.64    0.59 155307270/155307270     Rasterizer::drawTriangleWithLights(Renderer&, std::vector<Light, std::allocator<Light> > const&, math::Vec3 const&, Vertex const&, Vertex const&, Vertex const&, Texture const*) [3]
+[4]     19.3    2.64    0.59 155307270         Light::computLightComponent(S_ColorRGBA&, math::Vec3 const&, math::Vec3 const&, float) const [4]
+                0.59    0.00 156235606/156235606     operator+(S_ColorRGBA const&, S_ColorRGBA const&) [11]
+-----------------------------------------------
+                0.15    2.82     881/881         Rasterizer::renderScene(Renderer&, Scene const&, math::Mat4 const&) [2]
+[5]     17.7    0.15    2.82     881         convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+                0.18    1.73 5962608/5964372     math::Mat4::createFixedAngleEulerRotationMatrix(math::Vec3 const&) [6]
+                0.68    0.14 17887824/17887824     math::operator*(math::Mat4 const&, math::Vec4 const&) [10]
+                0.04    0.00 5962608/5962608     math::Vec3::Vec3(math::Vec4 const&) [22]
+                0.02    0.00 5962608/5962608     math::Vec4::homogenize() [25]
+                0.01    0.00 11925216/11925216     math::Vec4::Vec4(math::Vec3 const&, float) [27]
+                0.01    0.00 5962608/5967020     math::Mat4::~Mat4() [28]
+                0.01    0.00 11925216/11925216     math::Vec2::Vec2(math::Vec2 const&) [33]
+                0.00    0.00 5962608/613768160     math::Vec2::Vec2(float, float) [12]
+                0.00    0.00 5962608/5962608     math::Vec4::operator=(math::Vec4 const&) [55]
+                0.00    0.00 5962608/35799464     math::Matrix::~Matrix() [53]
+                0.00    0.00     881/881         std::vector<Vertex, std::allocator<Vertex> >::reserve(unsigned long) [69]
+-----------------------------------------------
+                0.00    0.00    1764/5964372     math::Mat4::createTRSMatrix(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&) [38]
+                0.18    1.73 5962608/5964372     convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+[6]     11.4    0.18    1.73 5964372         math::Mat4::createFixedAngleEulerRotationMatrix(math::Vec3 const&) [6]
+                1.25    0.00 11928744/11934036     math::Matrix::operator*(math::Matrix const&) [8]
+                0.23    0.00 17893116/17897528     math::Matrix::Matrix(unsigned int) [13]
+                0.21    0.00 5964372/5967900     math::Matrix::Matrix(math::Matrix const&) [14]
+                0.04    0.00 89465580/89483212     math::Matrix::operator[](unsigned int) [21]
+                0.00    0.00 29821860/35799464     math::Matrix::~Matrix() [53]
+-----------------------------------------------
+                0.59    0.84 155307270/155307270     Rasterizer::drawTriangleWithLights(Renderer&, std::vector<Light, std::allocator<Light> > const&, math::Vec3 const&, Vertex const&, Vertex const&, Vertex const&, Texture const*) [3]
+[7]      8.5    0.59    0.84 155307270         Renderer::setPixelColor(unsigned int, unsigned int, S_ColorRGBA const&, unsigned int) [7]
+                0.84    0.00 109990067/109990067     Texture::setPixelColor(unsigned int, unsigned int, S_ColorRGBA const&) [9]
+-----------------------------------------------
+                0.00    0.00    1764/11934036     Referential3D::updateTRSMat() [37]
+                0.00    0.00    3528/11934036     math::Mat4::createTRSMatrix(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&) [38]
+                1.25    0.00 11928744/11934036     math::Mat4::createFixedAngleEulerRotationMatrix(math::Vec3 const&) [6]
+[8]      7.5    1.25    0.00 11934036         math::Matrix::operator*(math::Matrix const&) [8]
+-----------------------------------------------
+                0.84    0.00 109990067/109990067     Renderer::setPixelColor(unsigned int, unsigned int, S_ColorRGBA const&, unsigned int) [7]
+[9]      5.0    0.84    0.00 109990067         Texture::setPixelColor(unsigned int, unsigned int, S_ColorRGBA const&) [9]
+-----------------------------------------------
+                0.68    0.14 17887824/17887824     convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+[10]     4.9    0.68    0.14 17887824         math::operator*(math::Mat4 const&, math::Vec4 const&) [10]
+                0.14    0.00 286205184/286205184     math::Matrix::operator[](unsigned int) const [16]
+                0.00    0.00 17887824/17887824     math::Vec4::Vec4() [54]
+-----------------------------------------------
+                0.59    0.00 156235606/156235606     Light::computLightComponent(S_ColorRGBA&, math::Vec3 const&, math::Vec3 const&, float) const [4]
+[11]     3.5    0.59    0.00 156235606         operator+(S_ColorRGBA const&, S_ColorRGBA const&) [11]
+-----------------------------------------------
+                0.00    0.00 5962608/613768160     convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+                0.34    0.00 607805552/613768160     Rasterizer::drawTriangleWithLights(Renderer&, std::vector<Light, std::allocator<Light> > const&, math::Vec3 const&, Vertex const&, Vertex const&, Vertex const&, Texture const*) [3]
+[12]     2.0    0.34    0.00 613768160         math::Vec2::Vec2(float, float) [12]
+-----------------------------------------------
+                0.00    0.00       3/17897528     math::Mat4::Mat4() [43]
+                0.00    0.00     881/17897528     math::Mat4::createPerspectiveMatrix(float, float, float, float) [42]
+                0.00    0.00    3528/17897528     math::Mat4::createTRSMatrix(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&) [38]
+                0.23    0.00 17893116/17897528     math::Mat4::createFixedAngleEulerRotationMatrix(math::Vec3 const&) [6]
+[13]     1.4    0.23    0.00 17897528         math::Matrix::Matrix(unsigned int) [13]
+-----------------------------------------------
+                0.00    0.00    1764/5967900     math::Mat4::Mat4(math::Matrix const&) [41]
+                0.00    0.00    1764/5967900     math::Mat4::createTRSMatrix(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&) [38]
+                0.21    0.00 5964372/5967900     math::Mat4::createFixedAngleEulerRotationMatrix(math::Vec3 const&) [6]
+[14]     1.3    0.21    0.00 5967900         math::Matrix::Matrix(math::Matrix const&) [14]
+-----------------------------------------------
+                                                 <spontaneous>
+[15]     1.1    0.18    0.00                 math::Matrix::adjointMatrixIsReversible() const [15]
+-----------------------------------------------
+                0.14    0.00 286205184/286205184     math::operator*(math::Mat4 const&, math::Vec4 const&) [10]
+[16]     0.8    0.14    0.00 286205184         math::Matrix::operator[](unsigned int) const [16]
+-----------------------------------------------
+                                                 <spontaneous>
+[17]     0.8    0.13    0.00                 math::Vec2::Vec2() [17]
+-----------------------------------------------
+                                                 <spontaneous>
+[18]     0.4    0.04    0.03                 Scene::~Scene() [18]
+                0.03    0.00       1/1           Texture::~Texture() [23]
+                0.00    0.00       3/5967020     math::Mat4::~Mat4() [28]
+                0.00    0.00       3/35799464     math::Matrix::~Matrix() [53]
+                0.00    0.00       1/1           std::_Sp_counted_ptr_inplace<Mesh, std::allocator<Mesh>, (__gnu_cxx::_Lock_policy)2>::_M_dispose() [105]
+                0.00    0.00       1/1           std::_Sp_counted_ptr_inplace<Mesh, std::allocator<Mesh>, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [104]
+-----------------------------------------------
+                0.05    0.00       1/1           Scene::addLigth(math::Vec3 const&, float, float, float) [20]
+[19]     0.3    0.05    0.00       1         Light::Light(math::Vec3 const&, float, float, float) [19]
+-----------------------------------------------
+                                                 <spontaneous>
+[20]     0.3    0.00    0.05                 Scene::addLigth(math::Vec3 const&, float, float, float) [20]
+                0.05    0.00       1/1           Light::Light(math::Vec3 const&, float, float, float) [19]
+-----------------------------------------------
+                0.00    0.00    7048/89483212     math::Mat4::createPerspectiveMatrix(float, float, float, float) [42]
+                0.00    0.00   10584/89483212     math::Mat4::createTRSMatrix(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&) [38]
+                0.04    0.00 89465580/89483212     math::Mat4::createFixedAngleEulerRotationMatrix(math::Vec3 const&) [6]
+[21]     0.2    0.04    0.00 89483212         math::Matrix::operator[](unsigned int) [21]
+-----------------------------------------------
+                0.04    0.00 5962608/5962608     convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+[22]     0.2    0.04    0.00 5962608         math::Vec3::Vec3(math::Vec4 const&) [22]
+-----------------------------------------------
+                0.03    0.00       1/1           Scene::~Scene() [18]
+[23]     0.2    0.03    0.00       1         Texture::~Texture() [23]
+-----------------------------------------------
+                                                 <spontaneous>
+[24]     0.2    0.03    0.00                 Renderer::clear() [24]
+                0.00    0.00     881/881         Texture::clear() [67]
+-----------------------------------------------
+                0.02    0.00 5962608/5962608     convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+[25]     0.1    0.02    0.00 5962608         math::Vec4::homogenize() [25]
+-----------------------------------------------
+                                                 <spontaneous>
+[26]     0.1    0.02    0.00                 std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) [clone .constprop.25] [26]
+-----------------------------------------------
+                0.01    0.00 11925216/11925216     convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+[27]     0.1    0.01    0.00 11925216         math::Vec4::Vec4(math::Vec3 const&, float) [27]
+-----------------------------------------------
+                0.00    0.00       3/5967020     Scene::~Scene() [18]
+                0.00    0.00     881/5967020     Scene::draw(Renderer&) const [1]
+                0.00    0.00    3528/5967020     Referential3D::updateTRSMat() [37]
+                0.01    0.00 5962608/5967020     convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+[28]     0.1    0.01    0.00 5967020         math::Mat4::~Mat4() [28]
+-----------------------------------------------
+                                                 <spontaneous>
+[29]     0.1    0.01    0.00                 math::Mat4::createProjectionMatrix(float) [29]
+-----------------------------------------------
+                                                 <spontaneous>
+[30]     0.1    0.01    0.00                 math::Vec4::Vec4(float) [30]
+-----------------------------------------------
+                                                 <spontaneous>
+[31]     0.1    0.01    0.00                 math::Matrix::Matrix(unsigned int, unsigned int, float) [31]
+-----------------------------------------------
+                                                 <spontaneous>
+[32]     0.1    0.01    0.00                 Input::~Input() [32]
+-----------------------------------------------
+                0.01    0.00 11925216/11925216     convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+[33]     0.0    0.01    0.00 11925216         math::Vec2::Vec2(math::Vec2 const&) [33]
+-----------------------------------------------
+                                                 <spontaneous>
+[34]     0.0    0.01    0.00                 math::Vec2::Vec2(float) [34]
+-----------------------------------------------
+                0.00    0.00       2/2           Entity::Entity(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&, E_primitive3D) [36]
+[35]     0.0    0.00    0.00       2         Referential3D::Referential3D(char const*, math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&) [35]
+                0.00    0.00       2/2           Referential3D::updateTRSMat() [37]
+                0.00    0.00       2/3           math::Mat4::Mat4() [43]
+                0.00    0.00       2/2           void std::vector<Referential3D*, std::allocator<Referential3D*> >::_M_emplace_back_aux<Referential3D*>(Referential3D*&&) [78]
+-----------------------------------------------
+                0.00    0.00       1/2           Scene::addEntity(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, E_primitive3D) [39]
+                0.00    0.00       1/2           Scene::addEntity(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, char const*) [40]
+[36]     0.0    0.00    0.00       2         Entity::Entity(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&, E_primitive3D) [36]
+                0.00    0.00       2/2           Referential3D::Referential3D(char const*, math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&) [35]
+-----------------------------------------------
+                0.00    0.00       2/2           Referential3D::Referential3D(char const*, math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&) [35]
+[37]     0.0    0.00    0.00       2         Referential3D::updateTRSMat() [37]
+                0.00    0.00    1764/1764        math::Mat4::createTRSMatrix(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&) [38]
+                0.00    0.00    1764/11934036     math::Matrix::operator*(math::Matrix const&) [8]
+                0.00    0.00    1764/1764        math::Mat4::Mat4(math::Matrix const&) [41]
+                0.00    0.00    3528/5967020     math::Mat4::~Mat4() [28]
+                0.00    0.00    5292/35799464     math::Matrix::~Matrix() [53]
+                0.00    0.00    3528/3528        math::Matrix::operator=(math::Matrix const&) [63]
+-----------------------------------------------
+                0.00    0.00    1764/1764        Referential3D::updateTRSMat() [37]
+[38]     0.0    0.00    0.00    1764         math::Mat4::createTRSMatrix(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&) [38]
+                0.00    0.00    1764/5964372     math::Mat4::createFixedAngleEulerRotationMatrix(math::Vec3 const&) [6]
+                0.00    0.00    3528/11934036     math::Matrix::operator*(math::Matrix const&) [8]
+                0.00    0.00    1764/5967900     math::Matrix::Matrix(math::Matrix const&) [14]
+                0.00    0.00    3528/17897528     math::Matrix::Matrix(unsigned int) [13]
+                0.00    0.00   10584/89483212     math::Matrix::operator[](unsigned int) [21]
+                0.00    0.00    8820/35799464     math::Matrix::~Matrix() [53]
+-----------------------------------------------
+                                                 <spontaneous>
+[39]     0.0    0.00    0.00                 Scene::addEntity(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, E_primitive3D) [39]
+                0.00    0.00       1/2           Entity::Entity(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&, E_primitive3D) [36]
+-----------------------------------------------
+                                                 <spontaneous>
+[40]     0.0    0.00    0.00                 Scene::addEntity(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, char const*) [40]
+                0.00    0.00       1/2           Entity::Entity(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&, E_primitive3D) [36]
+                0.00    0.00       1/1           Mesh::loadObj(char const*) [95]
+-----------------------------------------------
+                0.00    0.00    1764/1764        Referential3D::updateTRSMat() [37]
+[41]     0.0    0.00    0.00    1764         math::Mat4::Mat4(math::Matrix const&) [41]
+                0.00    0.00    1764/5967900     math::Matrix::Matrix(math::Matrix const&) [14]
+-----------------------------------------------
+                0.00    0.00     881/881         Scene::draw(Renderer&) const [1]
+[42]     0.0    0.00    0.00     881         math::Mat4::createPerspectiveMatrix(float, float, float, float) [42]
+                0.00    0.00     881/17897528     math::Matrix::Matrix(unsigned int) [13]
+                0.00    0.00    7048/89483212     math::Matrix::operator[](unsigned int) [21]
+-----------------------------------------------
+                0.00    0.00       1/3           Referential3D::Referential3D() [44]
+                0.00    0.00       2/3           Referential3D::Referential3D(char const*, math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&) [35]
+[43]     0.0    0.00    0.00       3         math::Mat4::Mat4() [43]
+                0.00    0.00       3/17897528     math::Matrix::Matrix(unsigned int) [13]
+-----------------------------------------------
+                0.00    0.00       1/1           Scene::Scene() [45]
+[44]     0.0    0.00    0.00       1         Referential3D::Referential3D() [44]
+                0.00    0.00       1/3           math::Mat4::Mat4() [43]
+-----------------------------------------------
+                                                 <spontaneous>
+[45]     0.0    0.00    0.00                 Scene::Scene() [45]
+                0.00    0.00       1/1           Referential3D::Referential3D() [44]
+-----------------------------------------------
+                0.00    0.00       3/35799464     Scene::~Scene() [18]
+                0.00    0.00     881/35799464     Scene::draw(Renderer&) const [1]
+                0.00    0.00    5292/35799464     Referential3D::updateTRSMat() [37]
+                0.00    0.00    8820/35799464     math::Mat4::createTRSMatrix(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&) [38]
+                0.00    0.00 5962608/35799464     convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+                0.00    0.00 29821860/35799464     math::Mat4::createFixedAngleEulerRotationMatrix(math::Vec3 const&) [6]
+[53]     0.0    0.00    0.00 35799464         math::Matrix::~Matrix() [53]
+-----------------------------------------------
+                0.00    0.00 17887824/17887824     math::operator*(math::Mat4 const&, math::Vec4 const&) [10]
+[54]     0.0    0.00    0.00 17887824         math::Vec4::Vec4() [54]
+-----------------------------------------------
+                0.00    0.00 5962608/5962608     convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+[55]     0.0    0.00    0.00 5962608         math::Vec4::operator=(math::Vec4 const&) [55]
+-----------------------------------------------
+                0.00    0.00   10818/10818       tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[56]     0.0    0.00    0.00   10818         std::vector<float, std::allocator<float> >::push_back(float const&) [56]
+-----------------------------------------------
+                0.00    0.00       1/7213        tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+                0.00    0.00    7212/7213        tinyobj::parseReal(char const**, double) [58]
+[57]     0.0    0.00    0.00    7213         tinyobj::parseInt(char const**) [57]
+-----------------------------------------------
+                0.00    0.00    3606/7212        tinyobj::parseReal3(float*, float*, float*, char const**, double, double, double) [65]
+                0.00    0.00    3606/7212        tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[58]     0.0    0.00    0.00    7212         tinyobj::parseReal(char const**, double) [58]
+                0.00    0.00    7212/7213        tinyobj::parseInt(char const**) [57]
+-----------------------------------------------
+                0.00    0.00    6768/6768        tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[59]     0.0    0.00    0.00    6768         tinyobj::parseTriple(char const**, int, int, int, tinyobj::vertex_index_t*) [clone .constprop.566] [59]
+-----------------------------------------------
+                0.00    0.00    6768/6768        tinyobj::exportGroupsToShape(tinyobj::shape_t*, tinyobj::PrimGroup const&, std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, bool, std::vector<float, std::allocator<float> > const&) [102]
+[60]     0.0    0.00    0.00    6768         std::vector<tinyobj::index_t, std::allocator<tinyobj::index_t> >::push_back(tinyobj::index_t const&) [60]
+-----------------------------------------------
+                0.00    0.00    4663/4663        tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[61]     0.0    0.00    0.00    4663         tinyobj::safeGetline(std::istream&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [61]
+-----------------------------------------------
+                0.00    0.00      13/4512        void std::vector<tinyobj::face_t, std::allocator<tinyobj::face_t> >::_M_emplace_back_aux<tinyobj::face_t const&>(tinyobj::face_t const&) [73]
+                0.00    0.00    2243/4512        tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+                0.00    0.00    2256/4512        tinyobj::exportGroupsToShape(tinyobj::shape_t*, tinyobj::PrimGroup const&, std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, bool, std::vector<float, std::allocator<float> > const&) [102]
+[62]     0.0    0.00    0.00    4512         std::vector<tinyobj::vertex_index_t, std::allocator<tinyobj::vertex_index_t> >::vector(std::vector<tinyobj::vertex_index_t, std::allocator<tinyobj::vertex_index_t> > const&) [62]
+-----------------------------------------------
+                0.00    0.00    3528/3528        Referential3D::updateTRSMat() [37]
+[63]     0.0    0.00    0.00    3528         math::Matrix::operator=(math::Matrix const&) [63]
+-----------------------------------------------
+                0.00    0.00       1/1205        tinyobj::shape_t::shape_t(tinyobj::shape_t const&) [100]
+                0.00    0.00       2/1205        tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, char const*, char const*, bool, bool) [98]
+                0.00    0.00    1202/1205        tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[64]     0.0    0.00    0.00    1205         tinyobj::parseReal(char const**, float*) [64]
+-----------------------------------------------
+                0.00    0.00    1202/1202        tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[65]     0.0    0.00    0.00    1202         tinyobj::parseReal3(float*, float*, float*, char const**, double, double, double) [65]
+                0.00    0.00    3606/7212        tinyobj::parseReal(char const**, double) [58]
+-----------------------------------------------
+                0.00    0.00    1202/1202        Mesh::loadObj(char const*) [95]
+[66]     0.0    0.00    0.00    1202         void std::vector<math::Vec3, std::allocator<math::Vec3> >::emplace_back<math::Vec3>(math::Vec3&&) [66]
+-----------------------------------------------
+                0.00    0.00     881/881         Renderer::clear() [24]
+[67]     0.0    0.00    0.00     881         Texture::clear() [67]
+-----------------------------------------------
+                0.00    0.00     881/881         Renderer::swapBuffer() [283]
+[68]     0.0    0.00    0.00     881         Texture::operator[](unsigned int) [68]
+-----------------------------------------------
+                0.00    0.00     881/881         convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [5]
+[69]     0.0    0.00    0.00     881         std::vector<Vertex, std::allocator<Vertex> >::reserve(unsigned long) [69]
+-----------------------------------------------
+                0.00    0.00      39/39          tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[70]     0.0    0.00    0.00      39         void std::vector<float, std::allocator<float> >::_M_emplace_back_aux<float const&>(float const&) [70]
+-----------------------------------------------
+                0.00    0.00      14/14          tinyobj::exportGroupsToShape(tinyobj::shape_t*, tinyobj::PrimGroup const&, std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, bool, std::vector<float, std::allocator<float> > const&) [102]
+[71]     0.0    0.00    0.00      14         void std::vector<tinyobj::index_t, std::allocator<tinyobj::index_t> >::_M_emplace_back_aux<tinyobj::index_t const&>(tinyobj::index_t const&) [71]
+-----------------------------------------------
+                0.00    0.00      13/13          Mesh::loadObj(char const*) [95]
+[72]     0.0    0.00    0.00      13         void std::vector<S_FaceIndices, std::allocator<S_FaceIndices> >::_M_emplace_back_aux<S_FaceIndices>(S_FaceIndices&&) [72]
+-----------------------------------------------
+                0.00    0.00      13/13          tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[73]     0.0    0.00    0.00      13         void std::vector<tinyobj::face_t, std::allocator<tinyobj::face_t> >::_M_emplace_back_aux<tinyobj::face_t const&>(tinyobj::face_t const&) [73]
+                0.00    0.00      13/4512        std::vector<tinyobj::vertex_index_t, std::allocator<tinyobj::vertex_index_t> >::vector(std::vector<tinyobj::vertex_index_t, std::allocator<tinyobj::vertex_index_t> > const&) [62]
+-----------------------------------------------
+                0.00    0.00      13/13          tinyobj::exportGroupsToShape(tinyobj::shape_t*, tinyobj::PrimGroup const&, std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, bool, std::vector<float, std::allocator<float> > const&) [102]
+[74]     0.0    0.00    0.00      13         void std::vector<unsigned char, std::allocator<unsigned char> >::_M_emplace_back_aux<unsigned char>(unsigned char&&) [74]
+-----------------------------------------------
+                0.00    0.00      13/13          tinyobj::exportGroupsToShape(tinyobj::shape_t*, tinyobj::PrimGroup const&, std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, bool, std::vector<float, std::allocator<float> > const&) [102]
+[75]     0.0    0.00    0.00      13         void std::vector<int, std::allocator<int> >::_M_emplace_back_aux<int>(int&&) [75]
+-----------------------------------------------
+                0.00    0.00      13/13          tinyobj::exportGroupsToShape(tinyobj::shape_t*, tinyobj::PrimGroup const&, std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, bool, std::vector<float, std::allocator<float> > const&) [102]
+[76]     0.0    0.00    0.00      13         void std::vector<unsigned int, std::allocator<unsigned int> >::_M_emplace_back_aux<unsigned int const&>(unsigned int const&) [76]
+-----------------------------------------------
+                0.00    0.00       2/2           Mesh::loadObj(char const*) [95]
+[77]     0.0    0.00    0.00       2         std::vector<math::Vec3, std::allocator<math::Vec3> >::reserve(unsigned long) [77]
+-----------------------------------------------
+                0.00    0.00       2/2           Referential3D::Referential3D(char const*, math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&) [35]
+[78]     0.0    0.00    0.00       2         void std::vector<Referential3D*, std::allocator<Referential3D*> >::_M_emplace_back_aux<Referential3D*>(Referential3D*&&) [78]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[79]     0.0    0.00    0.00       1         _GLOBAL__sub_I__Z3minff [79]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[80]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN13Referential3DC2Ev [80]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[81]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN4math4Mat4C2Ev [81]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[82]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN4math4Vec2C2Ev [82]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[83]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN4math4Vec3C2ERKNS_4Vec2Ef [83]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[84]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN4math4Vec4C2Ev [84]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[85]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN4math6MatrixC2Ejjf [85]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[86]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN5InputC2Ev [86]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[87]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN5LightC2ERKN4math4Vec3Efff [87]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[88]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN5SceneC2Ev [88]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[89]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6EntityC2ERKN4math4Vec3ES3_S3_R13Referential3D13E_primitive3D [89]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[90]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN7TextureC2Ejj13E_PixelFormat [90]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[91]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN7tinyobj14MaterialReaderD2Ev [91]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[92]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN8RendererC2EP10SDL_Windowii [92]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[93]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN9MaterialsC2Ev [93]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [377]
+[94]     0.0    0.00    0.00       1         _GLOBAL__sub_I_main [94]
+-----------------------------------------------
+                0.00    0.00       1/1           Scene::addEntity(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, char const*) [40]
+[95]     0.0    0.00    0.00       1         Mesh::loadObj(char const*) [95]
+                0.00    0.00    1202/1202        void std::vector<math::Vec3, std::allocator<math::Vec3> >::emplace_back<math::Vec3>(math::Vec3&&) [66]
+                0.00    0.00      13/13          void std::vector<S_FaceIndices, std::allocator<S_FaceIndices> >::_M_emplace_back_aux<S_FaceIndices>(S_FaceIndices&&) [72]
+                0.00    0.00       2/2           std::vector<math::Vec3, std::allocator<math::Vec3> >::reserve(unsigned long) [77]
+                0.00    0.00       1/1           std::__shared_ptr<Mesh, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<Mesh>>(std::_Sp_make_shared_tag, std::allocator<Mesh> const&) [103]
+                0.00    0.00       1/1           tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, char const*, char const*, bool, bool) [98]
+                0.00    0.00       1/1           std::vector<math::Vec2, std::allocator<math::Vec2> >::reserve(unsigned long) [106]
+-----------------------------------------------
+                0.00    0.00       1/1           Entity::setTexture(char const*) [249]
+[96]     0.0    0.00    0.00       1         Texture::Texture(char const*) [96]
+-----------------------------------------------
+                0.00    0.00       1/1           Renderer::Renderer(SDL_Window*, int, int) [284]
+[97]     0.0    0.00    0.00       1         Texture::Texture(unsigned int, unsigned int, E_PixelFormat) [97]
+-----------------------------------------------
+                0.00    0.00       1/1           Mesh::loadObj(char const*) [95]
+[98]     0.0    0.00    0.00       1         tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, char const*, char const*, bool, bool) [98]
+                0.00    0.00       2/1205        tinyobj::parseReal(char const**, float*) [64]
+                0.00    0.00       1/1           tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+-----------------------------------------------
+                0.00    0.00       1/1           tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, char const*, char const*, bool, bool) [98]
+[99]     0.0    0.00    0.00       1         tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+                0.00    0.00   10818/10818       std::vector<float, std::allocator<float> >::push_back(float const&) [56]
+                0.00    0.00    6768/6768        tinyobj::parseTriple(char const**, int, int, int, tinyobj::vertex_index_t*) [clone .constprop.566] [59]
+                0.00    0.00    4663/4663        tinyobj::safeGetline(std::istream&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [61]
+                0.00    0.00    3606/7212        tinyobj::parseReal(char const**, double) [58]
+                0.00    0.00    2243/4512        std::vector<tinyobj::vertex_index_t, std::allocator<tinyobj::vertex_index_t> >::vector(std::vector<tinyobj::vertex_index_t, std::allocator<tinyobj::vertex_index_t> > const&) [62]
+                0.00    0.00    1202/1205        tinyobj::parseReal(char const**, float*) [64]
+                0.00    0.00    1202/1202        tinyobj::parseReal3(float*, float*, float*, char const**, double, double, double) [65]
+                0.00    0.00      39/39          void std::vector<float, std::allocator<float> >::_M_emplace_back_aux<float const&>(float const&) [70]
+                0.00    0.00      13/13          void std::vector<tinyobj::face_t, std::allocator<tinyobj::face_t> >::_M_emplace_back_aux<tinyobj::face_t const&>(tinyobj::face_t const&) [73]
+                0.00    0.00       1/1           tinyobj::exportGroupsToShape(tinyobj::shape_t*, tinyobj::PrimGroup const&, std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, bool, std::vector<float, std::allocator<float> > const&) [102]
+                0.00    0.00       1/1           tinyobj::shape_t::~shape_t() [101]
+                0.00    0.00       1/1           std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int>, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> > >::_M_erase(std::_Rb_tree_node<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> >*) [110]
+                0.00    0.00       1/1           std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> >::~vector() [107]
+                0.00    0.00       1/7213        tinyobj::parseInt(char const**) [57]
+                0.00    0.00       1/1           void std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >::_M_emplace_back_aux<tinyobj::shape_t const&>(tinyobj::shape_t const&) [109]
+-----------------------------------------------
+                0.00    0.00       1/1           void std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >::_M_emplace_back_aux<tinyobj::shape_t const&>(tinyobj::shape_t const&) [109]
+[100]    0.0    0.00    0.00       1         tinyobj::shape_t::shape_t(tinyobj::shape_t const&) [100]
+                0.00    0.00       1/1205        tinyobj::parseReal(char const**, float*) [64]
+-----------------------------------------------
+                0.00    0.00       1/1           tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[101]    0.0    0.00    0.00       1         tinyobj::shape_t::~shape_t() [101]
+-----------------------------------------------
+                0.00    0.00       1/1           tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[102]    0.0    0.00    0.00       1         tinyobj::exportGroupsToShape(tinyobj::shape_t*, tinyobj::PrimGroup const&, std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, bool, std::vector<float, std::allocator<float> > const&) [102]
+                0.00    0.00    6768/6768        std::vector<tinyobj::index_t, std::allocator<tinyobj::index_t> >::push_back(tinyobj::index_t const&) [60]
+                0.00    0.00    2256/4512        std::vector<tinyobj::vertex_index_t, std::allocator<tinyobj::vertex_index_t> >::vector(std::vector<tinyobj::vertex_index_t, std::allocator<tinyobj::vertex_index_t> > const&) [62]
+                0.00    0.00      14/14          void std::vector<tinyobj::index_t, std::allocator<tinyobj::index_t> >::_M_emplace_back_aux<tinyobj::index_t const&>(tinyobj::index_t const&) [71]
+                0.00    0.00      13/13          void std::vector<int, std::allocator<int> >::_M_emplace_back_aux<int>(int&&) [75]
+                0.00    0.00      13/13          void std::vector<unsigned int, std::allocator<unsigned int> >::_M_emplace_back_aux<unsigned int const&>(unsigned int const&) [76]
+                0.00    0.00      13/13          void std::vector<unsigned char, std::allocator<unsigned char> >::_M_emplace_back_aux<unsigned char>(unsigned char&&) [74]
+                0.00    0.00       1/1           std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> >::operator=(std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&) [108]
+-----------------------------------------------
+                0.00    0.00       1/1           Mesh::loadObj(char const*) [95]
+[103]    0.0    0.00    0.00       1         std::__shared_ptr<Mesh, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<Mesh>>(std::_Sp_make_shared_tag, std::allocator<Mesh> const&) [103]
+-----------------------------------------------
+                0.00    0.00       1/1           Scene::~Scene() [18]
+[104]    0.0    0.00    0.00       1         std::_Sp_counted_ptr_inplace<Mesh, std::allocator<Mesh>, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [104]
+-----------------------------------------------
+                0.00    0.00       1/1           Scene::~Scene() [18]
+[105]    0.0    0.00    0.00       1         std::_Sp_counted_ptr_inplace<Mesh, std::allocator<Mesh>, (__gnu_cxx::_Lock_policy)2>::_M_dispose() [105]
+-----------------------------------------------
+                0.00    0.00       1/1           Mesh::loadObj(char const*) [95]
+[106]    0.0    0.00    0.00       1         std::vector<math::Vec2, std::allocator<math::Vec2> >::reserve(unsigned long) [106]
+-----------------------------------------------
+                0.00    0.00       1/1           tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[107]    0.0    0.00    0.00       1         std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> >::~vector() [107]
+-----------------------------------------------
+                0.00    0.00       1/1           tinyobj::exportGroupsToShape(tinyobj::shape_t*, tinyobj::PrimGroup const&, std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, bool, std::vector<float, std::allocator<float> > const&) [102]
+[108]    0.0    0.00    0.00       1         std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> >::operator=(std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&) [108]
+-----------------------------------------------
+                0.00    0.00       1/1           tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[109]    0.0    0.00    0.00       1         void std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >::_M_emplace_back_aux<tinyobj::shape_t const&>(tinyobj::shape_t const&) [109]
+                0.00    0.00       1/1           tinyobj::shape_t::shape_t(tinyobj::shape_t const&) [100]
+-----------------------------------------------
+                0.00    0.00       1/1           tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [99]
+[110]    0.0    0.00    0.00       1         std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int>, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> > >::_M_erase(std::_Rb_tree_node<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> >*) [110]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [79] _GLOBAL__sub_I__Z3minff (rasterizer.cpp) [17] math::Vec2::Vec2() [57] tinyobj::parseInt(char const**) (tiny_obj_loader.h)
+  [80] _GLOBAL__sub_I__ZN13Referential3DC2Ev (referential.cpp) [22] math::Vec3::Vec3(math::Vec4 const&) [64] tinyobj::parseReal(char const**, float*) (tiny_obj_loader.h)
+  [81] _GLOBAL__sub_I__ZN4math4Mat4C2Ev (mat4.cpp) [25] math::Vec4::homogenize() [58] tinyobj::parseReal(char const**, double) (tiny_obj_loader.h)
+  [82] _GLOBAL__sub_I__ZN4math4Vec2C2Ev (vec2.cpp) [30] math::Vec4::Vec4(float) [7] Renderer::setPixelColor(unsigned int, unsigned int, S_ColorRGBA const&, unsigned int)
+  [83] _GLOBAL__sub_I__ZN4math4Vec3C2ERKNS_4Vec2Ef (vec3.cpp) [54] math::Vec4::Vec4() [24] Renderer::clear()
+  [84] _GLOBAL__sub_I__ZN4math4Vec4C2Ev (vec4.cpp) [27] math::Vec4::Vec4(math::Vec3 const&, float) [26] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) [clone .constprop.25] (string_conversions.h)
+  [85] _GLOBAL__sub_I__ZN4math6MatrixC2Ejjf (matrix.cpp) [55] math::Vec4::operator=(math::Vec4 const&) [15] math::Matrix::adjointMatrixIsReversible() const
+  [86] _GLOBAL__sub_I__ZN5InputC2Ev (input.cpp) [14] math::Matrix::Matrix(math::Matrix const&) [16] math::Matrix::operator[](unsigned int) const
+  [87] _GLOBAL__sub_I__ZN5LightC2ERKN4math4Vec3Efff (light.cpp) [13] math::Matrix::Matrix(unsigned int) [4] Light::computLightComponent(S_ColorRGBA&, math::Vec3 const&, math::Vec3 const&, float) const
+  [88] _GLOBAL__sub_I__ZN5SceneC2Ev (scene.cpp) [31] math::Matrix::Matrix(unsigned int, unsigned int, float) [103] std::__shared_ptr<Mesh, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<Mesh>>(std::_Sp_make_shared_tag, std::allocator<Mesh> const&)
+  [89] _GLOBAL__sub_I__ZN6EntityC2ERKN4math4Vec3ES3_S3_R13Referential3D13E_primitive3D (entity.cpp) [53] math::Matrix::~Matrix() [104] std::_Sp_counted_ptr_inplace<Mesh, std::allocator<Mesh>, (__gnu_cxx::_Lock_policy)2>::_M_destroy()
+  [90] _GLOBAL__sub_I__ZN7TextureC2Ejj13E_PixelFormat (texture.cpp) [63] math::Matrix::operator=(math::Matrix const&) [105] std::_Sp_counted_ptr_inplace<Mesh, std::allocator<Mesh>, (__gnu_cxx::_Lock_policy)2>::_M_dispose()
+  [91] _GLOBAL__sub_I__ZN7tinyobj14MaterialReaderD2Ev (mesh.cpp) [21] math::Matrix::operator[](unsigned int) [72] void std::vector<S_FaceIndices, std::allocator<S_FaceIndices> >::_M_emplace_back_aux<S_FaceIndices>(S_FaceIndices&&)
+  [92] _GLOBAL__sub_I__ZN8RendererC2EP10SDL_Windowii (renderer.cpp) [8] math::Matrix::operator*(math::Matrix const&) [69] std::vector<Vertex, std::allocator<Vertex> >::reserve(unsigned long)
+  [93] _GLOBAL__sub_I__ZN9MaterialsC2Ev (materials.cpp) [10] math::operator*(math::Mat4 const&, math::Vec4 const&) [106] std::vector<math::Vec2, std::allocator<math::Vec2> >::reserve(unsigned long)
+  [94] _GLOBAL__sub_I_main (main.cpp) [32] Input::~Input() [66] void std::vector<math::Vec3, std::allocator<math::Vec3> >::emplace_back<math::Vec3>(math::Vec3&&)
+   [5] convertLocalToGlobalVertex(Entity const&, math::Mat4 const&, unsigned int, unsigned int) [19] Light::Light(math::Vec3 const&, float, float, float) [77] std::vector<math::Vec3, std::allocator<math::Vec3> >::reserve(unsigned long)
+   [2] Rasterizer::renderScene(Renderer&, Scene const&, math::Mat4 const&) [18] Scene::~Scene() [62] std::vector<tinyobj::vertex_index_t, std::allocator<tinyobj::vertex_index_t> >::vector(std::vector<tinyobj::vertex_index_t, std::allocator<tinyobj::vertex_index_t> > const&)
+   [3] Rasterizer::drawTriangleWithLights(Renderer&, std::vector<Light, std::allocator<Light> > const&, math::Vec3 const&, Vertex const&, Vertex const&, Vertex const&, Texture const*) [36] Entity::Entity(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&, E_primitive3D) [107] std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> >::~vector()
+  [37] Referential3D::updateTRSMat() [9] Texture::setPixelColor(unsigned int, unsigned int, S_ColorRGBA const&) [108] std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> >::operator=(std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&)
+  [35] Referential3D::Referential3D(char const*, math::Vec3 const&, math::Vec3 const&, math::Vec3 const&, Referential3D&) [67] Texture::clear() [73] void std::vector<tinyobj::face_t, std::allocator<tinyobj::face_t> >::_M_emplace_back_aux<tinyobj::face_t const&>(tinyobj::face_t const&)
+  [44] Referential3D::Referential3D() [96] Texture::Texture(char const*) [71] void std::vector<tinyobj::index_t, std::allocator<tinyobj::index_t> >::_M_emplace_back_aux<tinyobj::index_t const&>(tinyobj::index_t const&)
+  [95] Mesh::loadObj(char const*) [97] Texture::Texture(unsigned int, unsigned int, E_PixelFormat) [60] std::vector<tinyobj::index_t, std::allocator<tinyobj::index_t> >::push_back(tinyobj::index_t const&)
+  [38] math::Mat4::createTRSMatrix(math::Vec3 const&, math::Vec3 const&, math::Vec3 const&) [23] Texture::~Texture() [109] void std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >::_M_emplace_back_aux<tinyobj::shape_t const&>(tinyobj::shape_t const&)
+  [29] math::Mat4::createProjectionMatrix(float) [68] Texture::operator[](unsigned int) [78] void std::vector<Referential3D*, std::allocator<Referential3D*> >::_M_emplace_back_aux<Referential3D*>(Referential3D*&&)
+  [42] math::Mat4::createPerspectiveMatrix(float, float, float, float) [98] tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, char const*, char const*, bool, bool) [70] void std::vector<float, std::allocator<float> >::_M_emplace_back_aux<float const&>(float const&)
+   [6] math::Mat4::createFixedAngleEulerRotationMatrix(math::Vec3 const&) [99] tinyobj::LoadObj(tinyobj::attrib_t*, std::vector<tinyobj::shape_t, std::allocator<tinyobj::shape_t> >*, std::vector<tinyobj::_material_t, std::allocator<tinyobj::_material_t> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::istream*, tinyobj::MaterialReader*, bool, bool) [56] std::vector<float, std::allocator<float> >::push_back(float const&)
+  [43] math::Mat4::Mat4()    [100] tinyobj::shape_t::shape_t(tinyobj::shape_t const&) [74] void std::vector<unsigned char, std::allocator<unsigned char> >::_M_emplace_back_aux<unsigned char>(unsigned char&&)
+  [41] math::Mat4::Mat4(math::Matrix const&) [101] tinyobj::shape_t::~shape_t() [75] void std::vector<int, std::allocator<int> >::_M_emplace_back_aux<int>(int&&)
+  [28] math::Mat4::~Mat4()    [65] tinyobj::parseReal3(float*, float*, float*, char const**, double, double, double) (tiny_obj_loader.h) [76] void std::vector<unsigned int, std::allocator<unsigned int> >::_M_emplace_back_aux<unsigned int const&>(unsigned int const&)
+  [33] math::Vec2::Vec2(math::Vec2 const&) [59] tinyobj::parseTriple(char const**, int, int, int, tinyobj::vertex_index_t*) [clone .constprop.566] (tiny_obj_loader.h) [110] std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int>, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> > >::_M_erase(std::_Rb_tree_node<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> >*)
+  [34] math::Vec2::Vec2(float) [61] tinyobj::safeGetline(std::istream&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) (tiny_obj_loader.h) [11] operator+(S_ColorRGBA const&, S_ColorRGBA const&)
+  [12] math::Vec2::Vec2(float, float) [102] tinyobj::exportGroupsToShape(tinyobj::shape_t*, tinyobj::PrimGroup const&, std::vector<tinyobj::tag_t, std::allocator<tinyobj::tag_t> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, bool, std::vector<float, std::allocator<float> > const&) (tiny_obj_loader.h)

@@ -13,21 +13,23 @@ Light::Light(const math::Vec3& pos, float ambient, float diffuse, float specular
 }
 
 
-void Light::computLightComponent(ColorRGBA& colorIntensity, const math::Vec3& normal, float shininessCoef) const
+void Light::computLightComponent(ColorRGBA& colorIntensity, const math::Vec3& normal, const Vec3& position, float shininessCoef) const
 {
     ColorRGBA colorIntensityDiffuse = colorIntensity;
-    ColorRGBA colorIntensitySpec = colorIntensity;
-    
-    computAmbiantComponent      (colorIntensity);
+    ColorRGBA colorIntensitySpec    = colorIntensity;
+    computAmbiantComponent          (colorIntensity);
 
-    float cosTeta = normalizePosition_.dot_product(normal);
+    Vec3 normalPosLightWithObj = (position_ - position).getNormalize();
+
+    float cosTeta = normalPosLightWithObj.dot_product(normal);
 
 	if (cosTeta < 0.f)
 		return;
 
 	computDiffuseComponent      (colorIntensityDiffuse, normal, cosTeta);
-	computSpecularBlinnPhong    (colorIntensitySpec, normal, shininessCoef, cosTeta);		
+	computSpecularBlinnPhong    (colorIntensitySpec, normal, shininessCoef, cosTeta, normalPosLightWithObj);		
 	
+    //std::cout << normalizePosition_ << std::endl;
     colorIntensity = colorIntensity + colorIntensityDiffuse + colorIntensitySpec;
 }
 
@@ -64,18 +66,18 @@ void Light::computAmbiantComponent     (ColorRGBA& colorIntensity) const
 
 void Light::computDiffuseComponent     (ColorRGBA& colorIntensity, const math::Vec3& normal, float cosTeta) const
 {
-    colorIntensity.r = colorIntensity.r * diffuseComponent_.kr * cosTeta;
-    colorIntensity.g = colorIntensity.g * diffuseComponent_.kg * cosTeta;
-    colorIntensity.b = colorIntensity.b * diffuseComponent_.kb * cosTeta;
+    colorIntensity.r *= (diffuseComponent_.kr * cosTeta);
+    colorIntensity.g *= (diffuseComponent_.kg * cosTeta);
+    colorIntensity.b *= (diffuseComponent_.kb * cosTeta);
 }
 
-void Light::computSpecularBlinnPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
-                                                                    float shininessCoef, float cosTeta)  const
+void Light::computSpecularBlinnPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal,
+                                                                    float shininessCoef, float cosTeta, const Vec3& normalPosLightWithObj)  const
 {    
     // If the angle between the normal and the light direction is greater than 90 degrees, 
     // then we force the specular term to zero.
  
-    if (cosTeta / (normalizePosition_.length() * normal.length()) > 90)
+    if (cosTeta / (normalPosLightWithObj.length() * normal.length()) > 90)
     {
         colorIntensity.r = colorIntensity.g = colorIntensity.b = 0;
         return;
@@ -97,12 +99,12 @@ void Light::computSpecularBlinnPhong     (ColorRGBA& colorIntensity, const math:
 }
 
 void Light::computSpecularPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
-                                                                    float shininessCoef)  const
+                                                                    float shininessCoef, const Vec3& normalPosLightWithObj)  const
 {
   //  math::Vec3 reflexionR   = 2 * normal.dot_product(normalizePosition_) * normal - normalizePosition_;
 
     // Dot product of reflexionR and the position of the camera
-    float cosGamma = normalizePosition_.dot_product({0.f, 0.f, 1.f});
+    float cosGamma = normalPosLightWithObj.dot_product({0.f, 0.f, 1.f});
 
     if (cosGamma < 0.f)
         cosGamma = 0.f;
