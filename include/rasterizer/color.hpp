@@ -16,5 +16,8 @@ typedef struct S_ColorRGB
 } ColorRGB;
 
 ColorRGBA operator+(const ColorRGBA& otherColor1, const ColorRGBA& otherColor2);
+ColorRGBA operator=(ColorRGBA& otherColor1, const ColorRGB& otherColor2);
+ColorRGB operator*(const ColorRGB& color, float alpha);
+ColorRGBA operator*(const ColorRGBA& color, float alpha); 
 
 #endif // _COLOR_RGBA_H
