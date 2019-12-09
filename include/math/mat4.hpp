@@ -80,7 +80,7 @@ namespace math
 			static Mat4 createOrthoMatrix	(float left, float right, float bottom, float top, float nearVal, float farVal);
 
 			//static function that create projection in perspective matrix
-			//static Mat4 createPerspectMatrix	(float left, float right, float bottom, float top, float nearVal, float farVal);
+			static Mat4 createPerspectiveMatrix  (float aspect, float near, float far, float fov);
 
 			//static function that return projection matrix to pass from 3D to 2D.
 			//Distance in parameter is the distance between pin hole and user.

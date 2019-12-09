@@ -4,14 +4,24 @@ Renderer::Renderer (SDL_Window* win, int winW, int winH)
 	:	SDLRen_ 	(SDL_CreateRenderer	(win, -1, SDL_RENDERER_PRESENTVSYNC | 													SDL_RENDERER_ACCELERATED | 
 												  SDL_RENDERER_TARGETTEXTURE)),	
 		SDLBuffer_ 	(SDL_CreateTexture (	SDLRen_, 
-											SDL_PIXELFORMAT_ABGR8888,
+											SDL_PIXELFORMAT_RGB888,
 											SDL_TEXTUREACCESS_TARGET,
 											winW, winH)),
-		texBuffer_ 	(winW, winH)
-{}
+		texBuffer_ 	(winW, winH, E_PixelFormat::RGBA),
+		zBuffer_	(static_cast<unsigned int*>(malloc(winW * winH * sizeof(unsigned int))))
+{
+	//init zBuffer wither min value
+	for (int i = 0; i < winW * winH; i++)
+	{
+		zBuffer_[i] = 0; //uint limit
+	}	
+}
 
 Renderer::~Renderer ()
 {
+	if (zBuffer_ != nullptr)
+		free(zBuffer_);
+
 	SDL_DestroyTexture	(SDLBuffer_);
 	SDL_DestroyRenderer (SDLRen_);
 }
@@ -26,8 +36,25 @@ void		Renderer::swapBuffer		() noexcept
 
 void		Renderer::clear		() noexcept
 {
+	//clear current buffer
 	texBuffer_.clear();	
-	SDL_SetRenderTarget		(SDLRen_, SDLBuffer_);
-	SDL_RenderClear			(SDLRen_);
-	SDL_SetRenderTarget		(SDLRen_, NULL);
+
+	//clear Z buffer
+	size_t zBufferSize = texBuffer_.width() * texBuffer_.heigth();
+
+	for (size_t i = 0; i < zBufferSize; i++)
+	{
+		zBuffer_[i] = 0; //uint limit
+	}
+}
+
+void Renderer::setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, unsigned int z)
+{
+	//TODO: Add opacity function in function of depth
+	if (x < texBuffer_.width() && y < texBuffer_.heigth() &&
+		z > zBuffer_[texBuffer_.width() * y + x])
+	{
+		texBuffer_.	setPixelColor(x, y, c);
+		zBuffer_	[texBuffer_.width() * y + x] = z;
+	}
 }

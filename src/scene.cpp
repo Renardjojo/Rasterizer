@@ -31,6 +31,19 @@ unsigned int 	Scene::addEntity(const Vec3&  originVec, const Vec3& orientationVe
 	return entities_.size();
 }
 
+unsigned int 	Scene::addEntity(const Vec3&  originVec, const Vec3& orientationVec, const Vec3& scaleVec, const char* objPath) noexcept
+{
+	entities_.push_back(std::make_unique<Entity>(originVec, 
+												orientationVec,
+												scaleVec,
+												world,
+												E_primitive3D::NONE));
+
+	entities_.back()->getpMesh() = Mesh::loadObj(objPath);
+
+	return entities_.size();
+}
+
 unsigned int 	Scene::moveEntityInto (std::unique_ptr<Entity>& pEntityMove) noexcept
 {
 	//pEntityMove->getTransform().updateTRSMat(world.getTRSMatrix());
@@ -54,10 +67,10 @@ void 			Scene::deleteLight	(unsigned int id) throw()
 	light_.erase(light_.begin() + id);
 }
 
-void 			Scene::draw				(Texture& RenBuffer) const noexcept
+void 			Scene::draw				(Renderer& ren) const noexcept
 {
-	//Rasterizer::renderScene(RenBuffer, *this, Mat4::createOrthoMatrix(-1.f, 1.f, -1.f, 1.f, 0.f, -100.f));
-	Rasterizer::renderScene(RenBuffer, *this, Rasterizer::CreatePerspectiveProjectionMatrix(800, 600, 0.01f, 100.f, 150.f));
+	//Rasterizer::renderScene(ren, *this, Mat4::createOrthoMatrix(-1.f, 1.f, -1.f, 1.f, 0.f, -100.f));
+	Rasterizer::renderScene(ren, *this, Mat4::createPerspectiveMatrix(800/(float)600, 0.01f, 100.f, 150.f));
 }
 
 const Entity& 			Scene::getEntity		(unsigned int id) const throw()

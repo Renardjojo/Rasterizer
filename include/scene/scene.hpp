@@ -6,7 +6,7 @@
 #include "entity.hpp"
 #include "vec3.hpp"
 #include "mat4.hpp"
-#include "texture.hpp"
+#include "renderer.hpp"
 #include "light.hpp"
 
 class Scene
@@ -34,7 +34,7 @@ class Scene
 		*	const math::Vec3&  	originVec			: local origin of entity
 		*	const math::Vec3&  	orientationVec		: local orientation of entity in function of axes X, Y, Z 
 		*	const math::Vec3&  	scaleVec 			: local scale of entity
-		*	Primitive3D 		primitive 			: The mesh of the entity. By default, entity do not have mesh
+		*	Primitive3D 		primitive 			: Predefined mesh of the entity. By default, entity do not have mesh
 		*
 		* return (type unsigned int): ID of entity
 		*
@@ -44,6 +44,12 @@ class Scene
 												const math::Vec3&  	orientationVec, 										
 												const math::Vec3&  	scaleVec,
 												Primitive3D 		primitive 			= E_primitive3D::NONE) noexcept;
+
+		//Same function but to load .obj file
+		unsigned int 	addEntity			(	const math::Vec3&  	originVec,
+												const math::Vec3&  	orientationVec, 										
+												const math::Vec3&  	scaleVec,
+												const char* objPath) noexcept;
 
 		//this function deplace entity into scene. Use std::move, so the previous pointor must be destroy and nerver use.
 		unsigned int 	moveEntityInto		(	std::unique_ptr<Entity>& pEntityMove) noexcept;
@@ -55,7 +61,7 @@ class Scene
 		void 			deleteLight		(unsigned int id) throw();
 
 		//this function draw all entities of the scene in function of there referential. It take in parameter th buffer of renderer
-		void 			draw				(Texture& RenBuffer) const noexcept;
+		void 			draw				(Renderer& ren) const noexcept;
 
 		#pragma endregion //!methods
 

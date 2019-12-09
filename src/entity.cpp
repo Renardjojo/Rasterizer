@@ -44,6 +44,13 @@ Entity::Entity(const math::Vec3 &translVec,
 	}
 }
 
+void 	Entity::setTexture		(const char* path)
+{
+	assert (path != nullptr);
+
+	pTexture_ = make_unique<Texture>(path);
+}
+
 vector<Vertex> Entity::transformLocalToGlobal(const Mat4 &matTRS, unsigned int winW, unsigned int winH) const
 {
 	vector<Vertex> vertexGlobal = pMesh_->getVertices();
@@ -64,80 +71,81 @@ vector<Vertex> Entity::transformLocalToGlobal(const Mat4 &matTRS, unsigned int w
 	return vertexGlobal;
 }
 
-Vec4 Entity::transformVertexInVec4(const Vertex &vertex) const
+Vec4 Entity::transformVertexInVec4(const Vec3& vertex) const
 {
-	return (Vec4){vertex.position_.x_, vertex.position_.y_, vertex.position_.z_, 1};
+	return (Vec4){vertex.x_, vertex.y_, vertex.z_, 1};
 }
 
-void Entity::drawPoint(Texture &RenBuffer) const noexcept
+void Entity::drawPoint(Renderer &ren) const noexcept
 {
 	if (pMesh_ == nullptr)
 		return;
 
 	// Transform all the Mesh's Vertices to Vec4
-	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), RenBuffer.width(), RenBuffer.heigth());
+	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), ren.width(), ren.heigth());
 
 	for (auto &vertex : globalVertex)
 	{
-		RenBuffer.setPixelColor(vertex.position_.x_, vertex.position_.y_, {0, 255, 0, 255});
+		ren.setPixelColor(vertex.position_.x_, vertex.position_.y_, {0, 255, 0, 255});
 	}
 }
 
-void Entity::drawLine(Texture &RenBuffer) const noexcept
+void Entity::drawLine(Renderer &ren) const noexcept
 {
 	if (pMesh_ == nullptr)
 		return;
 
 	// Transform all the Mesh's Vertices to Vec4
-	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), RenBuffer.width(), RenBuffer.heigth());
-
+	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), ren.width(), ren.heigth());
+/*
 	for (size_t i = 0; i < pMesh_->getIndices().size(); i += 3)
 	{
-		Rasterizer::drawLine(	RenBuffer, 
+		Rasterizer::drawLine(	ren, 
 								globalVertex[pMesh_->getIndices()[i]],
 								globalVertex[pMesh_->getIndices()[i + 1]]);
 
-		Rasterizer::drawLine(	RenBuffer, 
+		Rasterizer::drawLine(	ren, 
 								globalVertex[pMesh_->getIndices()[i + 1]],
 								globalVertex[pMesh_->getIndices()[i + 2]]);
 
-		Rasterizer::drawLine(	RenBuffer, 
+		Rasterizer::drawLine(	ren, 
 								globalVertex[pMesh_->getIndices()[i + 2]],
 								globalVertex[pMesh_->getIndices()[i]]);
-	}
+	}*/
 }
 
-void Entity::drawFill(Texture &RenBuffer) const noexcept
+void Entity::drawFill(Renderer &ren) const noexcept
 {
 	if (pMesh_ == nullptr)
 		return;
 
 	// Transform all the Mesh's Vertices to Vec4
-	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), RenBuffer.width(), RenBuffer.heigth());
+	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), ren.width(), ren.heigth());
 
-	for (size_t i = 0; i < pMesh_->getIndices().size() ; i += 3)
+	for (size_t i = 0; i < pMesh_->getNbTriangle() ; i += 3)
 	{
-		Rasterizer::drawTriangle(RenBuffer,
-								 globalVertex[pMesh_->getIndices()[i]],
-								 globalVertex[pMesh_->getIndices()[i + 1]],
-								 globalVertex[pMesh_->getIndices()[i + 2]]);
+		Rasterizer::drawTriangle(ren,
+								 globalVertex[i],
+								 globalVertex[i + 1],
+								 globalVertex[i + 2]);
 	}
 }
 
-void Entity::drawFillWithLigths		(Texture &RenBuffer, const std::vector<Light>& light) const noexcept
+void Entity::drawFillWithLigths		(Renderer &ren, const std::vector<Light>& light) const noexcept
 {
 	if (pMesh_ == nullptr)
 		return;
 
 	// Transform all the Mesh's Vertices to Vec4
-	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), RenBuffer.width(), RenBuffer.heigth());
+	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), ren.width(), ren.heigth());
 
-	for (size_t i = 0; i < pMesh_->getIndices().size() ; i += 3)
+	for (size_t i = 0; i < pMesh_->getNbTriangle() * 3 ; i += 3)
 	{
-		Rasterizer::drawTriangleWithLights(RenBuffer, light, transform_.getLocalOrigin(),
-								 globalVertex[pMesh_->getIndices()[i]],
-								 globalVertex[pMesh_->getIndices()[i + 1]],
-								 globalVertex[pMesh_->getIndices()[i + 2]]);
+		Rasterizer::drawTriangleWithLights(ren, light, transform_.getLocalOrigin(),
+								 globalVertex[i],
+								 globalVertex[i + 1],
+								 globalVertex[i + 2], pTexture_.get());
+		
 	}
 }
 

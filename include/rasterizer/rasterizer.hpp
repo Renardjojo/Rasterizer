@@ -4,7 +4,7 @@
 #include <cmath>
 #include <SDL2/SDL.h>
 #include "vertex.hpp"
-#include "texture.hpp"
+#include "renderer.hpp"
 #include "color.hpp"
 #include "light.hpp"
 #include "scene.hpp"
@@ -47,25 +47,15 @@ class Rasterizer
 		 *
 		 * brief : 
 		 */
-		static void		drawLine		(Texture&, Vertex&, Vertex&);
+		static void		drawLine		(Renderer&, Vertex&, Vertex&);
 		
-		/**
-		 * function : drawTriangle
-		 *
-		 * parameter : 
-		 *  : 
-		 *  :
-		 *
-		 * return (type void):
-		 *
-		 * brief : this function draw colorfull triangle. Use algorythme of barycenter triangle.
-		 */
-		static void		drawTriangle				(Texture&, const Vertex& , const Vertex& , const Vertex&);
-		static void		drawTriangleWithLights		(Texture&, const std::vector<Light>& lights, const math::Vec3& entityPos, const Vertex& v1, const Vertex& v2, const Vertex& v3);
-		static void		drawTriangleWithTexture		(Texture*, const Vertex& , const Vertex& , const Vertex&);
+
+		 //this function draw colorfull triangle. Use algorythme of barycenter triangle
+		static void		drawTriangle				(Renderer& , const Vertex& , const Vertex& , const Vertex&);
+		static void		drawTriangleWithLights		(Renderer&, const std::vector<Light>& lights, const math::Vec3& entityPos, const Vertex& v1, const Vertex& v2, const Vertex& v3, const Texture* pTexture = nullptr);
 
 		// This function draw each entity in scene
-		static void renderScene(Texture& renBuffer, const Scene& scene, const math::Mat4& projectionMatrix);
+		static void renderScene(Renderer& ren, const Scene& scene, const math::Mat4& projectionMatrix);
 
 		#pragma endregion //!methods
 
@@ -98,9 +88,6 @@ class Rasterizer
 		// R_DRAW_REFERENTIAL		: Allow to draw the referential of entity
 		//
 		static void setSetting	(E_rasterizerSetting setting, bool data) throw();
-		
-		// This function creates a perspective projection matrix
-		static math::Mat4 CreatePerspectiveProjectionMatrix(int width, int height, float near, float far, float fov);
 
 		#pragma endregion //!mutator
 

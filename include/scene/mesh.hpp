@@ -4,9 +4,37 @@
 #include <vector>
 #include <math.h>
 #include <memory>
-#include "texture.hpp"
-#include "mat4.hpp"
+#include <utility>
+
+#include "vec2.hpp"
+#include "vec3.hpp"
 #include "vertex.hpp"
+
+typedef struct S_Indices
+{
+	unsigned int iV, iVt, iVn;
+
+} Indices;
+
+typedef struct S_FaceIndices
+{
+	Indices iV1, iV2, iV3;
+
+} FaceIndices;
+
+typedef struct S_VertexInfo
+{
+	const math::Vec3&	pos; 
+	const math::Vec2&	textCord; 
+	const math::Vec3&	normal;
+
+} VertexInfo;
+
+typedef struct S_Face
+{
+	VertexInfo v1, v2, v3;
+
+} Face;
 
 class Mesh
 {
@@ -15,6 +43,8 @@ class Mesh
 		#pragma region constructor/destructor
 
 		Mesh ()						= default;
+	
+
 		Mesh (const Mesh& other) 	= default;
 		~Mesh () 					= default;
 
@@ -28,6 +58,9 @@ class Mesh
 
 		//create cube of size 1 with triangle and return mesh. Cube is centered on the origin
 		static std::shared_ptr<Mesh> createCube	();
+
+		//load .obj file and return pointer to the new mesh
+		static std::shared_ptr<Mesh> loadObj	(const char* path);
 		
 		//create sphere of radius 1 and return it mesh.	Sphere is centered on the origin	
 		static std::shared_ptr<Mesh> createSphere(int latitudeCount, int longitudeCount);
@@ -39,15 +72,38 @@ class Mesh
 
 		#pragma region accessor
 
-		 const 	std::vector<Vertex>&	getVertices	() const 	{ return vertices_;}
-		 		std::vector<Vertex>&	getVertices	() 			{ return vertices_;}
+		//return the number of triangle in the mesh
+		unsigned int 					getNbTriangle	()				{ return facesIndices_.size();}
 
-		 const 	std::vector<int>&		getIndices	() const	{ return indices_;}
-		 		std::vector<int>&		getIndices	() 			{ return indices_;}
+		//return the number of triangle in the mesh
+		vector<Vertex> 					getVertices	()					
+		{
+			vector<Vertex> vertice;
+			vertice.reserve(facesIndices_.size() * 3);
+
+			for (size_t i = 0; i < facesIndices_.size(); i++)
+			{
+				vertice.push_back({vertex_[facesIndices_[i].iV1.iV], normal_[facesIndices_[i].iV1.iVn], {0,0}});
+				vertice.push_back({vertex_[facesIndices_[i].iV2.iV], normal_[facesIndices_[i].iV2.iVn], {0,0}});
+				vertice.push_back({vertex_[facesIndices_[i].iV3.iV], normal_[facesIndices_[i].iV3.iVn], {0,0}});
+			}
+
+			return vertice;
+		}
+
+		//this function stock allow information about face and return it. Face is composed of 3 vertex
+		const Face 	getFace	(unsigned int iFace) const noexcept
+		{
+			assert (iFace < facesIndices_.size());
+			return Face{{vertex_[facesIndices_[iFace].iV1.iV], textCoord_[facesIndices_[iFace].iV1.iVt], normal_[facesIndices_[iFace].iV1.iVn]},
+						{vertex_[facesIndices_[iFace].iV2.iV], textCoord_[facesIndices_[iFace].iV2.iVt], normal_[facesIndices_[iFace].iV2.iVn]},
+						{vertex_[facesIndices_[iFace].iV3.iV], textCoord_[facesIndices_[iFace].iV3.iVt], normal_[facesIndices_[iFace].iV3.iVn]}};
+		}
 
 		#pragma endregion //!accessor
 
 		#pragma region mutator
+		
 		#pragma endregion //!mutator
 
 		#pragma region operator
@@ -56,14 +112,17 @@ class Mesh
 		#pragma region convertor
 		#pragma endregion //!convertor
 
-	protected:
-
 		#pragma region attribut
 
-		std::vector<Vertex> vertices_; //vertex buffer. Local vertices, doesn't change
-		std::vector<int>	indices_;  //indices buffer. Define triangle of mesh. It's a suit of triplet index
+		std::vector<math::Vec3> 					vertex_; 		//vertex buffer. Local vertices, doesn't change
+		std::vector<math::Vec2> 					textCoord_; 	//buffer of texture coordonnate
+		std::vector<math::Vec3> 					normal_;		//buffer of normal. Nomral is unit vector indicate the direction of face
+
+		std::vector<FaceIndices>					facesIndices_;  //indices buffer. Define triangle of mesh. It's a suit of triplet index
 
 		#pragma endregion //!attribut
+
+	protected:
 
 		#pragma region static attribut
 		#pragma endregion //! static attribut
