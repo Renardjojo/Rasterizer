@@ -63,8 +63,55 @@ void 		Referential3D::addChildReferential (Referential3D& child) noexcept
 	child.		updateTRSMat();		//update TRS matrix of each of his child because of the new dependance.
 }
 
-void 		Referential3D::displayAxis 	(Renderer& ren) const noexcept
+Vertex convertVertexLocalToGlobalAndApplyProjection(Renderer& ren, Vertex vertex, const Mat4 &projectionMatrix, const Mat4 &TRSMat)
 {
+    //Aplly transformation and projection to get vector in 4D
+    Vec4 clipBoard = (Matrix)TRSMat * vertex.position_;
+    
+    clipBoard = (Matrix)projectionMatrix * clipBoard;
+
+    //convert vector in 4D to 3D this homogenize
+    if (clipBoard.w_ != 0.f && clipBoard.w_ != 1.f)
+    {
+       clipBoard.homogenize();
+    }
+
+    //adapte vertex to 2D
+    vertex.position_.x_ = static_cast<float>(((clipBoard.x_ / 5) + 1) * 0.5f * ren.width());
+    vertex.position_.y_ = static_cast<float>(ren.heigth() - ((clipBoard.y_ / 5) + 1) * 0.5 * ren.heigth());
+    vertex.position_.z_ = clipBoard.z_;
+
+   // std::cout << vertex.position_.x_ << "   "  << vertex.position_.z_ << std::endl;
+
+    Vec4 vecN(vertex.normal_);
+    vecN = TRSMat * vecN;
+    vertex.normal_  = {vecN.x_, vecN.y_, vecN.z_};
+    vertex.normal_.normalize();
+
+    return vertex;
+}
+
+void 		Referential3D::displayAxis 	(Renderer& ren, const math::Mat4& projectionMatrix) const noexcept
+{
+	Vertex origin (0.f, 0.f, 0.f);
+	origin = convertVertexLocalToGlobalAndApplyProjection(ren, origin, projectionMatrix, TRSMat_);
+
+	Vertex axisX = {1.f, 0.f, 0.f};
+	axisX = convertVertexLocalToGlobalAndApplyProjection(ren, axisX, projectionMatrix, TRSMat_);
+
+	Vertex axisY = {0.f, 1.f, 0.f};
+	axisY = convertVertexLocalToGlobalAndApplyProjection(ren, axisY, projectionMatrix, TRSMat_);
+
+	Vertex axisZ = {0.f, 0.f, 1.f};
+	axisZ = convertVertexLocalToGlobalAndApplyProjection(ren, axisZ, projectionMatrix, TRSMat_);
+
+	Rasterizer::setColor4ub(255, 0, 0, 255);
+	Rasterizer::drawLine(ren, axisX, origin); // (Ox)
+	Rasterizer::setColor4ub(0, 255, 0, 255);
+	Rasterizer::drawLine(ren, axisY, origin); // (Oy)
+	Rasterizer::setColor4ub(0, 0, 255, 255);
+	Rasterizer::drawLine(ren, axisZ, origin); // (Oz)
+/*
 	Vertex origin (origin_.x_, origin_.y_, origin_.z_);
 	Vec4 vecO(origin.position_);
 	origin = {((vecO.x_ / 5) + 1) * 0.5f * ren.width(), 
@@ -93,7 +140,7 @@ void 		Referential3D::displayAxis 	(Renderer& ren) const noexcept
 	Rasterizer::setColor4ub(0, 255, 0, 255);
 	Rasterizer::drawLine(ren, axisY, origin); // (Oy)
 	Rasterizer::setColor4ub(0, 0, 255, 255);
-	Rasterizer::drawLine(ren, axisZ, origin); // (Oz)
+	Rasterizer::drawLine(ren, axisZ, origin); // (Oz)*/
 }
 
 void 		Referential3D::updateTRSMat	() 			noexcept

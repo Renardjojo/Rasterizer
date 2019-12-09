@@ -93,7 +93,7 @@ void 			Scene::turnLeft 	(float rotation)
 {
 	for (auto& ent : entities_)
 	{
-		ent->getTransform().translate({rotation, 0, 0});
+		ent->getTransform().rotate({0, rotation, 0});
 	}
 }
 
@@ -101,7 +101,7 @@ void 			Scene::turnRight	(float rotation)
 {
 	for (auto& ent : entities_)
 	{
-		ent->getTransform().translate({-rotation, 0, 0});
+		ent->getTransform().rotate({0, -rotation, 0});
 	}
 }
 

@@ -433,7 +433,7 @@ void Rasterizer::renderScene(Renderer& ren, const Scene& scene, const math::Mat4
 
         if (Rasterizer::getSetting(R_DRAW_REFERENTIAL))
         {
-            scene.getEntities()[i]->getTransform().displayAxis(ren);
+            scene.getEntities()[i]->getTransform().displayAxis(ren, projectionMatrix);
         }
 
         if ( entMesh == nullptr)

@@ -17,8 +17,8 @@ using namespace math;
 
 int main()
 {
-	Window 			win (800, 600);
-	Renderer 		ren (win.get(), 800, 600);
+	Window 			win (1200, 800);
+	Renderer 		ren (win.get(), 1200, 800);
 	Input 			input;
 	Scene 			scene;
 	TimeManager		time;
@@ -109,22 +109,22 @@ int main()
 
 		if (input.keyboard.isDown[SDL_SCANCODE_UP])
 		{
-			scene.moveFront(1);
+			scene.moveFront(20 * time.dtf_);
 		}
 
 		if (input.keyboard.isDown[SDL_SCANCODE_DOWN])
 		{
-			scene.moveBack(1);
+			scene.moveBack(20 * time.dtf_);
 		}
 
 		if (input.keyboard.isDown[SDL_SCANCODE_LEFT])
 		{
-			scene.turnLeft(1);
+			scene.turnLeft(2 * time.dtf_);
 		}
 
 		if (input.keyboard.isDown[SDL_SCANCODE_RIGHT])
 		{
-			scene.turnRight(1);
+			scene.turnRight(2 * time.dtf_);
 		}
 
 		static float rot = 0.f;
