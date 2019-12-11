@@ -261,6 +261,7 @@ shared_ptr<Mesh> Mesh::loadObj	(const char* path)
 	string err;
 	tinyobj::attrib_t attrib;
 	vector<tinyobj::shape_t> shapes;
+	//vector<tinyobj::material_t> materials;
 	
 	tinyobj::LoadObj(&attrib, &shapes, NULL, &warn, &err, path);
 	
@@ -315,6 +316,17 @@ shared_ptr<Mesh> Mesh::loadObj	(const char* path)
 			firstFace = !firstFace;
 		}
 	}
+
+
+	/*if (!materials.empty())
+	{
+		Materials 	material(materials.back().ambient[3], materials.back().diffuse[3], materials.back().specular[3]);
+		
+	}
+	else
+		Materials material();*/
+		
+	
 
 /*
 	for (const tinyobj::shape_t& shape : shapes)

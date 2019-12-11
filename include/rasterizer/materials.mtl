@@ -1,0 +1,10 @@
+# Blender MTL File: ''
+# Material Count: 1
+
+newmtl Porcelain
+Ns 96.00000
+Ka 1.000000 1.000000 1.000000
+Kd 0.20000 0.500000 0.500000
+Ks 0.500000 0.500000 0.500000
+d 0.9
+illum 2
