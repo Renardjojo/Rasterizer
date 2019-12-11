@@ -12,5 +12,5 @@ newmtl Material__25
 	Kd 0.0000 0.0000 0.0000
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka crash5.bmp.png
-	map_Kd crash5.bmp.png
+	map_Ka crash5.png
+	map_Kd crash5.png
