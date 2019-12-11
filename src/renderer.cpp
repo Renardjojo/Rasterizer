@@ -51,10 +51,37 @@ void		Renderer::clear		() noexcept
 void Renderer::setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, unsigned int z)
 {
 	//TODO: Add opacity function in function of depth
-	if (x < texBuffer_.width() && y < texBuffer_.heigth() &&
-		z > zBuffer_[texBuffer_.width() * y + x])
+	if (x < texBuffer_.width() && y < texBuffer_.heigth())
 	{
-		texBuffer_.	setPixelColor(x, y, c);
-		zBuffer_	[texBuffer_.width() * y + x] = z;
+		if (c.a != 255)
+		{
+			ColorRGBA cb = texBuffer_.getRGBAPixelColor(x, y);
+			texBuffer_.setPixelColor(x, y, alphaBlending(c, cb));
+		}
+		else if (z > zBuffer_[texBuffer_.width() * y + x])
+		{
+			texBuffer_.	setPixelColor(x, y, c);
+			zBuffer_	[texBuffer_.width() * y + x] = z;
+		}
 	}
+}
+
+ColorRGBA Renderer::alphaBlending(const ColorRGBA& Ca, ColorRGBA& Cb)
+{
+	Cb.a = 1;
+	float finalAlpha = Ca.a + Cb.a * (255 - Ca.a);
+
+	return (ColorRGBA) {static_cast<ubyte>((Ca.r * Ca.a + Cb.r * Cb.a * (255 - Ca.a)) / finalAlpha),
+						static_cast<ubyte>((Ca.g * Ca.a + Cb.g * Cb.a * (255 - Ca.a)) / finalAlpha),
+						static_cast<ubyte>((Ca.b * Ca.a + Cb.b * Cb.a * (255 - Ca.a)) / finalAlpha),
+						static_cast<ubyte>(finalAlpha)};
+}
+
+ColorRGB Renderer::alphaBlending(const ColorRGBA& Ca, ColorRGB& Cb)
+{
+	float finalAlpha = Ca.a + (255 - Ca.a);
+
+	return (ColorRGB) {	static_cast<ubyte>(((Ca.r * Ca.a) + Cb.r * (255 - Ca.a)) / finalAlpha),
+						static_cast<ubyte>(((Ca.g * Ca.a) + Cb.g * (255 - Ca.a)) / finalAlpha),
+						static_cast<ubyte>(((Ca.b * Ca.a) + Cb.b * (255 - Ca.a)) / finalAlpha)};	
 }

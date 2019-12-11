@@ -53,6 +53,7 @@ class Texture
 		#pragma endregion //!methods
 
 		#pragma region static methods
+
 		#pragma endregion //!static methods
 
 		#pragma region accessor
