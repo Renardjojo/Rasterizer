@@ -26,16 +26,16 @@ int main()
 	bool 			running = true;
 
 	Rasterizer::setColor4ub(0, 0, 255, 50);
-	//int id = scene.addEntity({2.f, 2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
-	int light = scene.addEntity({0.f, 0.f, -2.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
+	int id		= scene.addEntity({.0f, .0f, -10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::CUBE);
+	int light	= scene.addEntity({0.f, 0.f, -10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
 	Rasterizer::setColor4ub(255, 0, 0, 255);
 	//int id3 = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::CYLINDRE);
 	//int id4 = scene.addEntity({1.f, 0.f, -10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, "./media/teapot.obj");
-	int id3 = scene.addEntity({0.f, -7.f, -30.f}, {0.f, 0.f, 0.f}, {0.13f, 0.13f, 0.13f}, "./media/Crash.obj");
+	//int id3 = scene.addEntity({0.f, -7.f, -30.f}, {0.f, 0.f, 0.f}, {0.13f, 0.13f, 0.13f}, "./media/Crash.obj");
 	scene.addLigth({1.f, 1.f, 1.f}, .2f, 1.f, 1.f);
 	//scene.getEntity(id4).setTexture("./media/marber.jpg");
-	scene.getEntity(id3).setTexture("./media/crash5f.png");
-	scene.getEntity(light).setTexture("./media/sp.png");
+	//scene.getEntity(id3).setTexture("./media/crash5f.png");
+	//scene.getEntity(light).setTexture("./media/sp.png");
 
 	do
 	{
@@ -138,22 +138,22 @@ int main()
 		}
 
 
-		float camScale = static_cast<float>(input.mouse.wheel_scrolling * 0.1f + 1.f);
+		float camScale	= static_cast<float>(input.mouse.wheel_scrolling * 0.1f + 1.f);
 		scene.camScale_ = {camScale, camScale, camScale};
 
 		static float rot = 0.f;
 		rot += .5f * time.dtf_;
 
 		Rasterizer::setColor4ub(0, 255, 255, 0);
-		scene.getEntity(light).getTransform().setOrigin({2.f * cos(rot), 0.f, -40.f + 20.f * sin(rot)});
-		/*scene.getEntity(id4).getTransform().rotate({1.f* time.dtf_, 1.5f* time.dtf_, 0.f});	
-		scene.getEntity(id4).getTransform().translate({5 * cos(rot) * time.dtf_, 0.f, 5 * sin(rot) * time.dtf_});*/
+		scene.getEntity(light).getTransform().setOrigin({2.f * cos(rot), 0.f, -10.f + 0.f * sin(rot)});
+		scene.getEntity(id).getTransform().rotate({1.f* time.dtf_, 1.5f* time.dtf_, 0.f});	
+		/*scene.getEntity(id).getTransform().translate({5 * cos(rot) * time.dtf_, 0.f, 5 * sin(rot) * time.dtf_});*/
 
-		//(void)id4;
+		(void)id;
 
 		//std::cout << __FILE__ << ":" <<__LINE__ << ": " << scene.getLight(1).getPosition().z << std::endl;
 
-		//scene.getLight(1).setPosition({2.f * cos(rot), 0.f, -10.f + 2.f * sin(rot)});
+		scene.getLight(1).setPosition({2.f * cos(rot), 0.f, -10.f + 1.f * sin(rot)});
 
 		//display
 		ren.clear ();
