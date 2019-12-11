@@ -77,7 +77,7 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 	assert(latitudeCount > 2 && longitudeCount > 2);
 
 	shared_ptr<Mesh> mesh = make_shared<Mesh>();
-/*
+
 	latitudeCount *= 2.f;
 
 	float latitudeStep = 2.f * M_PI / latitudeCount;
@@ -107,12 +107,11 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 				t = (float)i / longitudeCount;
 
 				// vertex position (x, y, z)
-				mesh->getVertices().push_back({ { posX, posY, posZ},
-												{ posX * radius, posY * radius, posZ * radius},
-												{s, t},
-												Rasterizer::getColor4ub()}); //point * radius
+				mesh->vertex_		.push_back({ posX, posY, posZ});
+				mesh->normal_		.push_back({ posX * radius, posY * radius, posZ * radius});
+				mesh->textCoord_	.push_back({s, t});
 				
-				mesh->getVertices().back().normal_.normalize();
+				mesh->normal_.back().normalize();
 			}
 		}
 	}
@@ -135,9 +134,8 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 					//	|	   /	 
 					// ver2	 
 
-				    mesh->getIndices().push_back(ver1);
-				    mesh->getIndices().push_back(ver2);
-				    mesh->getIndices().push_back(ver1 + 1); //to create triangle like shema
+					//to create triangle like shema
+				    mesh->facesIndices_.push_back({{ver1, ver1, ver1}, {ver2, ver2, ver2}, {ver1 + 1, ver1 + 1, ver1 + 1}});
 				}
 
 				if(i != static_cast<unsigned int>(longitudeCount)-1)
@@ -147,14 +145,12 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 					//		 /	  |
 					// ver2	 ->	ver2+1
 
-				    mesh->getIndices().push_back(ver1 + 1);
-				    mesh->getIndices().push_back(ver2);
-				    mesh->getIndices().push_back(ver2 + 1);
+				    mesh->facesIndices_.push_back({{ver1 + 1, ver1 + 1, ver1 + 1}, {ver2, ver2, ver2}, {ver2 + 1, ver2 + 1, ver2 + 1}});
 				}
 			}
 		}
 	}
-*/
+	
 	return mesh;
 }
 

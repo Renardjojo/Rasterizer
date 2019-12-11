@@ -6,8 +6,7 @@
 #include <math.h>
 #include <cassert>
 
-#include "vec2.hpp"
-#include "vec3.hpp"
+#include "vec.hpp"
 #include "color.hpp"
 
 class Vertex

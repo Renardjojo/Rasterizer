@@ -1,9 +1,7 @@
 #include <cmath>
 #include <utility>
 #include "rasterizer.hpp"
-#include "vec4.hpp"
-#include "vec3.hpp"
-#include "vec2.hpp"
+#include "vec.hpp"
 
 using namespace math;
 
@@ -25,7 +23,7 @@ inline float max(float value1, float value2)
 
 inline float crossProduct(const Vertex &v1, const Vertex &v2)
 {
-    return v1.position_.x_ * v2.position_.y_ - v1.position_.y_ * v2.position_.x_;
+    return v1.position_.x * v2.position_.y - v1.position_.y * v2.position_.x;
 }
 
 void Rasterizer::drawLine(Renderer& ren, Vertex &v1, Vertex &v2)
@@ -34,30 +32,30 @@ void Rasterizer::drawLine(Renderer& ren, Vertex &v1, Vertex &v2)
     Vertex pV2 = v2;
 
     // Bresenham's line algorithm
-    const bool steep = (fabs(pV2.position_.y_ - pV1.position_.y_) > fabs(pV2.position_.x_ - pV1.position_.x_));
+    const bool steep = (fabs(pV2.position_.y - pV1.position_.y) > fabs(pV2.position_.x - pV1.position_.x));
 
     if (steep)
     {
-        std::swap(pV1.position_.x_, pV1.position_.y_);
-        std::swap(pV2.position_.x_, pV2.position_.y_);
+        std::swap(pV1.position_.x, pV1.position_.y);
+        std::swap(pV2.position_.x, pV2.position_.y);
     }
 
-    if (pV1.position_.x_ > pV2.position_.x_)
+    if (pV1.position_.x > pV2.position_.x)
     {
-        std::swap(pV1.position_.x_, pV2.position_.x_);
-        std::swap(pV1.position_.y_, pV2.position_.y_);
+        std::swap(pV1.position_.x, pV2.position_.x);
+        std::swap(pV1.position_.y, pV2.position_.y);
     }
 
-    const float dx = pV2.position_.x_ - pV1.position_.x_;
-    const float dy = fabs(pV2.position_.y_ - pV1.position_.y_);
+    const float dx = pV2.position_.x - pV1.position_.x;
+    const float dy = fabs(pV2.position_.y - pV1.position_.y);
 
     float error = dx / 2.0f;
-    const int ystep = (pV1.position_.y_ < pV2.position_.y_) ? 1 : -1;
-    int y = (int)pV1.position_.y_;
+    const int ystep = (pV1.position_.y < pV2.position_.y) ? 1 : -1;
+    int y = (int)pV1.position_.y;
 
-    const int maxX = (int)pV2.position_.x_;
+    const int maxX = (int)pV2.position_.x;
 
-    for (int x = (int)pV1.position_.x_; x < maxX; x++)
+    for (int x = (int)pV1.position_.x; x < maxX; x++)
     {
         if (steep)
         {
@@ -84,14 +82,14 @@ void Rasterizer::drawTriangle(Renderer& ren, const Vertex &v1, const Vertex &v2,
     //float maxZ = -5;
     // float minZ = +5;
 
-    maxX = max(max(v1.position_.x_, v2.position_.x_), v3.position_.x_);
-    minX = min(min(v1.position_.x_, v2.position_.x_), v3.position_.x_);
-    maxY = max(max(v1.position_.y_, v2.position_.y_), v3.position_.y_);
-    minY = min(min(v1.position_.y_, v2.position_.y_), v3.position_.y_);
+    maxX = max(max(v1.position_.x, v2.position_.x), v3.position_.x);
+    minX = min(min(v1.position_.x, v2.position_.x), v3.position_.x);
+    maxY = max(max(v1.position_.y, v2.position_.y), v3.position_.y);
+    minY = min(min(v1.position_.y, v2.position_.y), v3.position_.y);
 
     // Spanning vectors of edge (pV1,pV2) and (pV1,v3)
-    Vertex vs1 = {v2.position_.x_ - v1.position_.x_, v2.position_.y_ - v1.position_.y_, 0.f};
-    Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0.f};
+    Vertex vs1 = {v2.position_.x - v1.position_.x, v2.position_.y - v1.position_.y, 0.f};
+    Vertex vs2 = {v3.position_.x - v1.position_.x, v3.position_.y - v1.position_.y, 0.f};
 
     Rasterizer::nbTriangleRender++;
 
@@ -99,7 +97,7 @@ void Rasterizer::drawTriangle(Renderer& ren, const Vertex &v1, const Vertex &v2,
     {
         for (int y = minY; y < maxY; y++)
         {
-            Vertex q = {x - v1.position_.x_, y - v1.position_.y_, 0.f};
+            Vertex q = {x - v1.position_.x, y - v1.position_.y, 0.f};
 
             float crossproductV1V2 = crossProduct(vs1, vs2);
             if (crossproductV1V2 == 0.f)
@@ -112,7 +110,7 @@ void Rasterizer::drawTriangle(Renderer& ren, const Vertex &v1, const Vertex &v2,
             // If inside of the triangle
             if ((w1 >= 0) && (w2 >= 0) && (w3 >= 0))
             {
-                float depth = (w1 * v2.position_.z_ + w2 * v3.position_.z_ + w3 * v1.position_.z_);
+                float depth = (w1 * v2.position_.z + w2 * v3.position_.z + w3 * v1.position_.z);
 
                 //maxZ = depth > maxZ ? depth : maxZ;
                 //minZ = depth < minZ ? depth : minZ;
@@ -157,7 +155,7 @@ void Rasterizer::drawTriangle(Renderer& ren, const Vertex &v1, const Vertex &v2,
 
 inline float cross_product_z (const Vec3& a, const Vec3& b)
 {
-	return (a.x_ * b.y_) - (a.y_ * b.x_);
+	return (a.x * b.y) - (a.y * b.x);
 }
 
 inline bool faceIsVisible(const Vertex &v1, const Vertex &v2, const Vertex &v3)
@@ -175,14 +173,14 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
        return;
 
     // Get the bounding box of the triangle
-    float maxX = max(max(v1.position_.x_, v2.position_.x_), v3.position_.x_);
+    float maxX = max(max(v1.position_.x, v2.position_.x), v3.position_.x);
 
     if (maxX > ren.width())
        maxX = ren.width();
     else if (maxX < 0.f) //clipping Xmax
         return;
 
-    float minX = min(min(v1.position_.x_, v2.position_.x_), v3.position_.x_);
+    float minX = min(min(v1.position_.x, v2.position_.x), v3.position_.x);
 
     //clipping Xmin
     if (minX < 0.f)
@@ -190,7 +188,7 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
     else if (minX > ren.width())
         return;
     
-    float maxY = max(max(v1.position_.y_, v2.position_.y_), v3.position_.y_);
+    float maxY = max(max(v1.position_.y, v2.position_.y), v3.position_.y);
 
     //clipping Ymax
     if (maxY > ren.heigth() - 100.f)
@@ -198,7 +196,7 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
     else if (maxY < 0.f)
         return;
 
-    float minY = min(min(v1.position_.y_, v2.position_.y_), v3.position_.y_);
+    float minY = min(min(v1.position_.y, v2.position_.y), v3.position_.y);
 
     //clipping Ymin
     if (minY < 100.f)
@@ -206,13 +204,13 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
     else if (minY > ren.heigth())
         return;
 
-    float maxZ = max(max(v1.position_.z_, v2.position_.z_), v3.position_.z_);
+    float maxZ = max(max(v1.position_.z, v2.position_.z), v3.position_.z);
 
     //clipping maxZ
     if (maxZ < zNear)
         return;
 
-    float minZ = min(min(v1.position_.z_, v2.position_.z_), v3.position_.z_);
+    float minZ = min(min(v1.position_.z, v2.position_.z), v3.position_.z);
 
     //clipping minZ
     if (minZ > zFar) //clipping Ymin
@@ -220,8 +218,8 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
 
 
     // Spanning vectors of edge (pV1,pV2) and (pV1,v3)
-    Vertex vs1 = {v2.position_.x_ - v1.position_.x_, v2.position_.y_ - v1.position_.y_, 0.f};
-    Vertex vs2 = {v3.position_.x_ - v1.position_.x_, v3.position_.y_ - v1.position_.y_, 0.f};
+    Vertex vs1 = {v2.position_.x - v1.position_.x, v2.position_.y - v1.position_.y, 0.f};
+    Vertex vs2 = {v3.position_.x - v1.position_.x, v3.position_.y - v1.position_.y, 0.f};
 
     Rasterizer::nbTriangleRender++;
 
@@ -229,7 +227,7 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
     {
         for (int y = minY; y < maxY; y++)
         {
-            Vertex q = {x - v1.position_.x_, y - v1.position_.y_, 0.f};
+            Vertex q = {x - v1.position_.x, y - v1.position_.y, 0.f};
 
             float crossproductV1V2 = crossProduct(vs1, vs2);
             if (crossproductV1V2 == 0.f)
@@ -242,7 +240,7 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
             // If inside of the triangle
             if ((w1 >= 0) && (w2 >= 0) && (w3 >= 0))
             {
-                float depth = (w1 * v2.position_.z_ + w2 * v3.position_.z_ + w3 * v1.position_.z_);
+                float depth = (w1 * v2.position_.z + w2 * v3.position_.z + w3 * v1.position_.z);
                 //std::cout << depth << std::endl;
 
                 if (depth < zNear || depth > zFar)
@@ -300,15 +298,15 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
                         {
                             Vec2 coordText = w1 * v2.texCoords_ + w2 * v3.texCoords_ + w3 * v1.texCoords_;
 
-                            coordText.x_ = coordText.x_ - floor(coordText.x_);
-                            coordText.y_ = coordText.y_ - floor(coordText.y_);
-                            coordText.x_ *= (pTexture->width() - 1);
-                            coordText.y_ *= (pTexture->heigth() - 1);
+                            coordText.x = coordText.x - floor(coordText.x);
+                            coordText.y = coordText.y - floor(coordText.y);
+                            coordText.x *= (pTexture->width() - 1);
+                            coordText.y *= (pTexture->heigth() - 1);
 
-                            //if (coordText.y_ < 0.f)
+                            //if (coordText.y < 0.f)
                              //   return;
 
-                            ColorRGBA color = pTexture->getRGBAPixelColor(coordText.x_, coordText.y_);
+                            ColorRGBA color = pTexture->getRGBAPixelColor(coordText.x, coordText.y);
 
                             for (auto &light : lights)
                             {
@@ -336,31 +334,30 @@ inline Vec3 createProjectionVector (Vec4& clipBoard, const Mat4 &projectionMatri
 {
     clipBoard = projectionMatrix * clipBoard;
 
-    //hack : preserve in Z for Z buffer en clipping
-    float z = clipBoard.z_;
-
     //convert vector in 4D to 3D this homogenize
-    if (clipBoard.w_ != 0.f && clipBoard.w_ != 1.f)
+    if (clipBoard.w != 0.f && clipBoard.w != 1.f)
     {
-       clipBoard.homogenize();
+        //hack : preserve in Z for Z buffer en clipping
+        clipBoard.x /= clipBoard.w;
+        clipBoard.y /= clipBoard.w;
     }
 
-    return Vec3{clipBoard.x_, clipBoard.y_, z};
+    return clipBoard.xyz;
 }
 
 inline void applyViewportTransformation (Vec3& vec, unsigned int winH, unsigned int winW)
 {
-    vec.x_ = static_cast<float>(((vec.x_ / 5) + 1) * 0.5f * winW);
-    vec.y_ = static_cast<float>(winH - ((vec.y_ / 5) + 1) * 0.5f * winH);
+    vec.x = static_cast<float>(((vec.x / 5) + 1) * 0.5f * winW);
+    vec.y = static_cast<float>(winH - ((vec.y / 5) + 1) * 0.5f * winH);
 }
 
 //draw normal of global vertex 
 inline void drawnNormal(Renderer& ren, Vertex& vertexLocal, Vertex& vertexGlobal, const Mat4 &projectionMatrix, const Mat4 &TRSMat)
 {
     Vertex origin = vertexGlobal;
-	Vertex axis = {	(vertexLocal.normal_.x_ * 0.5f + vertexLocal.position_.x_),
-					(vertexLocal.normal_.y_ * 0.5f + vertexLocal.position_.y_),
-					(vertexLocal.normal_.z_ * 0.5f + vertexLocal.position_.z_)};
+	Vertex axis = {	(vertexLocal.normal_.x * 0.5f + vertexLocal.position_.x),
+					(vertexLocal.normal_.y * 0.5f + vertexLocal.position_.y),
+					(vertexLocal.normal_.z * 0.5f + vertexLocal.position_.z)};
 
     Vec4 modelViewV1 = creatModelViewVector(axis.position_, TRSMat);
     Vec3 clipCoordV1 = createProjectionVector (modelViewV1, projectionMatrix);
@@ -374,10 +371,10 @@ inline void drawnNormal(Renderer& ren, Vertex& vertexLocal, Vertex& vertexGlobal
 
 inline void updateNormalWithRotation(Vec3& normal, const Vec3& rotation)
 {
-    normal = Mat4::createFixedAngleEulerRotationMatrix(rotation) * normal;
+    normal = Mat3::createFixedAngleEulerRotationMatrix(rotation) * normal;
 }
 
-inline vector<Vertex> convertLocalToGlobalVertex (const Entity& ent, const Mat4 &projectionMatrix, unsigned int winH, unsigned int winW)
+inline vector<Vertex> convertLocalToGlobalVertex (const Entity& ent, const Mat4 &projectionMatrix, unsigned int winH, unsigned int winW, const math::Mat4& inverseCameraMatrix)
 {
     //Step 1 : Create global vertex
     vector<Vec3> globalPosVertices = ent.getpMesh()->vertex_;
@@ -387,12 +384,14 @@ inline vector<Vertex> convertLocalToGlobalVertex (const Entity& ent, const Mat4 
         //Model & view transform
         Vec4 modelViewV1 = creatModelViewVector(vertex, ent.getTransform().getTRSMatrix());
 
+        modelViewV1 = inverseCameraMatrix * modelViewV1;
+
         //apply projection
-        Vec3 clipCoordV1 = createProjectionVector (modelViewV1, projectionMatrix);
+        Vec3 clipCoordV1 = std::move(createProjectionVector (modelViewV1, projectionMatrix));
 
         //create viewport position
         applyViewportTransformation (clipCoordV1 , winH, winW);
-        vertex = clipCoordV1;
+        vertex = std::move(clipCoordV1);
     }
 
     //Step 2 : Create global normal
@@ -425,7 +424,7 @@ inline vector<Vertex> convertLocalToGlobalVertex (const Entity& ent, const Mat4 
     return globalVertices;
 }
 
-void Rasterizer::renderScene(Renderer& ren, const Scene& scene, const math::Mat4& projectionMatrix)
+void Rasterizer::renderScene(Renderer& ren, const Scene& scene, const math::Mat4& projectionMatrix, const math::Mat4& inverseCameraMatrix)
 {
     for (unsigned int i = 0; i < scene.getEntities().size(); i++)
     {
@@ -439,7 +438,7 @@ void Rasterizer::renderScene(Renderer& ren, const Scene& scene, const math::Mat4
         if ( entMesh == nullptr)
             continue;
 
-        vector<Vertex> globalVertex (convertLocalToGlobalVertex(*scene.getEntities()[i].get(), projectionMatrix, ren.heigth(), ren.width()));
+        vector<Vertex> globalVertex (convertLocalToGlobalVertex(*scene.getEntities()[i].get(), projectionMatrix, ren.heigth(), ren.width(), inverseCameraMatrix));
 
         for (size_t ent = 0; ent < globalVertex.size(); ent += 3)
         {

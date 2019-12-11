@@ -56,16 +56,11 @@ vector<Vertex> Entity::transformLocalToGlobal(const Mat4 &matTRS, unsigned int w
 	vector<Vertex> vertexGlobal = pMesh_->getVertices();
 	for (auto &vertex : vertexGlobal)
 	{
-		Vec4 vec(vertex.position_);
-		vec = matTRS * vec;
-		vertex.position_ = {static_cast<float>(((vec.x_ / 5) + 1) * 0.5f * winW),
-							static_cast<float>(winH - ((vec.y_ / 5) + 1) * 0.5 * winH),
-							vec.z_};
+		vertex.position_ = (matTRS * vertex.position_).xyz;
+		vertex.position_.x = static_cast<float>(((vertex.position_.x / 5) + 1) * 0.5f * winW);
+		vertex.position_.y = static_cast<float>(winH - ((vertex.position_.y / 5) + 1) * 0.5 * winH);
 
-		Vec4 vecN(vertex.normal_);
-		vecN = matTRS * vecN;
-		vertex.normal_  = {vecN.x_, vecN.y_, vecN.z_};
-
+		vertex.normal_ = (matTRS * vertex.normal_).xyz;
 		vertex.normal_.normalize();
 	}
 	return vertexGlobal;
@@ -73,7 +68,7 @@ vector<Vertex> Entity::transformLocalToGlobal(const Mat4 &matTRS, unsigned int w
 
 Vec4 Entity::transformVertexInVec4(const Vec3& vertex) const
 {
-	return (Vec4){vertex.x_, vertex.y_, vertex.z_, 1};
+	return (Vec4){vertex.x, vertex.y, vertex.z, 1};
 }
 
 void Entity::drawPoint(Renderer &ren) const noexcept
@@ -86,7 +81,7 @@ void Entity::drawPoint(Renderer &ren) const noexcept
 
 	for (auto &vertex : globalVertex)
 	{
-		ren.setPixelColor(vertex.position_.x_, vertex.position_.y_, {0, 255, 0, 255});
+		ren.setPixelColor(vertex.position_.x, vertex.position_.y, {0, 255, 0, 255});
 	}
 }
 

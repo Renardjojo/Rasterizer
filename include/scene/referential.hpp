@@ -4,8 +4,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "mat4.hpp"
-#include "vec3.hpp"
+#include "mat.hpp"
+#include "vec.hpp"
 #include "renderer.hpp"
 
 typedef class Referential3D
@@ -67,7 +67,7 @@ typedef class Referential3D
 
 		const std::string& 				getName					()	const noexcept	{ return name_;}
 		const math::Mat4&				getTRSMatrix			()	const noexcept	{ return TRSMat_;}
-		const vector<Referential3D*>&	getChild				()	const noexcept	{ return childRef_;}
+		const std::vector<Referential3D*>&	getChild			()	const noexcept	{ return childRef_;}
 		const Referential3D*			getpParent				()	const noexcept	{ return parentRef_;}
 		const math::Vec3&				getLocalOrigin			()	const noexcept	{ return origin_;}
 		const math::Vec3&				getLocalOrientation		()	const noexcept	{ return orientation_;}
@@ -87,6 +87,9 @@ typedef class Referential3D
 		void 		rotate					(math::Vec3 rVec)						noexcept;
 		void 		scale					(math::Vec3 sVec)						noexcept;
 
+		void		rotateArroundPointY 	(math::Vec3 point, float rot) 			noexcept;
+		void		rotateArroundAxis		(math::Vec3 rVec, float rot)			noexcept;
+
 		#pragma endregion //!mutator
 
 		#pragma region operator
@@ -104,7 +107,7 @@ typedef class Referential3D
 		math::Vec3					orientation_; 	//Local Euler angle arround axis Ox, Oy and Oz
 		math::Vec3					scale_; 		//Local coef scale in x, y and z
 	
-		vector<Referential3D*>		childRef_;		//List of child referential
+		std::vector<Referential3D*>	childRef_;		//List of child referential
 		const Referential3D*		parentRef_;		//dependant referential
 
 		math::Mat4					TRSMat_;		//global TRS matrix (translation/Rotation/Scale), comput with mother ref. Allow to pass from local to global

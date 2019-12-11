@@ -8,7 +8,7 @@
 #include "color.hpp"
 #include "light.hpp"
 #include "scene.hpp"
-#include "mat4.hpp"
+#include "mat.hpp"
 
 
 enum E_rasterizerSetting
@@ -43,7 +43,7 @@ class Rasterizer
 		static void		drawTriangleWithLights		(Renderer&, const std::vector<Light>& lights, const math::Vec3& entityPos, const Vertex& v1, const Vertex& v2, const Vertex& v3, const Texture* pTexture = nullptr);
 
 		// This function draw each entity in scene
-		static void renderScene(Renderer& ren, const Scene& scene, const math::Mat4& projectionMatrix);
+		static void renderScene(Renderer& ren, const Scene& scene, const math::Mat4& projectionMatrix, const math::Mat4& inverseCameraMatrix);
 
 		static void resetNbTriangleRender	() { nbTriangleRender = 0; }
 

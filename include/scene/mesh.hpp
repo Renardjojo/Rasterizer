@@ -6,9 +6,9 @@
 #include <memory>
 #include <utility>
 #include <cassert>
+#include <vector>
 
-#include "vec2.hpp"
-#include "vec3.hpp"
+#include "vec.hpp"
 #include "vertex.hpp"
 
 typedef struct S_Indices
@@ -77,9 +77,9 @@ class Mesh
 		unsigned int 					getNbTriangle	()				{ return facesIndices_.size();}
 
 		//return the number of triangle in the mesh
-		vector<Vertex> 					getVertices	()			
+		std::vector<Vertex> 					getVertices	()			
 		{
-			vector<Vertex> vertice;
+			std::vector<Vertex> vertice;
 			vertice.reserve(facesIndices_.size() * 3);
 
 			for (size_t i = 0; i < facesIndices_.size(); i++)
