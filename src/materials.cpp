@@ -1,9 +1,19 @@
+#include <cassert>
 #include "materials.hpp"
 
 Materials::Materials()
 	:
 		pTexture_ (nullptr)
 {}
+
+/*Materials::Materials(tinyobj::real_t a, tinyobj::real_t d, tinyobj::real_t s)
+{
+    //pTexture_               = texture;
+    ambientComponent_[3]    = a;
+    diffuseComponent_[3]    = d;
+    specularComponent_[3]   = s;
+
+}*/
 
 void Materials::setColor(ColorRGB& color)
 {
@@ -17,13 +27,16 @@ void Materials::setAlpha (float alpha)
     alpha_ = alpha;
 }
 
-ColorRGBA Materials::alphaBlending(ColorRGB& Ca, ColorRGBA& Cb)
-{   
-    // Ca.a = 1, not transparency regarding already drawn pixels
+/*void Materials::addMaterial(const char* pathMtl)
+{
+    assert(pathMtl != nullptr);
 
-    ColorRGB Co = (Ca * 1 /*Ca.a*/ + (Cb * Cb.a) * (1 - 1 /*Ca.a*/)) / 1 /*Ca.a*/ + (Cb.a * (1 - 1 /*Ca.a*/));
-    
-    ColorRGBA Cofinale = Co;
-
-    return Cofinale;
+    pMaterial_.emplace(pathMtl, pMaterial_.end());
 }
+
+Materials* Materials::getMaterial(std::string id_material)
+{
+    assert(id_material != "");
+
+    return pMaterial_.find(id_material)->second.get();
+}*/

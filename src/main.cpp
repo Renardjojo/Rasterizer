@@ -24,15 +24,15 @@ int main()
 	TimeManager		time;
 	bool 			running = true;
 
-	Rasterizer::setColor4ub(255, 255, 0, 255);
+	Rasterizer::setColor4ub(0, 0, 255, 50);
 	//int id = scene.addEntity({2.f, 2.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
-	int light = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {0.3f, 0.3f, 0.3f}, E_primitive3D::NONE);
+	int light = scene.addEntity({0.f, 0.f, -10.f}, {0.f, 0.f, 0.f}, {0.3f, 0.3f, 0.3f}, E_primitive3D::CUBE);
 	Rasterizer::setColor4ub(255, 0, 0, 255);
-	//int id3 = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::CYLINDRE);
-	int id4 = scene.addEntity({0.f, 0.f, -10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, "./media/teapot.obj");
-	scene.addLigth({1.f, 1.f, 1.f}, .2f, 0.5f, .5f);
-	//scene.getEntity(id4).setTexture("./media/crate.png");
-	scene.getEntity(light).setTexture("./media/moon1.bmp");
+	int id3 = scene.addEntity({0.f, 0.f, -10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::CUBE);
+	//int id4 = scene.addEntity({0.f, 0.f, -10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, "./media/teapot.obj");
+	scene.addLigth({1.f, 1.f, 1.f}, 1.0f, .0f, .0f);
+	//scene.getEntity(id3).setTexture("./media/crate.png");
+	//scene.getEntity(light).setTexture("./media/moon1.bmp");
 
 	do
 	{
@@ -107,14 +107,14 @@ int main()
 		//scene.getEntity(id).getTransform().translate({0.f * time.dtf_, 0.f, -1.f* time.dtf_});
 		scene.getEntity(light).getTransform().setOrigin({2.f * cos(rot), 0.f, -10.f + 2.f * sin(rot)});
 		//scene.getEntity(id3).getTransform().rotate({0.5f* time.dtf_, 1.f* time.dtf_, 0.f* time.dtf_});
-		scene.getEntity(id4).getTransform().rotate({1.f* time.dtf_, 1.5f* time.dtf_, 0.f* time.dtf_});	
+		scene.getEntity(id3).getTransform().rotate({1.f* time.dtf_, 1.5f* time.dtf_, 0.f* time.dtf_});	
 		//scene.getEntity(id4).getTransform().setOrigin({cos(rot), 0.f, -10.f + 5.f * sin(rot)});
 
-		(void)id4;
+		(void)id3;
 
 		//std::cout << __FILE__ << ":" <<__LINE__ << ": " << scene.getLight(1).getPosition().z_ << std::endl;
 
-		scene.getLight(1).setPosition({2.f * cos(rot), 0.f, -10.f + 2.f * sin(rot)});
+		//scene.getLight(1).setPosition({2.f * cos(rot), 0.f, -10.f + 2.f * sin(rot)});
 
 		//display
 		ren.clear ();

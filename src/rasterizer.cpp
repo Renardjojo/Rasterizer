@@ -190,8 +190,8 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
     float zNear = 0.f;
     float zFar  = 100.f;
 
-    if (faceIsVisible(v1, v2, v3))
-       return;
+    //if (faceIsVisible(v1, v2, v3))
+      // return;
 
     // Get the bounding box of the triangle
     float maxX = max(max(v1.position_.x_, v2.position_.x_), v3.position_.x_);
@@ -413,7 +413,9 @@ void Rasterizer::renderScene(Renderer& ren, const Scene& scene, const math::Mat4
                 drawnNormal(ren, v3Local, globalVertex[ent + 2], projectionMatrix, scene.getEntities()[i]->getTransform().getTRSMatrix());
             }
 
-            Rasterizer::drawTriangleWithLights(ren, scene.getLights(), scene.getEntities()[i]->getTransform().getLocalOrigin() , globalVertex[ent], globalVertex[ent + 1], globalVertex[ent + 2], scene.getEntities()[i]->getpTexture().get());
+            Rasterizer::drawTriangleWithLights( ren, scene.getLights(), scene.getEntities()[i]->getTransform().getLocalOrigin(), 
+                                                globalVertex[ent], globalVertex[ent + 1], globalVertex[ent + 2], 
+                                                scene.getEntities()[i]->getpTexture().get());
         }
     }
 }

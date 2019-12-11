@@ -31,7 +31,7 @@ ColorRGBA operator+(const ColorRGBA& otherColor1, const ColorRGBA& otherColor2)
 	return (ColorRGBA){	static_cast<ubyte>(r), static_cast<ubyte>(g),static_cast<ubyte>(b) ,static_cast<ubyte>(a)};
 }
 
-ColorRGBA operator=(ColorRGBA& otherColor1, const ColorRGB& otherColor2)
+/*ColorRGBA operator=(ColorRGBA& otherColor1, const ColorRGB& otherColor2)
 {
     otherColor1.r = otherColor2.r;
     otherColor1.g = otherColor2.g;
@@ -39,7 +39,7 @@ ColorRGBA operator=(ColorRGBA& otherColor1, const ColorRGB& otherColor2)
     otherColor1.a = 1;
 
     return otherColor1;
-}
+}*/
 
 ColorRGB operator*(const ColorRGB& color, float alpha)
 {

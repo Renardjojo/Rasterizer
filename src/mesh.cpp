@@ -265,6 +265,7 @@ shared_ptr<Mesh> Mesh::loadObj	(const char* path)
 	string err;
 	tinyobj::attrib_t attrib;
 	vector<tinyobj::shape_t> shapes;
+	//vector<tinyobj::material_t> materials;
 	
 	tinyobj::LoadObj(&attrib, &shapes, NULL, &warn, &err, path);
 	
@@ -288,7 +289,6 @@ shared_ptr<Mesh> Mesh::loadObj	(const char* path)
 		mesh->normal_.push_back({attrib.normals[i], attrib.normals[i + 1], attrib.normals[i + 2]});
 	}
 
-
 	for (unsigned int i = 0; i < attrib.texcoords.size() ; i+=2)
 	{
 		mesh->textCoord_.push_back({attrib.texcoords[i], attrib.texcoords[i + 1]});
@@ -305,9 +305,19 @@ shared_ptr<Mesh> Mesh::loadObj	(const char* path)
 			mesh->facesIndices_.push_back({	{(unsigned int)indexV1.vertex_index, (unsigned int)indexV1.texcoord_index, (unsigned int)indexV1.normal_index},
 											{(unsigned int)indexV2.vertex_index, (unsigned int)indexV2.texcoord_index, (unsigned int)indexV2.normal_index},
 											{(unsigned int)indexV3.vertex_index, (unsigned int)indexV3.texcoord_index, (unsigned int)indexV3.normal_index}});
-	
 		}
 	}
+
+
+	/*if (!materials.empty())
+	{
+		Materials 	material(materials.back().ambient[3], materials.back().diffuse[3], materials.back().specular[3]);
+		
+	}
+	else
+		Materials material();*/
+		
+	
 
 /*
 	for (const tinyobj::shape_t& shape : shapes)

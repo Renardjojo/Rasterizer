@@ -2,6 +2,7 @@
 #define _MESH_H
 
 #include <vector>
+#include <map>
 #include <math.h>
 #include <memory>
 #include <utility>
@@ -9,6 +10,7 @@
 #include "vec2.hpp"
 #include "vec3.hpp"
 #include "vertex.hpp"
+#include "materials.hpp"
 
 typedef struct S_Indices
 {
@@ -114,18 +116,19 @@ class Mesh
 
 		#pragma region attribut
 
-		std::vector<math::Vec3> 					vertex_; 		//vertex buffer. Local vertices, doesn't change
-		std::vector<math::Vec2> 					textCoord_; 	//buffer of texture coordonnate
-		std::vector<math::Vec3> 					normal_;		//buffer of normal. Nomral is unit vector indicate the direction of face
+		std::vector<math::Vec3> 					vertex_; 		// Vertex buffer. Local vertices, doesn't change
+		std::vector<math::Vec2> 					textCoord_; 	// Buffer of texture coordonnate
+		std::vector<math::Vec3> 					normal_;		// Buffer of normal. Nomral is unit vector indicate the direction of face
 
-		std::vector<FaceIndices>					facesIndices_;  //indices buffer. Define triangle of mesh. It's a suit of triplet index
+		std::vector<FaceIndices>					facesIndices_;  // Indices buffer. Define triangle of mesh. It's a suit of triplet index
+		static Materials*							pMaterial_;		// Pointer of mesh's material
 
 		#pragma endregion //!attribut
 
 	protected:
 
 		#pragma region static attribut
-		#pragma endregion //! static attribut
+		#pragma endregion //!static attribut
 
 		#pragma region methods
 		#pragma endregion //!methods

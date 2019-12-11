@@ -48,7 +48,9 @@ class Renderer
 		 */
 		void		clear		()  noexcept;
 		
-		
+		ColorRGBA alphaBlending(const ColorRGBA& Ca, ColorRGBA& Cb);
+		ColorRGB alphaBlending(const ColorRGBA& Ca, ColorRGB& Cb);
+
 		
 
 		 /*----------*/
