@@ -44,10 +44,7 @@ public:
 	const float											getAlpha()		const noexcept	{ return alpha_;}
 	float												getAlpha()		noexcept		{ return alpha_;}
 
-	/*const std::map<std::string, unique_ptr<Materials>>	getMaterial()	const noexcept	{ return pMaterial_;}
-	std::map<std::string, unique_ptr<Materials>>		getMaterial()	noexcept		{ return pMaterial_;}
-
-	const real_t& 								getAmbientComponent()	const noexcept	{ return ambientComponent_[3];}
+	/*const real_t& 								getAmbientComponent()	const noexcept	{ return ambientComponent_[3];}
     real_t& 									getAmbientComponent()	noexcept		{ return ambientComponent_[3];}
 
     const real_t& 								getDiffuseComponent()	const noexcept	{ return diffuseComponent_[3];}

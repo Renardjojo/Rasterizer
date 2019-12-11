@@ -4,8 +4,8 @@
 #include <vector>
 #include <memory>
 #include "entity.hpp"
-#include "vec3.hpp"
-#include "mat4.hpp"
+#include "vec.hpp"
+#include "mat.hpp"
 #include "renderer.hpp"
 #include "light.hpp"
 
@@ -62,7 +62,7 @@ class Scene
 
 		//this function draw all entities of the scene in function of there referential. It take in parameter th buffer of renderer
 		void 			draw				(Renderer& ren) const noexcept;
-
+		
 		#pragma endregion //!methods
 
 		#pragma region accessor
@@ -88,6 +88,10 @@ class Scene
 		#pragma region convertor
 
 		#pragma endregion //!convertor
+
+		math::Vec3					camPos_;
+		math::Vec3					camDir_;
+		math::Vec3					camScale_;
 
 	protected:
 

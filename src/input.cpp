@@ -53,6 +53,7 @@ void   Input::pollEvent		(Uint32 windowID)
 	window.isMinimized	    = false;
 	window.isMaximized	    = false;
 	keyboard.escIsRelease	= false;
+	mouse.motion			= (SDL_Point){0, 0};
 
 
 	while (SDL_PollEvent(&event))

@@ -63,30 +63,43 @@ void 		Referential3D::addChildReferential (Referential3D& child) noexcept
 	child.		updateTRSMat();		//update TRS matrix of each of his child because of the new dependance.
 }
 
-void 		Referential3D::displayAxis 	(Renderer& ren) const noexcept
+Vertex convertVertexLocalToGlobalAndApplyProjection(Renderer& ren, Vertex vertex, const Mat4 &projectionMatrix, const Mat4 &TRSMat)
 {
-	Vertex origin (origin_.x_, origin_.y_, origin_.z_);
-	Vec4 vecO(origin.position_);
-	origin = {((vecO.x_ / 5) + 1) * 0.5f * ren.width(), 
-			(ren.heigth() - (( vecO.y_/ 5) + 1) * 0.5f *ren.heigth()), vecO.z_};
-	
+    //Aplly transformation and projection to get vector in 4D
+    Vec4 clipBoard = TRSMat * vertex.position_;
+    
+    clipBoard = projectionMatrix * clipBoard;
+
+    //convert vector in 4D to 3D this homogenize
+    if (clipBoard.w != 0.f && clipBoard.w != 1.f)
+    {
+       clipBoard.homogenize();
+    }
+
+    //adapte vertex to 2D
+    vertex.position_.x = static_cast<float>(((clipBoard.x / 5) + 1) * 0.5f * ren.width());
+    vertex.position_.y = static_cast<float>(ren.heigth() - ((clipBoard.y / 5) + 1) * 0.5 * ren.heigth());
+    vertex.position_.z = clipBoard.z;
+
+    vertex.normal_ = (TRSMat * vertex.normal_).xyz;
+    vertex.normal_.normalize();
+
+    return vertex;
+}
+
+void 		Referential3D::displayAxis 	(Renderer& ren, const math::Mat4& projectionMatrix) const noexcept
+{
+	Vertex origin (0.f, 0.f, 0.f);
+	origin = convertVertexLocalToGlobalAndApplyProjection(ren, origin, projectionMatrix, TRSMat_);
+
 	Vertex axisX = {1.f, 0.f, 0.f};
-	Vec4 vec(axisX.position_);
-	vec = TRSMat_ * vec;
-	axisX = {((vec.x_ / 5) + 1) * 0.5f * ren.width(), 
-			(ren.heigth() - (( vec.y_/ 5) + 1) * 0.5f *ren.heigth()), vec.z_};
-	
+	axisX = convertVertexLocalToGlobalAndApplyProjection(ren, axisX, projectionMatrix, TRSMat_);
+
 	Vertex axisY = {0.f, 1.f, 0.f};
-	Vec4 vec1(axisY.position_);
-	vec1 = TRSMat_ * vec1;
-	axisY = {((vec1.x_ / 5) + 1) * 0.5f * ren.width(), 
-			(ren.heigth() - (( vec1.y_/ 5) + 1) * 0.5f *ren.heigth()), vec1.z_};
+	axisY = convertVertexLocalToGlobalAndApplyProjection(ren, axisY, projectionMatrix, TRSMat_);
 
 	Vertex axisZ = {0.f, 0.f, 1.f};
-	Vec4 vec2(axisZ.position_);
-	vec2 = TRSMat_ * vec2;
-	axisZ = {((vec2.x_ / 5) + 1) * 0.5f * ren.width(), 
-			(ren.heigth() - (( vec2.y_/ 5) + 1) * 0.5f *ren.heigth()), vec2.z_};
+	axisZ = convertVertexLocalToGlobalAndApplyProjection(ren, axisZ, projectionMatrix, TRSMat_);
 
 	Rasterizer::setColor4ub(255, 0, 0, 255);
 	Rasterizer::drawLine(ren, axisX, origin); // (Ox)
@@ -94,6 +107,36 @@ void 		Referential3D::displayAxis 	(Renderer& ren) const noexcept
 	Rasterizer::drawLine(ren, axisY, origin); // (Oy)
 	Rasterizer::setColor4ub(0, 0, 255, 255);
 	Rasterizer::drawLine(ren, axisZ, origin); // (Oz)
+/*
+	Vertex origin (origin_.x, origin_.y, origin_.z);
+	Vec4 vecO(origin.position_);
+	origin = {((vecO.x / 5) + 1) * 0.5f * ren.width(), 
+			(ren.heigth() - (( vecO.y/ 5) + 1) * 0.5f *ren.heigth()), vecO.z};
+	
+	Vertex axisX = {1.f, 0.f, 0.f};
+	Vec4 vec(axisX.position_);
+	vec = TRSMat_ * vec;
+	axisX = {((vec.x / 5) + 1) * 0.5f * ren.width(), 
+			(ren.heigth() - (( vec.y/ 5) + 1) * 0.5f *ren.heigth()), vec.z};
+	
+	Vertex axisY = {0.f, 1.f, 0.f};
+	Vec4 vec1(axisY.position_);
+	vec1 = TRSMat_ * vec1;
+	axisY = {((vec1.x / 5) + 1) * 0.5f * ren.width(), 
+			(ren.heigth() - (( vec1.y/ 5) + 1) * 0.5f *ren.heigth()), vec1.z};
+
+	Vertex axisZ = {0.f, 0.f, 1.f};
+	Vec4 vec2(axisZ.position_);
+	vec2 = TRSMat_ * vec2;
+	axisZ = {((vec2.x / 5) + 1) * 0.5f * ren.width(), 
+			(ren.heigth() - (( vec2.y/ 5) + 1) * 0.5f *ren.heigth()), vec2.z};
+
+	Rasterizer::setColor4ub(255, 0, 0, 255);
+	Rasterizer::drawLine(ren, axisX, origin); // (Ox)
+	Rasterizer::setColor4ub(0, 255, 0, 255);
+	Rasterizer::drawLine(ren, axisY, origin); // (Oy)
+	Rasterizer::setColor4ub(0, 0, 255, 255);
+	Rasterizer::drawLine(ren, axisZ, origin); // (Oz)*/
 }
 
 void 		Referential3D::updateTRSMat	() 			noexcept
@@ -142,6 +185,22 @@ void 		Referential3D::scale (math::Vec3 sVec) noexcept
 {
 	scale_ += sVec;
 	updateTRSMat();
+}
+
+void		Referential3D::rotateArroundPointY (math::Vec3 point, float rot) noexcept
+{
+	TRSMat_ = 	Mat4::createTranslationMatrix (origin_) *
+				Mat4::createTranslationMatrix (-point) *
+				Mat4::createYRotationMatrix	  (rot) *
+				Mat4::createTranslationMatrix (point) * 
+				Mat4::createScaleMatrix (scale_);
+}
+
+void		Referential3D::rotateArroundAxis (math::Vec3 rVec, float rot) noexcept
+{
+/*	TRSMat_ = 	Mat4::createTranslationMatrix (origin_) *
+				Mat4::createRotationMatrixArroundVec(rVec, rot) *
+				Mat4::createScaleMatrix (scale_);*/
 }
 
 std::ostream& 	operator<<(std::ostream& out, const Ref3& ref)

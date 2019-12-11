@@ -1,7 +1,7 @@
 #ifndef _LIGHT_H
 #define _LIGHT_H
 
-#include "vec3.hpp"
+#include "vec.hpp"
 #include "color.hpp"
 
 typedef struct S_AmbiantComponent

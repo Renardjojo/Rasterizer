@@ -4,9 +4,10 @@
 #include <vector>
 #include <string>
 #include <SDL2/SDL.h>
+#include <cassert>
 #include "color.hpp"
 #include "vertex.hpp"
-#include "vec3.hpp"
+#include "vec.hpp"
 
 typedef enum E_PixelFormat
 {

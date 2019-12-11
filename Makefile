@@ -12,6 +12,7 @@ all: $(OUTPUT)
 
 multi :
 	make -j all
+	./$(OUTPUT)
 
 -include $(OBJS:.o=.d)
 

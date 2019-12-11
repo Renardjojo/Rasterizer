@@ -5,7 +5,10 @@
 using namespace math;
 
 Scene::Scene ()
-	: 	entities_	(),
+	: 	camPos_		{},
+		camDir_		{0, 0, 0},
+		camScale_	{1.f, 1.f, 1.f},
+		entities_	(),
 		light_		(),
 		world		()
 {
@@ -69,8 +72,14 @@ void 			Scene::deleteLight	(unsigned int id) throw()
 
 void 			Scene::draw				(Renderer& ren) const noexcept
 {
+	Mat4 matCam = Mat4::createTRSMatrix(camScale_, camDir_, camPos_);
+	if (matCam.reverse(matCam))
+	{
+		std::cerr << __FILE__ << ':' << __LINE__ << "Cam canot be invert" << std::endl;
+	}
+
 	//Rasterizer::renderScene(ren, *this, Mat4::createOrthoMatrix(-1.f, 1.f, -1.f, 1.f, 0.f, -100.f));
-	Rasterizer::renderScene(ren, *this, Mat4::createPerspectiveMatrix(800/(float)600, 0.01f, 100.f, 150.f));
+	Rasterizer::renderScene(ren, *this, Mat4::createPerspectiveMatrix(800/(float)600, 0.01f, 100.f, 150.f), matCam);
 }
 
 const Entity& 			Scene::getEntity		(unsigned int id) const throw()

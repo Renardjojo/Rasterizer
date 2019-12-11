@@ -4,9 +4,8 @@
 #include <memory>
 #include <vector>
 #include "mesh.hpp"
-#include "vec3.hpp"
-#include "vec4.hpp"
-#include "mat4.hpp"
+#include "vec.hpp"
+#include "mat.hpp"
 #include "renderer.hpp"
 #include "referential.hpp"
 #include "color.hpp"
@@ -67,11 +66,11 @@ class Entity
 	   const 	Ref3& 				getTransform()				const noexcept	{ return transform_;}
 	   			Ref3& 				getTransform()					  noexcept	{ return transform_;}
 
-	   const 	shared_ptr<Mesh>&	getpMesh	()				const noexcept	{ return pMesh_;}
-	  			shared_ptr<Mesh>&	getpMesh	()					  noexcept	{ return pMesh_;}
+	   const 	std::shared_ptr<Mesh>&	getpMesh	()				const noexcept	{ return pMesh_;}
+	  			std::shared_ptr<Mesh>&	getpMesh	()					  noexcept	{ return pMesh_;}
 
 		const 	std::unique_ptr<Texture>&		getpTexture	() const noexcept	{ return pTexture_;}
-		 		std::unique_ptr<Texture>&		getpTexture	() noexcept			{ return pTexture_;}	
+		 		std::unique_ptr<Texture>&		getpTexture	() noexcept			{ return pTexture_;}
 
 		#pragma endregion //!accessor
 
@@ -95,25 +94,25 @@ class Entity
 
 		#pragma region attribut
 
-		shared_ptr<Mesh>			pMesh_;				//pointor toward mesh (allow to not duplicate vertex)
+		std::shared_ptr<Mesh>		pMesh_;				//pointor toward mesh (allow to not duplicate vertex)
 		Ref3						transform_;			//local referential of entity. Entity is clip into another referntial and dependant of it.
-		shared_ptr<Materials>		materials_;
+		std::shared_ptr<Materials>	materials_;
 		std::unique_ptr<Texture>	pTexture_; 			//Texture of the mesh
 		
 		#pragma endregion //!attribut
 
 		#pragma region static attribut
 
-		static shared_ptr<Mesh> pMeshCube;
-		static shared_ptr<Mesh> pMeshSphere;
-		static shared_ptr<Mesh> pMeshCylindre;
+		static std::shared_ptr<Mesh> pMeshCube;
+		static std::shared_ptr<Mesh> pMeshSphere;
+		static std::shared_ptr<Mesh> pMeshCylindre;
 
 		#pragma endregion //! static attribut
 
 		#pragma region methods
 
 		//retrun an array of modified vectices form local to global. Project Shape in ortho
-		vector<Vertex>	transformLocalToGlobal	(const math::Mat4& matTRS, unsigned int winW, unsigned int winH) const;
+		std::vector<Vertex>	transformLocalToGlobal	(const math::Mat4& matTRS, unsigned int winW, unsigned int winH) const;
 
 		#pragma endregion //!methods
 
