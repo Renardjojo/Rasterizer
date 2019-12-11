@@ -16,6 +16,8 @@ Window::Window (unsigned int width, unsigned int heigth)
         SDL_Log("window_initilize : SDL_CreateWindow error: %s", SDL_GetError());
         exit(EXIT_FAILURE);
     }
+
+    SDL_ShowCursor(false);
 }
 
 Window::~Window ()

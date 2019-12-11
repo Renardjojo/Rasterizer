@@ -77,7 +77,7 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 	assert(latitudeCount > 2 && longitudeCount > 2);
 
 	shared_ptr<Mesh> mesh = make_shared<Mesh>();
-/*
+
 	latitudeCount *= 2.f;
 
 	float latitudeStep = 2.f * M_PI / latitudeCount;
@@ -107,12 +107,11 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 				t = (float)i / longitudeCount;
 
 				// vertex position (x, y, z)
-				mesh->getVertices().push_back({ { posX, posY, posZ},
-												{ posX * radius, posY * radius, posZ * radius},
-												{s, t},
-												Rasterizer::getColor4ub()}); //point * radius
+				mesh->vertex_		.push_back({ posX, posY, posZ});
+				mesh->normal_		.push_back({ posX * radius, posY * radius, posZ * radius});
+				mesh->textCoord_	.push_back({s, t});
 				
-				mesh->getVertices().back().normal_.normalize();
+				mesh->normal_.back().normalize();
 			}
 		}
 	}
@@ -135,9 +134,8 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 					//	|	   /	 
 					// ver2	 
 
-				    mesh->getIndices().push_back(ver1);
-				    mesh->getIndices().push_back(ver2);
-				    mesh->getIndices().push_back(ver1 + 1); //to create triangle like shema
+					//to create triangle like shema
+				    mesh->facesIndices_.push_back({{ver1, ver1, ver1}, {ver2, ver2, ver2}, {ver1 + 1, ver1 + 1, ver1 + 1}});
 				}
 
 				if(i != static_cast<unsigned int>(longitudeCount)-1)
@@ -147,14 +145,12 @@ shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 					//		 /	  |
 					// ver2	 ->	ver2+1
 
-				    mesh->getIndices().push_back(ver1 + 1);
-				    mesh->getIndices().push_back(ver2);
-				    mesh->getIndices().push_back(ver2 + 1);
+				    mesh->facesIndices_.push_back({{ver1 + 1, ver1 + 1, ver1 + 1}, {ver2, ver2, ver2}, {ver2 + 1, ver2 + 1, ver2 + 1}});
 				}
 			}
 		}
 	}
-*/
+	
 	return mesh;
 }
 
@@ -288,24 +284,35 @@ shared_ptr<Mesh> Mesh::loadObj	(const char* path)
 		mesh->normal_.push_back({attrib.normals[i], attrib.normals[i + 1], attrib.normals[i + 2]});
 	}
 
-
-	for (unsigned int i = 0; i < attrib.texcoords.size() ; i+=2)
+	if (attrib.texcoords.empty())
 	{
-		mesh->textCoord_.push_back({attrib.texcoords[i], attrib.texcoords[i + 1]});
+		mesh->textCoord_.push_back({0, 0});
+		mesh->textCoord_.push_back({1, 0});
+		mesh->textCoord_.push_back({0, 1});
+		mesh->textCoord_.push_back({1, 1});
+	}
+	else
+	{	
+		for (unsigned int i = 0; i < attrib.texcoords.size() ; i+=2)
+		{
+			mesh->textCoord_.push_back({attrib.texcoords[i], attrib.texcoords[i + 1]});
+		}
 	}
 
 	for (const tinyobj::shape_t& shape : shapes)
 	{
+		bool firstFace = true;
 		for (unsigned int i = 0; i < shape.mesh.indices.size() ; i+=3)
 		{
 			const tinyobj::index_t& indexV1 = shape.mesh.indices[i];
 			const tinyobj::index_t& indexV2 = shape.mesh.indices[i + 1];
 			const tinyobj::index_t& indexV3 = shape.mesh.indices[i + 2];
 
-			mesh->facesIndices_.push_back({	{(unsigned int)indexV1.vertex_index, (unsigned int)indexV1.texcoord_index, (unsigned int)indexV1.normal_index},
-											{(unsigned int)indexV2.vertex_index, (unsigned int)indexV2.texcoord_index, (unsigned int)indexV2.normal_index},
-											{(unsigned int)indexV3.vertex_index, (unsigned int)indexV3.texcoord_index, (unsigned int)indexV3.normal_index}});
-	
+			mesh->facesIndices_.push_back({	{(unsigned int)indexV1.vertex_index, attrib.texcoords.empty() ? (firstFace ? 0 : 2) : (unsigned int)indexV1.texcoord_index, (unsigned int)indexV1.normal_index},
+											{(unsigned int)indexV2.vertex_index, attrib.texcoords.empty() ? (firstFace ? 1 : 3) : (unsigned int)indexV2.texcoord_index, (unsigned int)indexV2.normal_index},
+											{(unsigned int)indexV3.vertex_index, attrib.texcoords.empty() ? (firstFace ? 2 : 1) : (unsigned int)indexV3.texcoord_index, (unsigned int)indexV3.normal_index}});
+
+			firstFace = !firstFace;
 		}
 	}
 

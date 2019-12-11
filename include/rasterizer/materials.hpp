@@ -29,8 +29,8 @@ public:
     ColorRGB                       getColor() noexcept                         { return colorRGB_;}
     const ColorRGB                 getColor() const noexcept                   { return colorRGB_;}
 
-    shared_ptr<Texture>	           	getTexture() noexcept                       { return pTexture_;}
-    const shared_ptr<Texture>	   	getTexture() const noexcept                 { return pTexture_;}
+    std::shared_ptr<Texture>	   	getTexture() noexcept                       { return pTexture_;}
+    const std::shared_ptr<Texture>	getTexture() const noexcept                 { return pTexture_;}
 
 	const float						getAlpha()	const noexcept					{ return alpha_;}
 	float							getAlpha()	noexcept						{ return alpha_;}
@@ -60,7 +60,7 @@ protected:
 
 	#pragma region attribut
     ColorRGBA               			color_;
-    shared_ptr<Texture>		pTexture_; //texture of entity. Nullptr if texture doesn't have any texture.
+    std::shared_ptr<Texture>			pTexture_; //texture of entity. Nullptr if texture doesn't have any texture.
 	float								alpha_ = 1;
 
 	#pragma endregion //!attribut

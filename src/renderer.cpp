@@ -1,10 +1,10 @@
 #include "renderer.hpp"
 
 Renderer::Renderer (SDL_Window* win, int winW, int winH)
-	:	SDLRen_ 	(SDL_CreateRenderer	(win, -1, SDL_RENDERER_PRESENTVSYNC | 													SDL_RENDERER_ACCELERATED | 
+	:	SDLRen_ 	(SDL_CreateRenderer	(win, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED | 
 												  SDL_RENDERER_TARGETTEXTURE)),	
 		SDLBuffer_ 	(SDL_CreateTexture (	SDLRen_, 
-											SDL_PIXELFORMAT_RGB888,
+											SDL_PIXELFORMAT_RGBA32,
 											SDL_TEXTUREACCESS_TARGET,
 											winW, winH)),
 		texBuffer_ 	(winW, winH, E_PixelFormat::RGBA),
