@@ -126,24 +126,6 @@ void Entity::drawFill(Renderer &ren) const noexcept
 	}
 }
 
-void Entity::drawFillWithLigths		(Renderer &ren, const std::vector<Light>& light) const noexcept
-{
-	if (pMesh_ == nullptr)
-		return;
-
-	// Transform all the Mesh's Vertices to Vec4
-	vector<Vertex> globalVertex = transformLocalToGlobal(transform_.getTRSMatrix(), ren.width(), ren.heigth());
-
-	for (size_t i = 0; i < pMesh_->getNbTriangle() * 3 ; i += 3)
-	{
-		Rasterizer::drawTriangleWithLights(ren, light, transform_.getLocalOrigin(),
-								 globalVertex[i],
-								 globalVertex[i + 1],
-								 globalVertex[i + 2], pTexture_.get());
-		
-	}
-}
-
 /*
 void Entity::updateTRS (const math::Mat4& TRSMatDep)
 {

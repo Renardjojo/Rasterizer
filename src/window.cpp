@@ -18,6 +18,7 @@ Window::Window (unsigned int width, unsigned int heigth)
     }
 
     SDL_ShowCursor(false);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 Window::~Window ()

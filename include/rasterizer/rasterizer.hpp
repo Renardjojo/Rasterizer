@@ -18,7 +18,8 @@ enum E_rasterizerSetting
 	R_DRAW_SHAPE_FILL,
 	R_DRAW_MULTI_COLOR,
 	R_DRAW_NORMAL,
-	R_DRAW_REFERENTIAL
+	R_DRAW_REFERENTIAL,
+	R_ENABLE_BACK_FACE_CULLING
 
 };
 
@@ -40,7 +41,7 @@ class Rasterizer
 
 		 //this function draw colorfull triangle. Use algorythme of barycenter triangle
 		static void		drawTriangle				(Renderer& , const Vertex& , const Vertex& , const Vertex&);
-		static void		drawTriangleWithLights		(Renderer&, const std::vector<Light>& lights, const math::Vec3& entityPos, const Vertex& v1, const Vertex& v2, const Vertex& v3, const Texture* pTexture = nullptr);
+		static void		drawTriangleWithLights		(Renderer&, const std::vector<Light>& lights, const math::Vec3& viewerPosition, const math::Vec3& entityPos, const Vertex& v1, const Vertex& v2, const Vertex& v3, const Texture* pTexture = nullptr);
 
 		// This function draw each entity in scene
 		static void renderScene(Renderer& ren, const Scene& scene, const math::Mat4& projectionMatrix, const math::Mat4& inverseCameraMatrix);
@@ -77,6 +78,7 @@ class Rasterizer
 		// R_DRAW_MULTI_COLOR		: Allow to drawn shape in multi color in mode drawTriangle(). By default to false.
 		// R_DRAW_NORMAL			: Allow to draw the normal of each vertexe.
 		// R_DRAW_REFERENTIAL		: Allow to draw the referential of entity
+		// R_ENABLE_BACK_FACE_CULLING : Allow to don't draw face in same direction au camera. Normaly not visible
 		//
 		static void setSetting	(E_rasterizerSetting setting, bool data) throw();
 
@@ -103,6 +105,7 @@ class Rasterizer
 		static bool			drawMutliColor;			//	by default in false
 		static bool			drawNormal;				//	by default in false
 		static bool			drawReferential;		//	by default in false
+		static bool			enableBackFaceCulling;	//	by default in true
 		static unsigned int nbTriangleRender;	
 
 		#pragma endregion //! static attribut

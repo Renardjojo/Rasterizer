@@ -163,7 +163,7 @@ namespace math
 		Vec3& 	operator=	(const Vec3& vec);
 		Vec3& 	operator+=	(const Vec3& vec);
 		Vec3& 	operator-=	(const Vec3& vec);
-		Vec3& 	operator*=	(const float& scale);
+		Vec3& 	operator*=	(const float scale);
 		Vec3& 	operator/=	(const float& scale);
 		float& 	operator[]	(unsigned int val);
 
@@ -180,7 +180,7 @@ namespace math
 
 	Vec3 		operator-		(Vec3 vec1, Vec3 const& vec2);
 	Vec3 		operator+		(Vec3 vec1, Vec3 const& vec2);
-	Vec3		operator*		(Vec3 vec, const float& scale);
+	Vec3		operator*		(Vec3 vec, const float scale);
 	Vec3 		operator*		(const float& scale, Vec3 vec);
 	Vec3 		operator/		(Vec3 vec, const float& scale);
 	Vec3 		operator/		(const float& scale, Vec3 vec);

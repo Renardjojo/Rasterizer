@@ -62,6 +62,9 @@ class Scene
 
 		//this function draw all entities of the scene in function of there referential. It take in parameter th buffer of renderer
 		void 			draw				(Renderer& ren) const noexcept;
+
+		//inscrease scale of all
+		void 			zoom				(float zoom);
 		
 		#pragma endregion //!methods
 
@@ -90,8 +93,9 @@ class Scene
 		#pragma endregion //!convertor
 
 		math::Vec3					camPos_;
-		math::Vec3					camDir_;
+		math::Vec3					camOrientation_;
 		math::Vec3					camScale_;
+		math::Vec3					playerDir_;
 
 	protected:
 

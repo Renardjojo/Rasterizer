@@ -13,13 +13,14 @@ Light::Light(const math::Vec3& pos, float ambient, float diffuse, float specular
 }
 
 
-void Light::computLightComponent(ColorRGBA& colorIntensity, const math::Vec3& normal, const Vec3& position, float shininessCoef) const
+void Light::computLightComponent(ColorRGBA& colorIntensity, const math::Vec3& normal, const Vec3& viewerPosition, const Vec3& position, float shininessCoef) const
 {
     ColorRGBA colorIntensityDiffuse = colorIntensity;
     ColorRGBA colorIntensitySpec    = colorIntensity;
     computAmbiantComponent          (colorIntensity);
 
     Vec3 normalPosLightWithObj = (position_ - position).getNormalize();
+    Vec3 Viewer = (viewerPosition - position).getNormalize();
 
     float cosTeta = normalPosLightWithObj.dot_product(normal);
 
@@ -27,9 +28,8 @@ void Light::computLightComponent(ColorRGBA& colorIntensity, const math::Vec3& no
 		return;
 
 	computDiffuseComponent      (colorIntensityDiffuse, normal, cosTeta);
-	computSpecularBlinnPhong    (colorIntensitySpec, normal, shininessCoef, cosTeta, normalPosLightWithObj);		
+	computSpecularBlinnPhong    (colorIntensitySpec, normal, Viewer, shininessCoef, cosTeta, normalPosLightWithObj);		
 	
-    //std::cout << normalizePosition_ << std::endl;
     colorIntensity = colorIntensity + colorIntensityDiffuse + colorIntensitySpec;
 }
 
@@ -71,7 +71,7 @@ void Light::computDiffuseComponent     (ColorRGBA& colorIntensity, const math::V
     colorIntensity.b *= (diffuseComponent_.kb * cosTeta);
 }
 
-void Light::computSpecularBlinnPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal,
+void Light::computSpecularBlinnPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, const Vec3& viewerPosition,
                                                                     float shininessCoef, float cosTeta, const Vec3& normalPosLightWithObj)  const
 {    
     // If the angle between the normal and the light direction is greater than 90 degrees, 
@@ -83,28 +83,29 @@ void Light::computSpecularBlinnPhong     (ColorRGBA& colorIntensity, const math:
         return;
     }
 
-   // math::Vec3 add          = normalizePosition_ + (Vec3){0.f, 0.f, 1.f};
+    math::Vec3 add   = normalPosLightWithObj + viewerPosition;
 
     //H: The halfway vector between the viewer and light-source vectors
     // Dot product of the normal and H of the camera
-   	//math::Vec3 H = add / add.length();
+   	math::Vec3 H = add / add.length();
+    float rst = normal.dot_product(H);
     //math::Vec3 H = normalizePosition_;
 
 
-    float powCosGamCoefShiniMult255 = 255 * powf(cosTeta, shininessCoef);
+    float powCosGamCoefShiniMult255 = 255 * powf(rst, shininessCoef);
 
     colorIntensity.r = specularComponent_.kr * powCosGamCoefShiniMult255;
     colorIntensity.g = specularComponent_.kg * powCosGamCoefShiniMult255;
     colorIntensity.b = specularComponent_.kb * powCosGamCoefShiniMult255;
 }
 
-void Light::computSpecularPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, 
+void Light::computSpecularPhong     (ColorRGBA& colorIntensity, const math::Vec3& normal, const Vec3& viewerPosition, 
                                                                     float shininessCoef, const Vec3& normalPosLightWithObj)  const
 {
-  //  math::Vec3 reflexionR   = 2 * normal.dot_product(normalizePosition_) * normal - normalizePosition_;
+    math::Vec3 reflexionR   = 2 * normal.dot_product(normalPosLightWithObj) * normal - normalPosLightWithObj;
 
     // Dot product of reflexionR and the position of the camera
-    float cosGamma = normalPosLightWithObj.dot_product({0.f, 0.f, 1.f});
+    float cosGamma = reflexionR.dot_product(viewerPosition.getNormalize());
 
     if (cosGamma < 0.f)
         cosGamma = 0.f;

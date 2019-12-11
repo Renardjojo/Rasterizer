@@ -123,11 +123,6 @@ void Rasterizer::drawTriangle(Renderer& ren, const Vertex &v1, const Vertex &v2,
                     {
                         ren.setPixelColor(x, y, {0, 0, 0, 255}, zValue);
                     }
-                    /*else if (drawEdge && (w1 < 0.03f || w2 < 0.03f || w3 < 0.03f))
-					{
-						target.setPixelColor(x, y, {0, 0, 0, 100}, zValue);
-					}*/
-                    //TODO: AAfunction When apha was implement
                     else if (drawZBuffer)
                     {
                         ubyte color = (depth + 1) / 2 * 255;
@@ -164,14 +159,16 @@ inline bool faceIsVisible(const Vertex &v1, const Vertex &v2, const Vertex &v3)
     return crossZ > 0.f;
 }
 
-void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> &lights, const Vec3& entityPos, const Vertex &v1, const Vertex &v2, const Vertex &v3, const Texture* pTexture)
+void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> &lights, const Vec3& viewerPosition, const Vec3& entityPos, const Vertex &v1, const Vertex &v2, const Vertex &v3, const Texture* pTexture)
 {
-    float zNear = 5.f;
+    float zNear = 0.01f;
     float zFar  = 100.f;
 
-    if (faceIsVisible(v1, v2, v3))
-       return;
-
+    if (enableBackFaceCulling)
+    {
+        if (faceIsVisible(v1, v2, v3))
+        return;
+    }
     // Get the bounding box of the triangle
     float maxX = max(max(v1.position_.x, v2.position_.x), v3.position_.x);
 
@@ -258,11 +255,6 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
                     {
                         ren.setPixelColor(x, y, {0, 0, 0, 255}, zValue);
                     }
-                    /*else if (drawEdge && (w1 < 0.03f || w2 < 0.03f || w3 < 0.03f))
-					{
-						target.setPixelColor(x, y, {0, 0, 0, 100}, zValue);
-					}*/
-                    //TODO: AAfunction When apha was implement
                     else if (drawZBuffer)
                     {
                         //ubyte color = ((depth - zNear) / (zFar + abs(zNear))) * 255;
@@ -286,8 +278,9 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
 
                             for (auto &light : lights)
                             {
-                                light.computLightComponent( color, 
-                                                            ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(), 
+                                light.computLightComponent( color,
+                                                            ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(),
+                                                            viewerPosition,
                                                             entityPos,
                                                             32.f);
                             }
@@ -311,7 +304,8 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
                             for (auto &light : lights)
                             {
                                 light.computLightComponent( color, 
-                                                            ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(), 
+                                                            ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(),
+                                                            viewerPosition, 
                                                             entityPos,
                                                             32.f);
                             }
@@ -454,7 +448,7 @@ void Rasterizer::renderScene(Renderer& ren, const Scene& scene, const math::Mat4
                 drawnNormal(ren, v3Local, globalVertex[ent + 2], projectionMatrix, scene.getEntities()[i]->getTransform().getTRSMatrix());
             }
 
-            Rasterizer::drawTriangleWithLights(ren, scene.getLights(), scene.getEntities()[i]->getTransform().getLocalOrigin() , globalVertex[ent], globalVertex[ent + 1], globalVertex[ent + 2], scene.getEntities()[i]->getpTexture().get());
+            Rasterizer::drawTriangleWithLights(ren, scene.getLights(), scene.camPos_, scene.getEntities()[i]->getTransform().getLocalOrigin(), globalVertex[ent], globalVertex[ent + 1], globalVertex[ent + 2], scene.getEntities()[i]->getpTexture().get());
         }
     }
 }
@@ -496,6 +490,10 @@ bool Rasterizer::getSetting(E_rasterizerSetting setting) throw()
 
     case (E_rasterizerSetting::R_DRAW_REFERENTIAL):
         return drawReferential;
+        break;
+
+    case (E_rasterizerSetting::R_ENABLE_BACK_FACE_CULLING):
+        return enableBackFaceCulling;
         break;
 
     default:
@@ -548,6 +546,10 @@ void Rasterizer::setSetting(E_rasterizerSetting setting, bool data) throw()
         drawReferential = data;
         break;
 
+    case (E_rasterizerSetting::R_ENABLE_BACK_FACE_CULLING):
+        enableBackFaceCulling = data;
+        break;
+
     default:
         throw runtime_error("Setting doesn't implemented");
         break;
@@ -562,4 +564,5 @@ bool Rasterizer::drawShapeFill(true);
 bool Rasterizer::drawMutliColor(false);
 bool Rasterizer::drawNormal(false);
 bool Rasterizer::drawReferential(false);
+bool Rasterizer::enableBackFaceCulling(true);
 unsigned int Rasterizer::nbTriangleRender(0);
