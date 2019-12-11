@@ -107,24 +107,14 @@ int main()
 			time.dtf_ = 0.f;
 		}
 
-		if (input.keyboard.isDown[SDL_SCANCODE_W])
+		if (input.keyboard.isDown[SDL_SCANCODE_UP])
 		{
 			scene.camPos_.z -= 20 * time.dtf_;
 		}
 
-		if (input.keyboard.isDown[SDL_SCANCODE_S])
-		{
-			scene.camPos_.z += 20 * time.dtf_;
-		}
-
-		if (input.keyboard.isDown[SDL_SCANCODE_UP])
-		{
-			scene.camDir_.x += 0.7f * time.dtf_;
-		}
-
 		if (input.keyboard.isDown[SDL_SCANCODE_DOWN])
 		{
-			scene.camDir_.x -= 0.7f * time.dtf_;
+			scene.camPos_.z += 20 * time.dtf_;
 		}
 
 		if (input.keyboard.isDown[SDL_SCANCODE_LEFT])
@@ -136,6 +126,17 @@ int main()
 		{
 			scene.camDir_.y -= 0.7f * time.dtf_;
 		}
+
+		if (input.mouse.motion.y != 0)
+		{
+			scene.camDir_.x += input.mouse.motion.y * 0.1f * time.dtf_ ;
+		}
+
+		if (input.mouse.motion.x != 0)
+		{
+			scene.camDir_.y += input.mouse.motion.x * 0.1f * time.dtf_;
+		}
+
 
 		float camScale = static_cast<float>(input.mouse.wheel_scrolling * 0.1f + 1.f);
 		scene.camScale_ = {camScale, camScale, camScale};

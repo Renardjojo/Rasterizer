@@ -78,11 +78,6 @@ void 			Scene::draw				(Renderer& ren) const noexcept
 		std::cerr << __FILE__ << ':' << __LINE__ << "Cam canot be invert" << std::endl;
 	}
 
-	std::cout << "Pos : " << camPos_ << std::endl;
-	std::cout << "Dir : " << camDir_ << std::endl;
-	std::cout << "Scale : " << camScale_ << std::endl;
-	std::cout << std::endl;
-
 	//Rasterizer::renderScene(ren, *this, Mat4::createOrthoMatrix(-1.f, 1.f, -1.f, 1.f, 0.f, -100.f));
 	Rasterizer::renderScene(ren, *this, Mat4::createPerspectiveMatrix(800/(float)600, 0.01f, 100.f, 150.f), matCam);
 }
