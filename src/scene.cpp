@@ -32,6 +32,8 @@ unsigned int 	Scene::addEntity(const Vec3&  originVec, const Vec3& orientationVe
 												world,
 												primitive));
 
+	entities_.back()->setMaterial(Material::getMaterial("Default"));
+
 	return entities_.size();
 }
 
@@ -43,7 +45,10 @@ unsigned int 	Scene::addEntity(const Vec3&  originVec, const Vec3& orientationVe
 												world,
 												E_primitive3D::NONE));
 
-	entities_.back()->getpMesh() = Mesh::loadObj(objPath);
+
+	pair<Material*, shared_ptr<Mesh>> objInfo = Mesh::loadObj(objPath);
+	entities_.back()->setMaterial(objInfo.first);
+	entities_.back()->getpMesh() 	 = objInfo.second;
 
 	return entities_.size();
 }
@@ -74,10 +79,8 @@ void 			Scene::deleteLight	(unsigned int id) throw()
 void 			Scene::draw				(Renderer& ren) const noexcept
 {
 	Mat4 matCam = Mat4::createTRSMatrix(camScale_, camOrientation_, camPos_);
-	if (matCam.reverse(matCam))
-	{
-		std::cerr << __FILE__ << ':' << __LINE__ << "Cam canot be invert" << std::endl;
-	}
+	
+	matCam.reverse(matCam);
 
 	//Rasterizer::renderScene(ren, *this, Mat4::createOrthoMatrix(-1.f, 1.f, -1.f, 1.f, 0.f, -100.f));
 	Rasterizer::renderScene(ren, *this, Mat4::createPerspectiveMatrix(800/(float)600, 0.01f, 100.f, 150.f), matCam);

@@ -34,21 +34,19 @@ Texture::~Texture ()
 
 void Texture::setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c)
 {
-	//TODO: Add opacity function in function of depth
-	if (x < width_ && y < heigth_)
+	assert(x < width_ && y < heigth_);
+
+	if (pixelFormat_ == E_PixelFormat::RGB)
 	{
-		if (pixelFormat_ == E_PixelFormat::RGB)
-		{
-			ColorRGB* pC = static_cast<ColorRGB*>(pPixels_);
-			pC += width_ * y + x;
-			*pC = {c.r, c.g, c.b};
-		}
-		else
-		{
-			ColorRGBA* pC = static_cast<ColorRGBA*>(pPixels_);
-			pC += width_ * y + x;
-			*pC = {c.r, c.g, c.b, c.a};
-		}
+		ColorRGB* pC = static_cast<ColorRGB*>(pPixels_);
+		pC += width_ * y + x;
+		*pC = {c.r, c.g, c.b};
+	}
+	else
+	{
+		ColorRGBA* pC = static_cast<ColorRGBA*>(pPixels_);
+		pC += width_ * y + x;
+		*pC = {c.r, c.g, c.b, c.a};
 	}
 }
 

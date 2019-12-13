@@ -9,6 +9,7 @@
 #include "light.hpp"
 #include "scene.hpp"
 #include "mat.hpp"
+#include "material.hpp"
 
 
 enum E_rasterizerSetting
@@ -41,7 +42,7 @@ class Rasterizer
 
 		 //this function draw colorfull triangle. Use algorythme of barycenter triangle
 		static void		drawTriangle				(Renderer& , const Vertex& , const Vertex& , const Vertex&);
-		static void		drawTriangleWithLights		(Renderer&, const std::vector<Light>& lights, const math::Vec3& viewerPosition, const math::Vec3& entityPos, const Vertex& v1, const Vertex& v2, const Vertex& v3, const Texture* pTexture = nullptr);
+		static void		drawTriangleWithLights		(Renderer&, const std::vector<Light>& lights, const math::Vec3& viewerPosition, const math::Vec3& entityPos, const Material* entityMat,const Vertex& v1, const Vertex& v2, const Vertex& v3, const Texture* pTexture = nullptr);
 
 		// This function draw each entity in scene
 		static void renderScene(Renderer& ren, const Scene& scene, const math::Mat4& projectionMatrix, const math::Mat4& inverseCameraMatrix);

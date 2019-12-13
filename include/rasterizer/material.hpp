@@ -14,22 +14,22 @@ using namespace tinyobj;
 
 struct LightComponent
 {
-	typedef struct AmbiantComponent
+	struct AmbiantComponent
 	{
 		float r, g, b;
 	} Ka;
 
-	typedef struct DiffuseComponent
+	struct DiffuseComponent
 	{
 		float r, g, b;
 	} Kd;
 
-	typedef struct SpecularComponent
+	struct SpecularComponent
 	{
 		float r, g, b;
 	} Ks;
 
-	unsigned int shiny;
+	unsigned int shininess;
 };
 
 class Material
@@ -39,7 +39,7 @@ public:
     #pragma region constructor/destructor
 
 	Material() = default;
-	Material(LightComponent&& LightComponent);
+	Material(LightComponent&& LightComponent, std::string textureAmbPath, float alpha);
 	Material(const Material& other) = default;
     ~Material() = default;
 
@@ -56,20 +56,16 @@ public:
 	#pragma region static method
 
 	// Load the file mtl in a global container, if doesn't exist ->assert
-	static void addMaterial(LightComponent&& LightComponent); 
+	static std::map<std::string, std::unique_ptr<Material>>::iterator addMaterial(std::string name, LightComponent&& LightComponent, std::string textureAmbPath, float alpha); 
+	static std::map<std::string, std::unique_ptr<Material>>::iterator addMaterial(std::string mtlPath);
+
 
 	// Return a pointer to the indicated material, if doesn't exist -> assert
-	static const Material* getMaterial(std::string id_material); 
+	static Material* getMaterial(std::string id_material); 
 
 	#pragma endregion
 
 	#pragma region mutator
-
-	// This function allow to integret texture in entity. Texture must be shared ptr initilize outside 
-	// with make shared to don't load multiple same texture
-	void setTexture (Texture* pTexture)	noexcept   			{	pTexture_	= pTexture;};
-	void setColor	(ColorRGB& color);
-	void setAlpha	(float alpha);
 
 	#pragma endregion //!mutator
 

@@ -26,16 +26,33 @@ int main()
 	bool 			running = true;
 
 	Rasterizer::setColor4ub(255, 255, 0, 255);
-	//int skyBox = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {10.f, 10.f, 10.f}, "./media/skybox.obj");
-	int light = scene.addEntity({0.f, 0.f, -2.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
+
+	//int skyBox = scene.addEntity({0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {10.f, 10.f, 10.f}, "./media/obj/skybox.obj");
+//	int light = scene.addEntity({0.f, 0.f, -2.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, E_primitive3D::SPHERE);
 	Rasterizer::setColor4ub(255, 0, 0, 255);
-	//int teaPot = scene.addEntity({1.f, 0.f, -10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, "./media/teapot.obj");
-	int character = scene.addEntity({0.f, -7.f, -30.f}, {0.f, 0.f, 0.f}, {0.13f, 0.13f, 0.13f}, "./media/Crash.obj");
-	scene.addLigth({1.f, 1.f, 1.f}, .2f, 0.8f, 0.7f);
-	//scene.getEntity(teaPot).setTexture("./media/marber.jpg");
-	scene.getEntity(character).setTexture("./media/crash5f.png");
-	scene.getEntity(light).setTexture("./media/sp.png");
-	//scene.getEntity(skyBox).setTexture("./media/cube3.png");
+	/*int teaPot = scene.addEntity({10.f, 0.5f, -29.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, "./media/obj/teapot.obj");
+	int teaPot2 = scene.addEntity({-10.f, 0.5f, -29.f}, {0.f, M_PI, 0.f}, {1.f, 1.f, 1.f}, "./media/obj/teapot.obj");
+	int teaPot3 = scene.addEntity({0.f, 4.5f, -29.f}, {0.f, -M_PI_2, 0.f}, {1.f, 1.f, 1.f}, "./media/obj/teapot.obj");
+	int character = scene.addEntity({0.f, -7.f, -30.f}, {0.f, 0.f, 0.f}, {0.13f, 0.13f, 0.13f}, "./media/obj/crash.obj");*/
+
+	scene.addEntity({2.f, 2.f, -30.f}, {0.f, 0.f, 0.f}, {10.f, 10.f, 0.3f}, E_primitive3D::CUBE);
+	int window = scene.addEntity({0.f, 0.f, -10.f}, {0.f, 0.f, 0.f}, {10.f, 10.f, 0.3f}, E_primitive3D::CUBE);
+	int cube1 = scene.addEntity({5.f, 5.f, -15.f}, {0.f, 0.f, 0.f}, {10.f, 10.f, 0.3f}, E_primitive3D::CUBE);
+
+	//auto is iterator to map
+	auto itB = Material::addMaterial("./media/material/glassBlue.mtl");
+	auto itR = Material::addMaterial("./media/material/glassRed.mtl");
+	scene.getEntity(window).setMaterial(itB->second.get());
+	scene.getEntity(cube1).setMaterial(itR->second.get());
+
+	std::cout << scene.getEntity(window).getpMaterial()->alpha_ << endl;
+	
+	scene.addLigth({0.f, 0.f, -30.f}, 1.f, 0.f, 0.f);
+/*
+	(void)character;
+	(void)teaPot;
+	(void)teaPot2;
+	(void)teaPot3;*/
 
 	do
 	{
@@ -112,39 +129,30 @@ int main()
 			Rasterizer::setSetting(E_rasterizerSetting::R_ENABLE_BACK_FACE_CULLING, true);
 		}
 
-		if (input.keyboard.isDown[SDL_SCANCODE_UP])
+		if (input.keyboard.isDown[SDL_SCANCODE_UP] || input.keyboard.isDown[SDL_SCANCODE_W])
 		{
 			Vec3 vec = scene.playerDir_ * (20.f * time.dtf_);
 			scene.camPos_ += vec;
 		}
 
-		if (input.keyboard.isDown[SDL_SCANCODE_DOWN])
+		if (input.keyboard.isDown[SDL_SCANCODE_DOWN] || input.keyboard.isDown[SDL_SCANCODE_S])
 		{
 			Vec3 vec = scene.playerDir_ * (20.f * time.dtf_);
 			scene.camPos_ -= vec;
 		}
 
-	/*	if (input.keyboard.isDown[SDL_SCANCODE_LEFT])
-		{
-			Vec2 vecDirPlayer = {scene.playerDir_.x, scene.playerDir_.z};
-			vecDirPlayer.rotate(-0.7f * time.dtf_ * 180 / M_PI);
-			scene.playerDir_.x = vecDirPlayer.x;
-			scene.playerDir_.z = vecDirPlayer.y;
 
-			scene.camOrientation_.y += 0.7f * time.dtf_;
+		if (input.keyboard.isDown[SDL_SCANCODE_SPACE])
+		{
+			scene.camPos_.y += 20.f * time.dtf_;
 		}
 
-		if (input.keyboard.isDown[SDL_SCANCODE_RIGHT])
+		if (input.keyboard.isDown[SDL_SCANCODE_LCTRL ])
 		{
-			Vec2 vecDirPlayer = {scene.playerDir_.x, scene.playerDir_.z};
-			vecDirPlayer.rotate(0.7f * time.dtf_ * 180 / M_PI);
-			scene.playerDir_.x = vecDirPlayer.x;
-			scene.playerDir_.z = vecDirPlayer.y;
+			scene.camPos_.y -= 20.f * time.dtf_;
+		}
 
-			scene.camOrientation_.y -= 0.7f * time.dtf_;
-		}*/
-
-		if (input.keyboard.isDown[SDL_SCANCODE_LEFT])
+		if (input.keyboard.isDown[SDL_SCANCODE_LEFT] || input.keyboard.isDown[SDL_SCANCODE_A])
 		{
 			Vec2 vecDirPlayer = {scene.playerDir_.x, scene.playerDir_.z};
 			vecDirPlayer.rotate(-input.mouse.motion.x * 0.1f * time.dtf_ * 180 / M_PI).rotated90();
@@ -154,7 +162,7 @@ int main()
 			scene.camPos_ -= playerDirOrtho;
 		}
 
-		if (input.keyboard.isDown[SDL_SCANCODE_RIGHT])
+		if (input.keyboard.isDown[SDL_SCANCODE_RIGHT] || input.keyboard.isDown[SDL_SCANCODE_D])
 		{
 			Vec2 vecDirPlayer = {scene.playerDir_.x, scene.playerDir_.z};
 			vecDirPlayer.rotate(-input.mouse.motion.x * 0.1f * time.dtf_ * 180 / M_PI).rotated90();
@@ -198,21 +206,20 @@ int main()
 		static float rot = 0.f;
 
 
-		if (!input.keyboard.isDown[SDL_SCANCODE_SPACE])
+		if (!input.keyboard.isDown[SDL_SCANCODE_P])
 		{
 			rot += .5f * time.dtf_;
 
 			Rasterizer::setColor4ub(0, 255, 255, 0);
-			scene.getEntity(light).getTransform().setOrigin({2.f * cos(rot), 0.f, -40.f + 20.f * sin(rot)});
+			//scene.getEntity(light).getTransform().setOrigin({2.f * cos(rot), 0.f, -40.f + 20.f * sin(rot)});
 			//scene.getEntity(skyBox).getTransform().rotate({1.f* time.dtf_, 1.5f* time.dtf_, 0.f})
 			//scene.getEntity(character).getTransform().translate({5 * cos(rot) * time.dtf_, 0.f, 5 * sin(rot) * time.dtf_});
-
 			//scene.getEntity(skyBox).getTransform().scale({0.5f * time.dtf_, 0.5f * time.dtf_, 0.5f * time.dtf_});
 
 
 			//std::cout << __FILE__ << ":" <<__LINE__ << ": " << scene.getLight(1).getPosition().z << std::endl;
 
-			scene.getLight(1).setPosition({2.f * cos(rot), 0.f, -40.f + 20.f * sin(rot)});
+			//scene.getLight(1).setPosition({2.f * cos(rot), 0.f, -40.f + 20.f * sin(rot)});
 		}
 		//display
 		ren.clear ();

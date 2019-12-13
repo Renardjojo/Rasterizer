@@ -159,18 +159,20 @@ inline bool faceIsVisible(const Vertex &v1, const Vertex &v2, const Vertex &v3)
     return crossZ > 0.f;
 }
 
-void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> &lights, const Vec3& viewerPosition, const Vec3& entityPos, const Vertex &v1, const Vertex &v2, const Vertex &v3, const Texture* pTexture)
+void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> &lights, const Vec3& viewerPosition, const Vec3& entityPos, const Material* entityMat, const Vertex &v1, const Vertex &v2, const Vertex &v3, const Texture* pTexture)
 {
     float zNear = 0.01f;
     float zFar  = 100.f;
 
-    if (enableBackFaceCulling)
+    if (enableBackFaceCulling && entityMat->alpha_ == 1.f)
     {
         if (faceIsVisible(v1, v2, v3))
         return;
     }
+
     // Get the bounding box of the triangle
     float maxX = max(max(v1.position_.x, v2.position_.x), v3.position_.x);
+
 
     if (maxX > ren.width())
        maxX = ren.width();
@@ -211,8 +213,7 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
 
     //clipping minZ
     if (minZ > zFar) //clipping Ymin
-        return;    
-
+        return;
 
     // Spanning vectors of edge (pV1,pV2) and (pV1,v3)
     Vertex vs1 = {v2.position_.x - v1.position_.x, v2.position_.y - v1.position_.y, 0.f};
@@ -270,11 +271,7 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
                     {
                         if (pTexture == nullptr) //color this color of vertex
                         { 
-                            ColorRGBA color;
-                            color.r = w1 * v2.color_.r + w2 * v3.color_.r + w3 * v1.color_.r;
-                            color.g = w1 * v2.color_.g + w2 * v3.color_.g + w3 * v1.color_.g;
-                            color.b = w1 * v2.color_.b + w2 * v3.color_.b + w3 * v1.color_.b;
-                            color.a = w1 * v2.color_.a + w2 * v3.color_.a + w3 * v1.color_.a;
+                            ColorRGBA color {255, 255, 255, static_cast<ubyte>(255 * entityMat->alpha_)};
 
                             for (auto &light : lights)
                             {
@@ -282,7 +279,7 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
                                                             ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(),
                                                             viewerPosition,
                                                             entityPos,
-                                                            32.f);
+                                                            entityMat);
                             }
                     
                             ren.setPixelColor(x, y, color, zValue);
@@ -300,6 +297,7 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
                              //   return;
 
                             ColorRGBA color = pTexture->getRGBAPixelColor(coordText.x, coordText.y);
+                            color.a *= entityMat->alpha_;
 
                             for (auto &light : lights)
                             {
@@ -307,7 +305,7 @@ void Rasterizer::drawTriangleWithLights(Renderer& ren, const std::vector<Light> 
                                                             ((w1 * v2.normal_) + (w2 * v3.normal_) + (w3 * v1.normal_)).getNormalize(),
                                                             viewerPosition, 
                                                             entityPos,
-                                                            32.f);
+                                                            entityMat);
                             }
                             ren.setPixelColor(x, y, color, zValue);
                         }
@@ -448,7 +446,8 @@ void Rasterizer::renderScene(Renderer& ren, const Scene& scene, const math::Mat4
                 drawnNormal(ren, v3Local, globalVertex[ent + 2], projectionMatrix, scene.getEntities()[i]->getTransform().getTRSMatrix());
             }
 
-            Rasterizer::drawTriangleWithLights(ren, scene.getLights(), scene.camPos_, scene.getEntities()[i]->getTransform().getLocalOrigin(), globalVertex[ent], globalVertex[ent + 1], globalVertex[ent + 2], scene.getEntities()[i]->getpTexture().get());
+            Texture* pTex = scene.getEntities()[i]->getpMaterial() == nullptr ? nullptr : scene.getEntities()[i]->getpMaterial()->pTexture_.get();
+            Rasterizer::drawTriangleWithLights(ren, scene.getLights(), scene.camPos_, scene.getEntities()[i]->getTransform().getLocalOrigin(), scene.getEntities()[i]->getpMaterial(), globalVertex[ent], globalVertex[ent + 1], globalVertex[ent + 2], pTex);
         }
     }
 }

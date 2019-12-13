@@ -11,7 +11,7 @@ Entity::Entity(const math::Vec3 &translVec,
 			   Primitive3D primitive)
 	: pMesh_		(nullptr),
 	  transform_	("Test", translVec, rotVec, scaleVec, dependance),
-	  materials_	(nullptr)
+	  pMaterial_	(nullptr)
 {
 	switch (primitive)
 	{
@@ -42,13 +42,6 @@ Entity::Entity(const math::Vec3 &translVec,
 	default:
 		break;
 	}
-}
-
-void 	Entity::setTexture		(const char* path)
-{
-	assert (path != nullptr);
-
-	pTexture_ = make_unique<Texture>(path);
 }
 
 vector<Vertex> Entity::transformLocalToGlobal(const Mat4 &matTRS, unsigned int winW, unsigned int winH) const

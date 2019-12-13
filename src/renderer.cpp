@@ -44,44 +44,124 @@ void		Renderer::clear		() noexcept
 
 	for (size_t i = 0; i < zBufferSize; i++)
 	{
-		zBuffer_[i] = 0; //uint limit
+		zBuffer_[i] = 0; //TODO: memset to optimize
 	}
+}
+
+ColorRGBA alphaBlendingADD(const ColorRGBA& Ca, const ColorRGBA& Cd) //Ca Over Cb
+{
+	float Car(Ca.r / 255.f) , Cag(Ca.g / 255.f), Cab(Ca.b / 255.f), Caa(Ca.a / 255.f);
+	float Cdr(Cd.r / 255.f) , Cdg(Cd.g / 255.f), Cdb(Cd.b / 255.f), Cda(Cd.a / 255.f);
+
+	float finalAlpha = Caa + Cda * (1.f - Caa);
+
+	float r =  (Car * Caa) + Cdr;
+	float g =  (Cag * Caa) + Cdg;
+	float b =  (Cab * Caa) + Cdb;
+
+	return (ColorRGBA) {static_cast<ubyte>(r * 255.f),
+						static_cast<ubyte>(g * 255.f),
+						static_cast<ubyte>(b * 255.f),
+						static_cast<ubyte>(finalAlpha * 255.f)};
+}
+
+
+ColorRGBA alphaBlending(const ColorRGBA& Ca, const ColorRGBA& Cb) //Ca Over Cb
+{
+	float Car(Ca.r / 255.f) , Cag(Ca.g / 255.f), Cab(Ca.b / 255.f), Caa(Ca.a / 255.f);
+	float Cbr(Cb.r / 255.f) , Cbg(Cb.g / 255.f), Cbb(Cb.b / 255.f), Cba(Cb.a / 255.f);
+
+	float finalAlpha = Caa + Cba * (1.f - Caa);
+
+	float r =  (Car * Caa + Cbr * Cba * (1.f - Caa)) / finalAlpha;
+	float g =  (Cag * Caa + Cbg * Cba * (1.f - Caa)) / finalAlpha;
+	float b =  (Cab * Caa + Cbb * Cba * (1.f - Caa)) / finalAlpha;
+
+	return (ColorRGBA) {static_cast<ubyte>(r * 255.f),
+						static_cast<ubyte>(g * 255.f),
+						static_cast<ubyte>(b * 255.f),
+						static_cast<ubyte>(finalAlpha * 255.f)};
+}
+
+/*
+ColorRGBA alphaBlending(const ColorRGBA& Ca, const ColorRGBA& Cb) //Ca Over Cb
+{
+	float Car(Ca.r / 255.f) , Cag(Ca.g / 255.f), Cab(Ca.b / 255.f), Caa(Ca.a / 255.f);
+	float Cbr(Cb.r / 255.f) , Cbg(Cb.g / 255.f), Cbb(Cb.b / 255.f), Cba(Cb.a / 255.f);
+
+	float r = (Car * Caa + Cbr * Cba * (1.f - Caa));
+	float g = (Cag * Caa + Cbg * Cba * (1.f - Caa));
+	float b = (Cab * Caa + Cbb * Cba * (1.f - Caa));
+	float a = (Caa * Caa + Cba * Cba * (1.f - Caa));
+
+	return (ColorRGBA) {static_cast<ubyte>(r * 255.f),
+						static_cast<ubyte>(g * 255.f),
+						static_cast<ubyte>(b * 255.f),
+						static_cast<ubyte>(a * 255.f)};
+}*/
+/*
+
+ColorRGBA alphaBlending(const ColorRGBA& Ca, const ColorRGBA& Cb) //Ca Over Cb
+{
+	float Car(Ca.r / 255.f) , Cag(Ca.g / 255.f), Cab(Ca.b / 255.f), Caa(Ca.a / 255.f);
+	float Cbr(Cb.r / 255.f) , Cbg(Cb.g / 255.f), Cbb(Cb.b / 255.f), Cba(Cb.a / 255.f);
+
+	float finalAlpha = Caa + Cba * (1.f - Caa);
+
+	float r =  (Car * Caa + Cbr * Cba * (1.f - Caa)) / finalAlpha;
+	float g =  (Cag * Caa + Cbg * Cba * (1.f - Caa)) / finalAlpha;
+	float b =  (Cab * Caa + Cbb * Cba * (1.f - Caa)) / finalAlpha;
+
+	return (ColorRGBA) {static_cast<ubyte>(r * 255.f),
+						static_cast<ubyte>(g * 255.f),
+						static_cast<ubyte>(b * 255.f),
+						static_cast<ubyte>(finalAlpha * 255.f)};
+}
+*/
+ColorRGBA alphaBlendingWithoutBlendAlpha(const ColorRGBA& Ca, const ColorRGBA& Cb) //Ca Over Cb
+{
+	float Car(Ca.r / 255.f) , Cag(Ca.g / 255.f), Cab(Ca.b / 255.f), Caa(Ca.a / 255.f);
+
+	float finalAlpha = Caa;
+
+	float r =  (Car * Caa) / finalAlpha;
+	float g =  (Cag * Caa) / finalAlpha;
+	float b =  (Cab * Caa) / finalAlpha;
+
+	return (ColorRGBA) {static_cast<ubyte>(r * 255.f),
+						static_cast<ubyte>(g * 255.f),
+						static_cast<ubyte>(b * 255.f),
+						static_cast<ubyte>(finalAlpha * 255.f)};
 }
 
 void Renderer::setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c, unsigned int z)
 {
-	//TODO: Add opacity function in function of depth
-	if (x < texBuffer_.width() && y < texBuffer_.heigth())
+	assert(x < texBuffer_.width() && y < texBuffer_.heigth());
+
+	ColorRGBA ca = texBuffer_.getRGBAPixelColor(x, y);
+
+	if (z > zBuffer_[texBuffer_.width() * y + x])
 	{
-		if (c.a != 255)
-		{
-			ColorRGBA cb = texBuffer_.getRGBAPixelColor(x, y);
-			texBuffer_.setPixelColor(x, y, alphaBlending(c, cb));
-		}
-		else if (z > zBuffer_[texBuffer_.width() * y + x])
+		if (c.a == 255)
 		{
 			texBuffer_.	setPixelColor(x, y, c);
-			zBuffer_	[texBuffer_.width() * y + x] = z;
 		}
+		else
+		{
+			if (zBuffer_[texBuffer_.width() * y + x] == 0)
+			{
+				texBuffer_.setPixelColor(x, y, alphaBlendingWithoutBlendAlpha(c, ca)); //C over Ca
+			}
+			else
+			{
+				texBuffer_.setPixelColor(x, y, alphaBlending(c, ca)); //C over Ca
+			}
+		}
+
+		zBuffer_	[texBuffer_.width() * y + x] = z;
 	}
-}
-
-ColorRGBA Renderer::alphaBlending(const ColorRGBA& Ca, ColorRGBA& Cb)
-{
-	Cb.a = 1;
-	float finalAlpha = Ca.a + Cb.a * (255 - Ca.a);
-
-	return (ColorRGBA) {static_cast<ubyte>((Ca.r * Ca.a + Cb.r * Cb.a * (255 - Ca.a)) / finalAlpha),
-						static_cast<ubyte>((Ca.g * Ca.a + Cb.g * Cb.a * (255 - Ca.a)) / finalAlpha),
-						static_cast<ubyte>((Ca.b * Ca.a + Cb.b * Cb.a * (255 - Ca.a)) / finalAlpha),
-						static_cast<ubyte>(finalAlpha)};
-}
-
-ColorRGB Renderer::alphaBlending(const ColorRGBA& Ca, ColorRGB& Cb)
-{
-	float finalAlpha = Ca.a + (255 - Ca.a);
-
-	return (ColorRGB) {	static_cast<ubyte>(((Ca.r * Ca.a) + Cb.r * (255 - Ca.a)) / finalAlpha),
-						static_cast<ubyte>(((Ca.g * Ca.a) + Cb.g * (255 - Ca.a)) / finalAlpha),
-						static_cast<ubyte>(((Ca.b * Ca.a) + Cb.b * (255 - Ca.a)) / finalAlpha)};	
+	else if (ca.a != 255)
+	{
+		texBuffer_.setPixelColor(x, y, alphaBlending(ca, c)); //Ca over C		
+	}
 }

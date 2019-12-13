@@ -21,6 +21,4 @@ ColorRGB operator*(const ColorRGB& color, float alpha);
 ColorRGBA operator*(const ColorRGBA& color, float alpha); 
 
 
-
-
 #endif // _COLOR_RGBA_H

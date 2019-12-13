@@ -11,7 +11,7 @@
 
 #include "vec.hpp"
 #include "vertex.hpp"
-#include "materials.hpp"
+#include "material.hpp"
 
 typedef struct S_Indices
 {
@@ -62,8 +62,8 @@ class Mesh
 		//create cube of size 1 with triangle and return mesh. Cube is centered on the origin
 		static std::shared_ptr<Mesh> createCube	();
 
-		//load .obj file and return pointer to the new mesh
-		static std::shared_ptr<Mesh> loadObj	(const char* path);
+		//load .obj file and return pointer to the new mesh in second and pointor to material in first
+		static std::pair<Material*, std::shared_ptr<Mesh>> loadObj	(const char* path);
 		
 		//create sphere of radius 1 and return it mesh.	Sphere is centered on the origin	
 		static std::shared_ptr<Mesh> createSphere(int latitudeCount, int longitudeCount);
@@ -122,7 +122,6 @@ class Mesh
 		std::vector<math::Vec3> 					normal_;		// Buffer of normal. Nomral is unit vector indicate the direction of face
 
 		std::vector<FaceIndices>					facesIndices_;  // Indices buffer. Define triangle of mesh. It's a suit of triplet index
-		static Materials*							pMaterial_;		// Pointer of mesh's material
 
 		#pragma endregion //!attribut
 

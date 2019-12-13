@@ -10,7 +10,7 @@
 #include "referential.hpp"
 #include "color.hpp"
 #include "light.hpp"
-#include "materials.hpp"
+#include "material.hpp"
 
 typedef enum E_primitive3D
 {
@@ -69,15 +69,15 @@ class Entity
 	   const 	std::shared_ptr<Mesh>&	getpMesh	()				const noexcept	{ return pMesh_;}
 	  			std::shared_ptr<Mesh>&	getpMesh	()					  noexcept	{ return pMesh_;}
 
-		const 	std::unique_ptr<Texture>&		getpTexture	() const noexcept	{ return pTexture_;}
-		 		std::unique_ptr<Texture>&		getpTexture	() noexcept			{ return pTexture_;}
+		const 	Material*		getpMaterial	() const noexcept	{ return pMaterial_;}
+		 		Material*		getpMaterial	() noexcept			{ return pMaterial_;}
 
 		#pragma endregion //!accessor
 
 		#pragma region mutator
 
-		//Enable to create entity texturing.
-		void 	setTexture		(const char* path);
+		//Enable to create entity material.
+		void 	setMaterial	(Material* pMat) { pMaterial_ = pMat; }; //TODO: with more paramter
 
 
 		#pragma endregion //!mutator
@@ -96,8 +96,7 @@ class Entity
 
 		std::shared_ptr<Mesh>		pMesh_;				//pointor toward mesh (allow to not duplicate vertex)
 		Ref3						transform_;			//local referential of entity. Entity is clip into another referntial and dependant of it.
-		std::shared_ptr<Materials>	materials_;
-		std::unique_ptr<Texture>	pTexture_; 			//Texture of the mesh
+		Material*					pMaterial_; 		//Material of the entity
 		
 		#pragma endregion //!attribut
 

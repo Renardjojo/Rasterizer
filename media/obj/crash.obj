@@ -1,7 +1,7 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
 # File Created: 05.06.2019 14:10:31
 
-mtllib Crash.mtl
+mtllib media/material/Crash.mtl
 
 #
 # object crash_v5Shape
