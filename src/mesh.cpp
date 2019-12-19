@@ -71,6 +71,36 @@ shared_ptr<Mesh> Mesh::createCube	()
 
 	return mesh;
 }
+
+shared_ptr<Mesh> Mesh::createTriangle	()
+{
+	shared_ptr<Mesh> mesh = make_shared<Mesh>();
+
+	//triangle contain 1 triangle, 3 vertex 3 texture coordonate and 1 normal
+	mesh->facesIndices_	.reserve(1);
+	mesh->vertex_		.reserve(3);
+	mesh->textCoord_	.reserve(3);
+	mesh->normal_		.reserve(1);
+
+	//initialize the index of cube :
+	//Face 1
+	mesh->facesIndices_	.push_back({{0, 0, 0}, {1, 1, 0}, {2, 2, 0}});
+
+	//initialize vertex :
+	mesh->vertex_			.push_back({-0.5f, -0.5f, 0.f});
+	mesh->vertex_			.push_back({ 0.5f, -0.5f, 0.f});
+	mesh->vertex_			.push_back({ 0.f ,  0.5f, 0.f});
+
+	//initialize texture coord : 
+	mesh->textCoord_		.push_back({ 0.f, 0.f});
+	mesh->textCoord_		.push_back({ 1.f, 0.f});
+	mesh->textCoord_		.push_back({ 0.f, 1.f});
+
+	//initialize normal :
+	mesh->normal_			.push_back({ 0.f,  0.f,  1.f});
+
+	return mesh;
+}
 		
 shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 {

@@ -53,11 +53,13 @@ map<string, unique_ptr<Material>>::iterator Material::addMaterial(string mtlPath
 										                materials.back().ambient_texname.empty() ? "" : "media/picture/" + materials.back().ambient_texname,
 										                materials.back().dissolve);
 
+        matIStream.close();
         return it;    
 	}
 	else
 	{
 		cerr << __FILE__ << ':' << __LINE__ <<": Error  file .mlt not found or void : " << mtlPath << endl;
+        matIStream.close();
         exit(EXIT_FAILURE);
 	}
 }
@@ -83,7 +85,7 @@ Material* Material::getMaterial(string id_material)
 map<string, unique_ptr<Material>>	defaultValueMapMaterial()
 {
     map<string, unique_ptr<Material>> m;
-    LightComponent l {{1.f, 1.f, 1.f},  {1.f, 1.f, 1.f},  {1.f, 1.f, 1.f}, 16};
+    LightComponent l {{1.f, 1.f, 1.f},  {1.f, 1.f, 1.f},  {1.f, 1.f, 1.f}, 124};
     m["Default"] = make_unique<Material>(std::move(l), "", 1.f);
     return m;
 }

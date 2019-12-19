@@ -7,7 +7,6 @@
 #include <iostream>
 #include "color.hpp"
 #include "texture.hpp"
-#include "light.hpp"
 #include "tiny_obj_loader.h"
 
 using namespace tinyobj;

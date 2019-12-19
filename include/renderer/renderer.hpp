@@ -58,10 +58,22 @@ class Renderer
 	   /*----------*/
 
 		Texture& getDrawBuffer() { return texBuffer_;}
+		unsigned int* getDepthBuffer() { return zBuffer_;}
 
 		//this function return the color of pixel in current renderer
-		const ColorRGB& 	getPixelColor(unsigned int x, unsigned int y) const noexcept	{ return *(static_cast<ColorRGB*>(texBuffer_[y]) + x); }
-		ColorRGB& 			getPixelColor(unsigned int x, unsigned int y) noexcept			{ return *(static_cast<ColorRGB*>(texBuffer_[y]) + x); }
+		const ColorRGBA& 	getPixelColor(unsigned int x, unsigned int y) const noexcept	
+		{ 
+			ColorRGBA* pC = static_cast<ColorRGBA*>(texBuffer_[0]);
+			pC += width() * y + x;
+			return *pC;	
+		}
+
+		ColorRGBA& 			getPixelColor(unsigned int x, unsigned int y) noexcept
+		{ 
+			ColorRGBA* pC = static_cast<ColorRGBA*>(texBuffer_[0]);
+			pC += width() * y + x;
+			return *pC;	
+		}
 
 		unsigned int 	width	() const { return texBuffer_.width(); }
 		unsigned int 	heigth	() const { return texBuffer_.heigth(); }
@@ -92,6 +104,10 @@ class Renderer
 		unsigned int*			zBuffer_;	//Z buffer determined the depth of pixel. If 2 textures war add, Z buffer determined whitch pixel is hidden
 
 	private:
+
+
 };
+
+#include "renderer.inl"
 
 #endif // _RENDERER_H	

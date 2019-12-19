@@ -1,11 +1,10 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
 # File Created: 05.06.2019 14:10:31
 
-newmtl Material__25
+newmtl crashSkin
 	Ns 32.0000
 	Ni 1.5000
-	d 1.000
-	Tr 0.0000
+	d 1.0000
 	Tf 1.0000 1.0000 1.0000 
 	illum 10
 	Ka 1.0000 1.0000 1.0000
@@ -13,4 +12,3 @@ newmtl Material__25
 	Ks 1.0000 1.0000 1.0000
 	Ke 0.0000 0.0000 0.0000
 	map_Ka crash5f.png
-	map_Kd crash5f.png

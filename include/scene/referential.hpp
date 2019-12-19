@@ -56,7 +56,7 @@ typedef class Referential3D
 		void 		addChildReferential (Referential3D& child) 	noexcept;
 
 		// few function to display entity of ref in function of his TRS matrix.
-		void 		displayAxis 		(Renderer& ren, const math::Mat4& projectionMatrix)	const noexcept;
+		void 		displayAxis 		(Renderer& ren, const math::Mat4& projectionMatrix, const math::Mat4& inversCam)	const noexcept;
 
 		#pragma endregion //!methods
 

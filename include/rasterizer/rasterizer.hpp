@@ -20,8 +20,42 @@ enum E_rasterizerSetting
 	R_DRAW_MULTI_COLOR,
 	R_DRAW_NORMAL,
 	R_DRAW_REFERENTIAL,
-	R_ENABLE_BACK_FACE_CULLING
+	R_ENABLE_BACK_FACE_CULLING,
+	R_ENABLE_CLIPPING,
+	R_ENABLE_LETTERBOX_CLIPPING,
+	R_ENABLE_ANTI_ALIASING,
+	R_USE_PHONG_LIGHT_ALGORYTHME,
+	R_USE_BLINN_PHONG_LIGHT_ALGORYTHME,
+	R_ENABLE_ALPHA_BLENDING
 
+};
+
+struct ArgRasterizer
+{
+	Renderer& ren;
+	const std::vector<Light>& lights; 
+	const math::Vec3& viewerPosition; 
+
+	const Material* entityMat;
+
+	const Vertex& v1;
+	const Vertex& v2;
+	const Vertex& v3;
+
+	const math::Vec3& v1RealPos; 
+	const math::Vec3& v2RealPos;
+	const math::Vec3& v3RealPos; 
+
+	float depthV1;
+	float depthV2;
+	float depthV3;
+
+	float wV1;
+	float wV2;
+	float wV3;
+
+	const math::Mat4& inverseCameraMatrix; 
+	const Texture* pTexture = nullptr;
 };
 
 class Rasterizer
@@ -41,13 +75,17 @@ class Rasterizer
 		static void		drawLine		(Renderer&, Vertex&, Vertex&);		
 
 		 //this function draw colorfull triangle. Use algorythme of barycenter triangle
-		static void		drawTriangle				(Renderer& , const Vertex& , const Vertex& , const Vertex&);
-		static void		drawTriangleWithLights		(Renderer&, const std::vector<Light>& lights, const math::Vec3& viewerPosition, const math::Vec3& entityPos, const Material* entityMat,const Vertex& v1, const Vertex& v2, const Vertex& v3, const Texture* pTexture = nullptr);
+		static void		drawTriangleWithLights		(ArgRasterizer& arg);
 
 		// This function draw each entity in scene
-		static void renderScene(Renderer& ren, const Scene& scene, const math::Mat4& projectionMatrix, const math::Mat4& inverseCameraMatrix);
+		static void renderScene(Renderer& ren, const Scene& scene, const math::Mat4& inverseCameraMatrix, const math::Vec3& camPos);
 
 		static void resetNbTriangleRender	() { nbTriangleRender = 0; }
+
+		//this function apply algorythme of MSAA for each borderer of triangle. Do not apply to back face 
+		static void applyMSAA			(Renderer& ren, const Vertex& v1, const math::Vec3& v1RealPos, float depthV1, const Vertex& v2, const math::Vec3& v2RealPos, float depthV2, const Vertex& v3, const math::Vec3& v3RealPos, float depthV3);
+
+
 
 		#pragma endregion //!methods
 
@@ -80,8 +118,28 @@ class Rasterizer
 		// R_DRAW_NORMAL			: Allow to draw the normal of each vertexe.
 		// R_DRAW_REFERENTIAL		: Allow to draw the referential of entity
 		// R_ENABLE_BACK_FACE_CULLING : Allow to don't draw face in same direction au camera. Normaly not visible
+		// R_ENABLE_CLIPPING		 : clipping allow to don't try to display triangle outside of screen.
+		// R_ENABLE_LETTERBOX_CLIPPING : Letter box is a process in cinema in witch user can see a black bande in top and bottom of screen
+		// R_ENABLE_ANTI_ALIASING		: allow to avoid aliasing because of screen resolution 
+		// R_USE_PHONG_LIGHT_ALGORYTHME : Phong algorythme is an calcul to comput light with ligth different result than blinn phong algorythm. This algorythm is also more less than blinn-phong ligth.
+		// R_USE_BLINN_PHONG_LIGHT_ALGORYTHME : Blinn phong algorythme is an calcul to comput light with ligth different result than phong algorythm. This algorythm is also more fast phong ligth.
+		// R_ENABLE_ALPHA_BLENDING			: Enable alpha blending of entity.
 		//
 		static void setSetting	(E_rasterizerSetting setting, bool data) throw();
+
+		//This function load perspective matrix in function of a FOV in Y, aspect, zNear and zFar
+		static void loadPerspectiveMatrix	(	float fovy,
+												float aspect,
+												float zNear,
+												float zFar);
+
+		//This function load perspective matrix in function 
+		static void loadOrthoMatrix	(	float  	left,
+										float  	right,
+										float  	bottom,
+										float  	top,
+										float  	nearVal,
+										float  	farVal);
 
 		#pragma endregion //!mutator
 
@@ -107,7 +165,18 @@ class Rasterizer
 		static bool			drawNormal;				//	by default in false
 		static bool			drawReferential;		//	by default in false
 		static bool			enableBackFaceCulling;	//	by default in true
-		static unsigned int nbTriangleRender;	
+		static bool			enableClipping;			//	by default in false
+		static bool			enableLetterBoxClipping;//	by default in false
+		static bool			enableAntiAliasing;		//	by default in false
+		static bool			usePhongLigthAlgorythme;	//	by default in false
+		static bool			useBlinnPhongLigthAlgorythme;	//	by default in true
+		static bool			enableAlphaBlending;			//	by default in false
+
+		static unsigned int nbTriangleRender;
+
+		static math::Mat4	projectionMatrix;		//Matrix of projection. Can be in perspective or in ortho. By default is identitary
+		static float 		zNear;					//by default 0
+		static float		zFar;					//by default 0
 
 		#pragma endregion //! static attribut
 

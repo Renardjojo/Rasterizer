@@ -2172,7 +2172,7 @@ vt 0.6487 -0.6573 0.0000
 # 524 texture coords
 
 g crash_v5Shape
-usemtl Material__25
+usemtl crashSkin
 s 1
 f 1/1/1 2/2/2 3/3/3 
 f 2/2/2 1/1/1 4/4/4 

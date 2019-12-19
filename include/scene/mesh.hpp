@@ -62,6 +62,9 @@ class Mesh
 		//create cube of size 1 with triangle and return mesh. Cube is centered on the origin
 		static std::shared_ptr<Mesh> createCube	();
 
+		//create simple triangle
+		static std::shared_ptr<Mesh> createTriangle	();
+
 		//load .obj file and return pointer to the new mesh in second and pointor to material in first
 		static std::pair<Material*, std::shared_ptr<Mesh>> loadObj	(const char* path);
 		

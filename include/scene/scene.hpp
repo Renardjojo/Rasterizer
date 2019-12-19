@@ -43,7 +43,7 @@ class Scene
 		unsigned int 	addEntity			(	const math::Vec3&  	originVec,
 												const math::Vec3&  	orientationVec, 										
 												const math::Vec3&  	scaleVec,
-												Primitive3D 		primitive 			= E_primitive3D::NONE) noexcept;
+												E_primitive3D 		primitive 			= E_primitive3D::NONE) noexcept;
 
 		//Same function but to load .obj file
 		unsigned int 	addEntity			(	const math::Vec3&  	originVec,
@@ -61,10 +61,13 @@ class Scene
 		void 			deleteLight		(unsigned int id) throw();
 
 		//this function draw all entities of the scene in function of there referential. It take in parameter th buffer of renderer
-		void 			draw				(Renderer& ren) const noexcept;
+		void 			draw				(Renderer& ren) noexcept;
 
 		//inscrease scale of all
 		void 			zoom				(float zoom);
+
+		//this function clear all element and reset his variable
+		void 			clear				();
 		
 		#pragma endregion //!methods
 
@@ -81,6 +84,8 @@ class Scene
 		#pragma endregion //!accessor
 
 		#pragma region mutator
+
+		
 
 		#pragma endregion //!mutator
 
@@ -106,7 +111,6 @@ class Scene
 		Ref3									world; 		//world referential of scene. Do not move.
 
 		#pragma endregion //!attribut
-
 
 	private:
 };

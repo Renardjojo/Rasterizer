@@ -28,6 +28,9 @@ class Window
 
 		const SDL_Window*		get () const 	{ return win; }
 		SDL_Window*				get () 			{ return win; }
+
+		unsigned int 			width () const	{ return width_;}
+		unsigned int			heigth() const 	{ return heigth_;}
 		
 
 		 /*----------*/
@@ -47,6 +50,8 @@ class Window
 	protected:
 
 	SDL_Window* win;
+	unsigned int width_;
+	unsigned int heigth_;
 
 	private:
 };

@@ -35,7 +35,7 @@ class Texture
 		#pragma region methods
 
 		//color pixel of matrix. Z paramater correspond to the depth of pixel in zBuffer
-		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA&);
+		void setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c);
 
 		/**
 		 * function : clear
@@ -47,8 +47,6 @@ class Texture
 		 * brief : This function destroy the current Texture and alloc new texture buffer with the same size. Clear in black
 		 */
 		void		clear		();
-		
-		void bilinearFiltering(math::Vec3& vec);
 
 		#pragma endregion //!methods
 
@@ -61,22 +59,7 @@ class Texture
 		unsigned int 	width	() const { return width_; }
 		unsigned int 	heigth	() const { return heigth_; }
 
-		ColorRGBA		getRGBAPixelColor (unsigned int x, unsigned int y) const noexcept
-		{ 
-			assert(x < width_ && y < heigth_);
-			unsigned int i = width_ * y + x;
-
-			if (pixelFormat_ == RGBA)
-			{
-				auto cRGBA = static_cast<ColorRGBA*>(pPixels_);
-				return ColorRGBA{cRGBA[i].r, cRGBA[i].g, cRGBA[i].b, cRGBA[i].a};
-			}
-			else
-			{
-				auto cRGB = static_cast<ColorRGB*>(pPixels_);
-				return (ColorRGBA){cRGB[i].r, cRGB[i].g, cRGB[i].b, 255};
-			}
-		}
+		ColorRGBA		getRGBAPixelColor (unsigned int x, unsigned int y) const noexcept;
 
 		const PixelFormat& 	getPixelFormat () const noexcept 	{ return pixelFormat_;}		
 		PixelFormat& 		getPixelFormat () noexcept 			{ return pixelFormat_;}
@@ -142,5 +125,7 @@ class Texture
 
 		#pragma endregion //!methods
 };
+
+#include "texture.inl"
 
 #endif //_TEXTURE_H

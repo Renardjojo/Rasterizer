@@ -63,17 +63,18 @@ void 		Referential3D::addChildReferential (Referential3D& child) noexcept
 	child.		updateTRSMat();		//update TRS matrix of each of his child because of the new dependance.
 }
 
-Vertex convertVertexLocalToGlobalAndApplyProjection(Renderer& ren, Vertex vertex, const Mat4 &projectionMatrix, const Mat4 &TRSMat)
+Vertex convertVertexLocalToGlobalAndApplyProjection(Renderer& ren, Vertex vertex, const Mat4 &projectionMatrix, const Mat4 &TRSMat, const math::Mat4& invertCam)
 {
     //Aplly transformation and projection to get vector in 4D
     Vec4 clipBoard = TRSMat * vertex.position_;
+	clipBoard = invertCam * clipBoard;
     
     clipBoard = projectionMatrix * clipBoard;
 
     //convert vector in 4D to 3D this homogenize
     if (clipBoard.w != 0.f && clipBoard.w != 1.f)
     {
-       clipBoard.homogenize();
+	    clipBoard.homogenize();
     }
 
     //adapte vertex to 2D
@@ -87,19 +88,23 @@ Vertex convertVertexLocalToGlobalAndApplyProjection(Renderer& ren, Vertex vertex
     return vertex;
 }
 
-void 		Referential3D::displayAxis 	(Renderer& ren, const math::Mat4& projectionMatrix) const noexcept
+void 		Referential3D::displayAxis 	(Renderer& ren, const math::Mat4& projectionMatrix, const math::Mat4& invertCam) const noexcept
 {
 	Vertex origin (0.f, 0.f, 0.f);
-	origin = convertVertexLocalToGlobalAndApplyProjection(ren, origin, projectionMatrix, TRSMat_);
+	origin = convertVertexLocalToGlobalAndApplyProjection(ren, origin, projectionMatrix, TRSMat_, invertCam);
+	origin.position_.z = 0.01f;
 
 	Vertex axisX = {1.f, 0.f, 0.f};
-	axisX = convertVertexLocalToGlobalAndApplyProjection(ren, axisX, projectionMatrix, TRSMat_);
+	axisX = convertVertexLocalToGlobalAndApplyProjection(ren, axisX, projectionMatrix, TRSMat_, invertCam);
+	axisX.position_.z = 0.01f;
 
 	Vertex axisY = {0.f, 1.f, 0.f};
-	axisY = convertVertexLocalToGlobalAndApplyProjection(ren, axisY, projectionMatrix, TRSMat_);
+	axisY = convertVertexLocalToGlobalAndApplyProjection(ren, axisY, projectionMatrix, TRSMat_, invertCam);
+	axisY.position_.z = 0.01f;
 
 	Vertex axisZ = {0.f, 0.f, 1.f};
-	axisZ = convertVertexLocalToGlobalAndApplyProjection(ren, axisZ, projectionMatrix, TRSMat_);
+	axisZ = convertVertexLocalToGlobalAndApplyProjection(ren, axisZ, projectionMatrix, TRSMat_, invertCam);
+	axisZ.position_.z = 0.01f;
 
 	Rasterizer::setColor4ub(255, 0, 0, 255);
 	Rasterizer::drawLine(ren, axisX, origin); // (Ox)
@@ -107,36 +112,6 @@ void 		Referential3D::displayAxis 	(Renderer& ren, const math::Mat4& projectionM
 	Rasterizer::drawLine(ren, axisY, origin); // (Oy)
 	Rasterizer::setColor4ub(0, 0, 255, 255);
 	Rasterizer::drawLine(ren, axisZ, origin); // (Oz)
-/*
-	Vertex origin (origin_.x, origin_.y, origin_.z);
-	Vec4 vecO(origin.position_);
-	origin = {((vecO.x / 5) + 1) * 0.5f * ren.width(), 
-			(ren.heigth() - (( vecO.y/ 5) + 1) * 0.5f *ren.heigth()), vecO.z};
-	
-	Vertex axisX = {1.f, 0.f, 0.f};
-	Vec4 vec(axisX.position_);
-	vec = TRSMat_ * vec;
-	axisX = {((vec.x / 5) + 1) * 0.5f * ren.width(), 
-			(ren.heigth() - (( vec.y/ 5) + 1) * 0.5f *ren.heigth()), vec.z};
-	
-	Vertex axisY = {0.f, 1.f, 0.f};
-	Vec4 vec1(axisY.position_);
-	vec1 = TRSMat_ * vec1;
-	axisY = {((vec1.x / 5) + 1) * 0.5f * ren.width(), 
-			(ren.heigth() - (( vec1.y/ 5) + 1) * 0.5f *ren.heigth()), vec1.z};
-
-	Vertex axisZ = {0.f, 0.f, 1.f};
-	Vec4 vec2(axisZ.position_);
-	vec2 = TRSMat_ * vec2;
-	axisZ = {((vec2.x / 5) + 1) * 0.5f * ren.width(), 
-			(ren.heigth() - (( vec2.y/ 5) + 1) * 0.5f *ren.heigth()), vec2.z};
-
-	Rasterizer::setColor4ub(255, 0, 0, 255);
-	Rasterizer::drawLine(ren, axisX, origin); // (Ox)
-	Rasterizer::setColor4ub(0, 255, 0, 255);
-	Rasterizer::drawLine(ren, axisY, origin); // (Oy)
-	Rasterizer::setColor4ub(0, 0, 255, 255);
-	Rasterizer::drawLine(ren, axisZ, origin); // (Oz)*/
 }
 
 void 		Referential3D::updateTRSMat	() 			noexcept
