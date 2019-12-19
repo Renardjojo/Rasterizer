@@ -1,6 +1,8 @@
 #include "window.hpp"
 
 Window::Window (unsigned int width, unsigned int heigth)
+    : 	width_  (width),
+	    heigth_ (heigth)
 {
 	// Init SDL
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -18,6 +20,7 @@ Window::Window (unsigned int width, unsigned int heigth)
     }
 
     SDL_ShowCursor(false);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 Window::~Window ()

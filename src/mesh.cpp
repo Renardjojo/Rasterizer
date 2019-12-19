@@ -71,6 +71,36 @@ shared_ptr<Mesh> Mesh::createCube	()
 
 	return mesh;
 }
+
+shared_ptr<Mesh> Mesh::createTriangle	()
+{
+	shared_ptr<Mesh> mesh = make_shared<Mesh>();
+
+	//triangle contain 1 triangle, 3 vertex 3 texture coordonate and 1 normal
+	mesh->facesIndices_	.reserve(1);
+	mesh->vertex_		.reserve(3);
+	mesh->textCoord_	.reserve(3);
+	mesh->normal_		.reserve(1);
+
+	//initialize the index of cube :
+	//Face 1
+	mesh->facesIndices_	.push_back({{0, 0, 0}, {1, 1, 0}, {2, 2, 0}});
+
+	//initialize vertex :
+	mesh->vertex_			.push_back({-0.5f, -0.5f, 0.f});
+	mesh->vertex_			.push_back({ 0.5f, -0.5f, 0.f});
+	mesh->vertex_			.push_back({ 0.f ,  0.5f, 0.f});
+
+	//initialize texture coord : 
+	mesh->textCoord_		.push_back({ 0.f, 0.f});
+	mesh->textCoord_		.push_back({ 1.f, 0.f});
+	mesh->textCoord_		.push_back({ 0.f, 1.f});
+
+	//initialize normal :
+	mesh->normal_			.push_back({ 0.f,  0.f,  1.f});
+
+	return mesh;
+}
 		
 shared_ptr<Mesh> Mesh::createSphere(int latitudeCount, int longitudeCount)
 {
@@ -251,7 +281,16 @@ shared_ptr<Mesh> Mesh::createCylindre(unsigned int prescision)
 	return mesh;
 }
 
-shared_ptr<Mesh> Mesh::loadObj	(const char* path)
+inline Vec3 vec3_cross(Vec3 a, Vec3 b)
+{
+    Vec3 r;
+    r.x = a.y * b.z - a.z * b.y;
+    r.y = a.z * b.x - a.x * b.z;
+    r.z = a.x * b.y - a.y * b.x;
+    return r;
+}
+
+std::pair<Material*, std::shared_ptr<Mesh>> Mesh::loadObj	(const char* path)
 {
 	assert(path != nullptr);
 
@@ -261,9 +300,9 @@ shared_ptr<Mesh> Mesh::loadObj	(const char* path)
 	string err;
 	tinyobj::attrib_t attrib;
 	vector<tinyobj::shape_t> shapes;
-	//vector<tinyobj::material_t> materials;
+	vector<tinyobj::material_t> materials;
 	
-	tinyobj::LoadObj(&attrib, &shapes, NULL, &warn, &err, path);
+	tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path);
 	
 	if (!err.empty())
 		cerr << "Error loading obj: " << err << " . Path : " << path << endl;
@@ -280,10 +319,28 @@ shared_ptr<Mesh> Mesh::loadObj	(const char* path)
 		mesh->vertex_.push_back({attrib.vertices[i], attrib.vertices[i + 1], attrib.vertices[i + 2]});	
 	}
 
-	for (unsigned int i = 0; i < attrib.normals.size() ; i+=3)
+	if (attrib.normals.empty())
 	{
-		mesh->normal_.push_back({attrib.normals[i], attrib.normals[i + 1], attrib.normals[i + 2]});
+        for (unsigned int i = 0; i < mesh->vertex_.size(); i += 3)
+        {
+            Vec3& v0 = mesh->vertex_[i + 0];
+            Vec3& v1 = mesh->vertex_[i + 1];
+            Vec3& v2 = mesh->vertex_[i + 2];
+ 
+            Vec3 normal = vec3_cross((v1 - v0), (v2 - v0));
+            mesh->normal_.push_back({normal});
+			mesh->normal_.push_back({normal});
+			mesh->normal_.push_back({normal});
+		}
+	} 
+	else
+	{
+		for (unsigned int i = 0; i < attrib.normals.size() ; i+=3)
+		{
+			mesh->normal_.push_back({attrib.normals[i], attrib.normals[i + 1], attrib.normals[i + 2]});
+		}		
 	}
+	
 
 	if (attrib.texcoords.empty())
 	{
@@ -317,28 +374,26 @@ shared_ptr<Mesh> Mesh::loadObj	(const char* path)
 		}
 	}
 
+	
+	Material* pMat = nullptr;
 
-	/*if (!materials.empty())
+	//Load information about material and create materal if doesn't exist
+	if (!materials.empty())
 	{
-		Materials 	material(materials.back().ambient[3], materials.back().diffuse[3], materials.back().specular[3]);
-		
+		auto it = Material::addMaterial(materials.back().name,
+										{{ materials.back().ambient[0] , materials.back().ambient[1] , materials.back().ambient[2]}, 
+										{ materials.back().diffuse[0] , materials.back().diffuse[1] , materials.back().diffuse[2]},
+						 				{ materials.back().specular[0], materials.back().specular[1], materials.back().specular[2]},
+						  				  static_cast<unsigned int>(materials.back().shininess)},
+										materials.back().ambient_texname.empty() ? "" : "media/picture/" + materials.back().ambient_texname,
+										materials.back().dissolve);
+
+		pMat = it->second.get();
 	}
 	else
-		Materials material();*/
-		
-	
-
-/*
-	for (const tinyobj::shape_t& shape : shapes)
 	{
-		for (unsigned int i = 0; i < shape.mesh.indices.size() ; i+=3)
-		{
-			const tinyobj::index_t& index = shape.mesh.indices[i];
-			mesh->facesIndices_.push_back({	{(unsigned int)index.vertex_index  + 0  , 0   , (unsigned int)index.normal_index + 0 },
-											{(unsigned int)index.vertex_index + 1, 0, (unsigned int)index.normal_index + 1},
-											{(unsigned int)index.vertex_index + 2, 0, (unsigned int)index.normal_index + 2}});
-		}
-	}*/
-
-	return mesh;
+		pMat = Material::getMaterial("Default");
+	}
+	
+	return pair<Material*, shared_ptr<Mesh>>(pMat ,mesh);
 }

@@ -463,6 +463,8 @@ inline Mat4 Mat4::createOrthoMatrix	(float left, float right, float bottom, floa
 
 inline Mat4 Mat4::createPerspectiveMatrix 	(float aspect, float near, float far, float fov)
 {
+	assert (near > 0 && aspect != 0 && fov != 0);
+
     float scale = tanf(fov * 0.5f * M_PI / 180.f) * near;
     float rigth = aspect * scale;
 
@@ -470,6 +472,7 @@ inline Mat4 Mat4::createPerspectiveMatrix 	(float aspect, float near, float far,
     float left   = -rigth;
     float top    = scale;
     float bottom = -scale;
+	float zDir	 = -1;
 
     float a11 = 2 * near / (rigth - left);
     float a22 = 2 * near / (top - bottom);
@@ -477,7 +480,6 @@ inline Mat4 Mat4::createPerspectiveMatrix 	(float aspect, float near, float far,
     float a32 = (top + bottom) / (top - bottom);
     float a33 = -(far + near) / (far - near);
     float a43 = -2 * far * near / (far - near);
-    float zDir = -1.f;
 
 	return {  a11, 0.f, 0.f, 0.f,
               0.f, a22, 0.f, 0.f,

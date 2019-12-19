@@ -1,0 +1,10 @@
+# By Six J for Rasterizer project
+
+newmtl Earth
+	Ns 16.0000
+	d 1.0000
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.8000 0.8000 0.8000
+
+	map_Ka sp.png

@@ -9,7 +9,7 @@
 #include <GL/glu.h>
 #include <string.h>
 
-Texture::Texture (unsigned int width, unsigned int height, E_PixelFormat pixelFormat)
+inline Texture::Texture (unsigned int width, unsigned int height, E_PixelFormat pixelFormat)
 	:	width_			(width),
 		heigth_			(height),
 		pPixels_		(static_cast<ColorRGBA*>(calloc(width * height, sizeof(ColorRGBA)))),
@@ -17,7 +17,7 @@ Texture::Texture (unsigned int width, unsigned int height, E_PixelFormat pixelFo
 {}
 
 
-Texture::Texture (const char* path)
+inline Texture::Texture (const char* path)
 	:	width_			(0),
 		heigth_			(0),
 		pPixels_		(nullptr),
@@ -26,33 +26,31 @@ Texture::Texture (const char* path)
 	loadTexture (path);
 }
 
-Texture::~Texture ()
+inline Texture::~Texture ()
 {
 	if (pPixels_ != nullptr)
 		free(pPixels_);
 }
 
-void Texture::setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c)
+inline void Texture::setPixelColor(unsigned int x, unsigned int y, const ColorRGBA& c)
 {
-	//TODO: Add opacity function in function of depth
-	if (x < width_ && y < heigth_)
+	assert(x < width_ && y < heigth_);
+
+	if (pixelFormat_ == E_PixelFormat::RGB)
 	{
-		if (pixelFormat_ == E_PixelFormat::RGB)
-		{
-			ColorRGB* pC = static_cast<ColorRGB*>(pPixels_);
-			pC += width_ * y + x;
-			*pC = {c.r, c.g, c.b};
-		}
-		else
-		{
-			ColorRGBA* pC = static_cast<ColorRGBA*>(pPixels_);
-			pC += width_ * y + x;
-			*pC = {c.r, c.g, c.b, c.a};
-		}
+		ColorRGB* pC = static_cast<ColorRGB*>(pPixels_);
+		pC += width_ * y + x;
+		*pC = {c.r, c.g, c.b};
+	}
+	else
+	{
+		ColorRGBA* pC = static_cast<ColorRGBA*>(pPixels_);
+		pC += width_ * y + x;
+		*pC = {c.r, c.g, c.b, c.a};
 	}
 }
 
-void Texture::clear		()
+inline void Texture::clear		()
 {
 	if (pixelFormat_ == E_PixelFormat::RGB)
 	{
@@ -64,10 +62,7 @@ void Texture::clear		()
 	}
 }
 
-void Texture::bilinearFiltering(math::Vec3& vec)
-{}
-
-void*		Texture::operator[]		(unsigned int indexLine) const
+inline void*		Texture::operator[]		(unsigned int indexLine) const
 {
 	assert(indexLine < heigth_);
 
@@ -86,7 +81,7 @@ void*		Texture::operator[]		(unsigned int indexLine) const
 }
 
 
-void*		Texture::operator[]		(unsigned int indexLine)
+inline void*		Texture::operator[]		(unsigned int indexLine)
 {
 	assert(indexLine < heigth_);
 
@@ -104,15 +99,25 @@ void*		Texture::operator[]		(unsigned int indexLine)
 	}
 }
 
+inline ColorRGBA		Texture::getRGBAPixelColor (unsigned int x, unsigned int y) const noexcept
+{ 
+    assert(x < width_ && y < heigth_);
+    unsigned int i = width_ * y + x;
 
-void Texture::loadTexture (const char* path)
-{/*
-	int imgFlags = IMG_INIT_PNG;
-	if( !( IMG_Init( imgFlags ) & imgFlags ) )
-	{
-		printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
-	}
-*/
+    if (pixelFormat_ == RGBA)
+    {
+        auto cRGBA = static_cast<ColorRGBA*>(pPixels_);
+        return ColorRGBA{cRGBA[i].r, cRGBA[i].g, cRGBA[i].b, cRGBA[i].a};
+    }
+    else
+    {
+        auto cRGB = static_cast<ColorRGB*>(pPixels_);
+        return (ColorRGBA){cRGB[i].r, cRGB[i].g, cRGB[i].b, 255};
+    }
+}
+
+inline void Texture::loadTexture (const char* path)
+{
 	SDL_Surface* image = IMG_Load(path);
 
 	if (image == nullptr)

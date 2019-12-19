@@ -382,7 +382,7 @@ inline Vec3& Vec3::operator-=(const Vec3& vec)
 	return *this;
 }
 
-inline Vec3& Vec3::operator*=(const float& scale)
+inline Vec3& Vec3::operator*=(const float scale)
 {
 	x *= scale;
 	y *= scale;
@@ -424,7 +424,7 @@ inline Vec3 operator+ (Vec3 vec1, const Vec3& vec2)
 	return vec1;
 }
 
-inline Vec3 operator*		(Vec3 vec, const float& scale)
+inline Vec3 operator*		(Vec3 vec, const float scale)
 {
 	return vec *= scale;
 }
